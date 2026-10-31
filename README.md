@@ -37,3 +37,17 @@ python -m http.server 8080
 可选：想让官网在主仓库发版后立即刷新快照，可在主仓库的 release workflow 里加一个 `repository_dispatch`（`event_type: release-published`）调用本仓库——需要一个有本仓库权限的 PAT 作为 secret，不配则只靠每 6 小时的定时同步。
 
 本地手动更新快照：`node scripts/sync-releases.mjs`（可选环境变量 `GITHUB_TOKEN`）。
+
+## 功能演示（app-demo/）
+
+`app-demo/` 是用 **MultiGameAssistant 真实前端代码**（`apps/web`，AGPL-3.0，源码：<https://github.com/haaahhhis/MultiGameAssistant>）打包出来的静态演示：浏览器内的假 gateway 应答 JSON-RPC，场景导演按虚拟时钟驱动真实 UI。
+
+重新构建（需要把 MultiGameAssistant 仓库放在本仓库旁边，或用 `MGA_REPO` 指定路径）：
+
+```bash
+node demo-build/build.mjs   # 使用主仓库自己的 vite/@vitejs/plugin-react，无需在本仓库装依赖
+```
+
+- `demo-build/entry.ts`：安装 FakeGatewaySocket → 注入演示 token → 导入真实 `main.tsx`
+- `demo-build/gateway/fake.ts`：假 gateway；`?validate=1` 打开校验日志；未知方法会 warn
+- `demo-build/scenarios/director.ts`：六个场景的导演（路由切换、真实 DOM 交互、gateway 通知），父页面用 postMessage 控制

@@ -1,0 +1,19 @@
+{
+  "base": "http://127.0.0.1:8081/web_MultiGameAssistant/app-demo/index.html?validate=1",
+  "rail": ["游戏", "对话", "脚本", "编排", "运行", "技能"],
+  "banned": ["当前连接没有提供这个功能"],
+  "urls": [
+    { "name": "scripts", "hash": "#/p/scripts", "must": ["脚本", "模拟器日常", "桌面日常", "每日巡检"] },
+    { "name": "scripts-detail", "hash": "#/p/scripts/daily-helper", "must": ["每日巡检", "每日任务", "材料速刷"] },
+    { "name": "pipelines", "hash": "#/p/pipelines", "must": ["每天早上的日常"] },
+    { "name": "pipeline-canvas", "hash": "#/p/pipelines/morning-daily", "must": ["每天早上的日常", "模拟器日常", "桌面日常"] },
+    { "name": "runs", "hash": "#/p/runs", "must": ["出错", "每日巡检"] },
+    { "name": "games", "hash": "#/p/games", "must": ["星轨行动", "远空回响"] },
+    { "name": "game-detail", "hash": "#/p/games/startrail", "must": ["星轨行动", "曙光前线"] },
+    { "name": "chat", "hash": "#/chat", "must": ["排每天早上的日常", "诊断昨晚失败"] },
+    { "name": "session-diag", "hash": "#/s/s-diag", "must": ["昨晚的日常为什么失败", "logs/run.log", "模拟器卡在启动页", "允许"] },
+    { "name": "skills", "hash": "#/p/skills", "must": ["pipeline-planning"] },
+    { "name": "feishu", "hash": "#/settings/feishu", "must": ["MGA 助手"] },
+    { "name": "settings", "hash": "#/settings", "must": ["设置"] }
+  ]
+}

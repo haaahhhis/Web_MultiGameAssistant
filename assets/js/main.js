@@ -188,28 +188,6 @@
   updateRail();
 
   /* ============================================================
-     Hero mouse parallax
-     ============================================================ */
-  var stack = document.getElementById('pipelineStack');
-  if (stack && !REDUCED && !TOUCH) {
-    var layers = Array.prototype.slice.call(stack.querySelectorAll('[data-depth]'));
-    var px = 0, py = 0, parallaxRaf = false;
-    document.getElementById('home').addEventListener('pointermove', function (e) {
-      px = (e.clientX / window.innerWidth - 0.5) * 2;
-      py = (e.clientY / window.innerHeight - 0.5) * 2;
-      if (parallaxRaf) return;
-      parallaxRaf = true;
-      requestAnimationFrame(function () {
-        layers.forEach(function (l) {
-          var d = parseFloat(l.dataset.depth) || 0;
-          l.style.transform = 'translate(' + (-px * d * 500).toFixed(1) + 'px,' + (-py * d * 320).toFixed(1) + 'px)';
-        });
-        parallaxRaf = false;
-      });
-    }, { passive: true });
-  }
-
-  /* ============================================================
      Feature switcher
      ============================================================ */
   var FEATURE_DATA = [
@@ -615,3 +593,52 @@
     window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
   });
 })();
+
+
+  /* ============================================================
+    COMMAND CORE — rings, packet, countdown, terminal, tilt
+     ============================================================ */
+  var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var TOUCH = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  var cc = document.getElementById('cmdCore');
+  if (cc && !REDUCED) {
+    var ccNodes = cc.querySelectorAll('.cc-node'), ccPkt = document.getElementById('ccPacket');
+    var ccCenter = 230, ccR = 188, ccAng = 0, ccIdx = 0;
+    ccNodes[0].classList.add('lit');
+    (function ccMove() {
+      ccAng = (ccAng + 0.008) % (Math.PI * 2);
+      var a = ccAng - Math.PI / 2;
+      ccPkt.style.left = (ccCenter + Math.cos(a) * ccR - 4) + 'px';
+      ccPkt.style.top = (ccCenter + Math.sin(a) * ccR - 4) + 'px';
+      var seg = Math.floor(((ccAng + Math.PI / 4) % (Math.PI * 2)) / (Math.PI / 2)) % 4;
+      if (seg !== ccIdx) { ccIdx = seg; ccNodes.forEach(function (n, j) { n.classList.toggle('lit', j === seg); }); }
+      requestAnimationFrame(ccMove);
+    })();
+    /* countdown */
+    var ccNext = document.getElementById('ccNext');
+    setInterval(function () {
+      var t = 630 - (Math.floor(Date.now() / 1000) % 1800);
+      ccNext.textContent = 'NEXT RUN\n06:30 · ' + Math.floor(t / 60) + ':' + ('0' + t % 60).slice(-2);
+    }, 1000);
+    /* terminal */
+    var ccTerm = document.getElementById('ccTerm');
+    var LOGS = ['[06:30:00] pipeline 每天早上的日常 · start', '[06:30:02] agent · 读懂 DailyHelper → 脚本包', '[06:31:40] 桌面日常·清体力 · queued (desktop)', '[06:34:12] incident · 自动重跑 <span class="ok">✓</span>', '[06:35:01] 飞书 · 已推送日报'];
+    var li = 0;
+    setInterval(function () {
+      var d = document.createElement('div'); d.className = 'tl in';
+      d.innerHTML = LOGS[li % LOGS.length]; ccTerm.appendChild(d);
+      while (ccTerm.children.length > 4) ccTerm.firstChild.remove();
+      li++;
+    }, 1800);
+    /* tilt */
+    if (!TOUCH) {
+      var hero = document.getElementById('home'), tx = 0, ty = 0, traf = false;
+      hero.addEventListener('pointermove', function (e) {
+        tx = (e.clientX / innerWidth - .5) * 10; ty = (e.clientY / innerHeight - .5) * -8;
+        if (traf) return; traf = true;
+        requestAnimationFrame(function () { cc.style.transform = 'rotateY(' + tx + 'deg) rotateX(' + ty + 'deg)'; traf = false; });
+      }, { passive: true });
+    }
+  } else if (cc) {
+    document.getElementById('ccNext').textContent = 'NEXT RUN 06:30';
+  }
