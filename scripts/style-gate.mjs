@@ -18,12 +18,7 @@ async function assertStyles(page) {
   const styles = await page.evaluate(() => {
     const css = selector => getComputedStyle(document.querySelector(selector));
     return {
-      nodeFill: css('.fl-node:not(.fl-marker)').backgroundColor,
-      edgeFill: css('.flow-edge').fill,
-      edgeStroke: css('.flow-edge').stroke,
-      pulseFill: css('.flow-pulse').fill,
-      flowNodes: document.querySelectorAll('.fl-node').length,
-      flowEdges: document.querySelectorAll('.flow-edge').length,
+      spine: (() => { const s = document.getElementById('titleSpine'); return s ? s.querySelectorAll('.spine-dot').length : -1; })(),
       wordmarkSize: parseFloat(css('.bridge-wordmark').fontSize),
       wordmark: document.querySelector('.bridge-wordmark').textContent,
       wordmarkFits: (() => {
@@ -41,13 +36,7 @@ async function assertStyles(page) {
       overflow: document.documentElement.scrollWidth > innerWidth
     };
   });
-  const channels = styles.nodeFill.match(/\d+/g)?.map(Number);
-  assert.ok(channels?.[0] >= 245 && channels[1] >= 245 && channels[2] >= 150, 'nodes must stay light throughout the active-state transition: ' + JSON.stringify(styles));
-  assert.equal(styles.edgeFill, 'none', 'connections must be lines, not solid black polygons');
-  assert.equal(styles.pulseFill, 'none', 'run pulses must be stroked lines, not filled polygons');
-  assert.notEqual(styles.edgeStroke, 'none');
-  assert.equal(styles.flowNodes, 6, 'canvas must render the six demo nodes');
-  assert.equal(styles.flowEdges, 7, 'canvas must render the seven edges');
+  assert.equal(styles.spine, 3, 'title spine must connect the three section titles');
   assert.ok(styles.wordmarkSize >= 27, 'transition must display the complete wordmark');
   assert.equal(styles.wordmark, '// MultiGameAssistant');
   assert.ok(styles.wordmarkFits, 'complete name must fit in the bridge at this viewport');
@@ -97,7 +86,7 @@ async function warmCache() {
   try {
     const url = `http://127.0.0.1:${server.address().port}${prefix}`;
     await page.goto(url);
-    assert.equal(await page.locator('.fl-node:not(.fl-marker)').first().evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(0, 0, 0, 0)');
+    assert.equal(await page.locator('.wipe-title-text').first().evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(0, 0, 0, 0)');
     await page.goto(url);
     assert.equal(unversionedRequests, 1, 'legacy CSS must actually be cached');
     published = true;

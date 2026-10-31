@@ -866,51 +866,6 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 
 
 /* ============ PIPELINE SCHEMATIC ============ */
-.pipeline { background: var(--bg); padding-bottom: 90px; }
-.pipe-wrap { position: relative; max-width: 1000px; margin: 0 auto; padding: 0 7vw; }
-.flow-board { position: relative; width: 100%; max-width: 980px; margin: 40px auto 0; }
-.flow-topline, .flow-bottomline { position: absolute; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; font: 10.5px var(--font-mono); letter-spacing: .04em; color: #777; pointer-events: none; }
-.flow-topline { top: -24px; }
-.flow-bottomline { bottom: -24px; gap: 8px; }
-.flow-bottomline > span:last-child { color: #999; flex-shrink: 0; }
-.flow-topline .flow-tag { color: #666; }
-.flow-actions { pointer-events: auto; }
-.flow-actions { display: flex; gap: 6px; }
-.flow-btn { font: 10.5px var(--font-mono); letter-spacing: .06em; padding: 5px 12px; border: 1px solid var(--grey-2); border-radius: 3px; background: #fff; color: var(--ink); cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
-.flow-btn:hover { border-color: var(--ink); }
-.flow-btn-run { background: var(--accent); border-color: var(--accent); font-weight: 700; }
-.flow-btn-run:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
-.flow-btn[disabled] { opacity: .45; cursor: default; pointer-events: none; }
-.flow-stage { width: 100%; overflow: hidden; }
-.flow-stage-inner { position: relative; width: 560px; height: 400px; transform-origin: top left; }
-.flow-edges-svg { position: absolute; inset: 0; pointer-events: none; }
-.flow-edges-svg .flow-edge { fill: none; stroke: #b1b1b7; stroke-width: 1; }
-.flow-edges-svg .flow-edge-label { font: 10px var(--font-zh); fill: #66666e; paint-order: stroke; stroke: #fafafa; stroke-width: 4px; }
-.flow-edges-svg .flow-pulse { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 8 14; opacity: 0; }
-.flow-edges-svg .flow-pulse.active { opacity: 1; }
-.flow-board.is-running .flow-edges-svg .flow-pulse.active { animation: edgeFlow 1.2s linear infinite; }
-/* mirrors the app's step-node / marker / handle / edge visuals 1:1 */
-.fl-node { position: absolute; width: 168px; padding: 8px 10px; border: 1px solid rgba(16,16,20,.14); border-radius: 10px; background: #fff; box-shadow: 0 1px 2px rgba(16,16,20,.04); font-size: 12.5px; cursor: grab; user-select: none; touch-action: none; transition: background .3s, border-color .3s, box-shadow .3s; }
-.fl-node.dragging { cursor: grabbing; box-shadow: 0 8px 20px rgba(16,16,20,.16); z-index: 3; }
-.fl-node.selected { border-color: rgba(10,120,150,.38); box-shadow: 0 0 0 3px rgba(10,140,170,.12); }
-.fl-node.active { border-color: rgba(10,120,150,.38); }
-.fl-node.done { border-color: rgba(19,134,92,.6); background: rgba(19,134,92,.06); }
-.fl-node.fl-marker { display: flex; align-items: center; width: auto; min-width: 0; padding: 8px 18px; border-radius: 999px; font-weight: 600; }
-.fl-node.fl-marker.start { background: rgba(19,134,92,.1); }
-.fl-node.fl-marker.end { background: #f6f6f4; }
-.fl-node .fl-kind { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #66666e; }
-.fl-node .fl-badge { padding: 1px 6px; border: 1px solid rgba(16,16,20,.14); border-radius: 999px; font-size: 10px; }
-.fl-node .fl-state { margin-left: auto; font-weight: 600; color: #0a6a83; }
-.fl-node.done .fl-state { color: #13865c; }
-.fl-node .fl-title { margin-top: 3px; font-weight: 600; overflow-wrap: anywhere; }
-.fl-node .fl-sub { color: #66666e; font-family: var(--font-mono); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.fl-port { position: absolute; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 100%; background: #1a192b; border: 1px solid #fff; pointer-events: none; }
-.fl-port.fl-in { left: -3.5px; }
-.fl-port.fl-out { right: -3.5px; }
-.fl-node.fl-marker .fl-port { top: 50%; }
-.flow-log { max-width: 980px; margin: 30px auto 0; font: 11px/1.9 var(--font-mono); color: #767676; min-height: 58px; }
-.flow-log > span { letter-spacing: .12em; font-size: 10px; color: #999; }
-@keyframes edgeFlow { to { stroke-dashoffset: -44; } }
 
 /* ============ TITLE SPINE ============ */
 .main { position: relative; }
@@ -944,4 +899,4 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 .section-bridge p span { font: 9px var(--font-mono); color: #777; }
 .menu-wordmark { display: none; }
 @media (max-width: 768px) { .section-bridge { padding: 22px 6vw; } .bridge-meta span:last-child { display: none; } .section-bridge p span { display: none; } .menu-wordmark { display: block; position: absolute; bottom: 120px; left: 6vw; font: 900 23vw var(--font-wide); letter-spacing: -.05em; color: #e3e3e3; pointer-events: none; transform: translateX(-15px); opacity: 0; transition: transform .6s var(--ease-out), opacity .6s; } .mobile-menu.open .menu-wordmark { transform: none; opacity: 1; } .mobile-menu-list, .mobile-menu-foot { position: relative; z-index: 1; } }
-@media (prefers-reduced-motion: reduce) { .bridge-wordmark { clip-path: none; transform: none; transition: none; } .bridge-track b { transform: none; transition: none; } .fl-node, .menu-wordmark { transition: none; } .flow-board.is-running .flow-pulses path.active, .feat-panel-wrap.is-visible .feat-item, .feat-panel-zh.scene-enter { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .bridge-wordmark { clip-path: none; transform: none; transition: none; } .bridge-track b { transform: none; transition: none; } .menu-wordmark { transition: none; } .feat-panel-wrap.is-visible .feat-item, .feat-panel-zh.scene-enter { animation: none; } }
