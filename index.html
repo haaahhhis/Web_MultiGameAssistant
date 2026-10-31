@@ -6,11 +6,11 @@
   <title>MultiGameAssistant — 让 agent 替你管好各个游戏的日常脚本</title>
   <meta name="description" content="MultiGameAssistant（多游戏助手）：通用的游戏脚本管家——任意脚本、任意游戏、任意模型。安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=e9c9bbf0ac59">
+  <link rel="stylesheet" href="assets/css/style.css?v=5c786140a58d">
   <link rel="stylesheet" href="assets/css/demo.css?v=d27b5e416cbc">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
-  <script src="assets/js/main.js?v=56a6309b113d" defer></script>
-  <script src="assets/js/demo.js?v=7fa39360d3c8" defer></script>
+  <script src="assets/js/main.js?v=d58c4e22f8e7" defer></script>
+  <script src="assets/js/demo.js?v=e7a9b8f914d8" defer></script>
 </head>
 <body>
 
@@ -77,6 +77,7 @@
   </div>
 
   <main class="main" id="main">
+    <div class="title-spine" id="titleSpine" aria-hidden="true"></div>
 
     <!-- ============ 01 HERO ============ -->
     <section class="hero section" id="home" aria-label="首页">
@@ -165,13 +166,13 @@
       </header>
       <div class="pipe-wrap">
         <div class="flow-board" id="flowBoard">
-          <div class="flow-topline"><span class="flow-tag">PIPELINE / 325</span><span class="flow-actions"><button class="flow-btn" id="flowAdd" type="button">+ 节点</button><button class="flow-btn" id="flowDel" type="button" disabled>− 节点</button><button class="flow-btn flow-btn-run" id="flowRun" type="button">▶ 运行</button></span><span>DEMO GRAPH</span></div>
+          <div class="flow-topline"><span class="flow-tag">PIPELINE / 325</span><span class="flow-actions"><button class="flow-btn" id="flowAdd" type="button">+ 节点</button><button class="flow-btn flow-btn-run" id="flowRun" type="button">▶ 运行</button></span><span>DEMO GRAPH</span></div>
           <div class="flow-stage" id="flowStage">
             <div class="flow-stage-inner" id="flowStageInner">
               <svg class="flow-edges-svg" id="flowEdges" width="560" height="400" aria-hidden="true"></svg>
             </div>
           </div>
-          <div class="flow-bottomline"><span id="flowStatus">就绪 / 拖拽节点 · 可添加 · 可删除 · 可运行</span><span>EVENT / 799</span></div>
+          <div class="flow-bottomline"><span id="flowStatus">就绪 / 拖拽节点 · 可添加 · 可运行</span><span>EVENT / 799</span></div>
         </div>
         <div class="flow-log"><span>SIMULATED EXECUTION</span><p id="flowLog">[06:30:00] pipeline / 325 · ready</p></div>
       </div>
@@ -191,7 +192,7 @@
         <div class="demo-outer anno-frame" id="demoOuter">
           <div class="demo-outer-top">
             <span class="demo-label" id="demoLabel">DEMO // SCRIPTS</span>
-            <div class="demo-top-controls"><button class="demo-zoom" id="demoZoom" type="button" aria-pressed="true">局部放大 · 开</button><span class="demo-rec" aria-hidden="true">[REC]</span></div>
+            <div class="demo-top-controls"><span class="demo-rec" aria-hidden="true">[REC]</span></div>
           </div>
           <div class="appwin-clip" id="appwinClip">
             <iframe class="appwin-frame" id="demoFrame" title="MultiGameAssistant 界面演示" tabindex="-1" aria-hidden="true"></iframe>

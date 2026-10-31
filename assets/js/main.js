@@ -678,7 +678,7 @@
     { id: 'e5', from: 'n2', to: 'n5', when: '结束后' }, { id: 'e6', from: 'n3', to: 'n5', when: '结束后' },
     { id: 'e7', from: 'n5', to: 'n4', when: '结束后' }
   ];
-  var nodeEls = {}, edgeEls = {}, addSeq = 0, running = false, selectedId = null;
+  var nodeEls = {}, edgeEls = {}, addSeq = 0, running = false;
 
   /* inner stage stays 560 logical px wide and is zoomed to the real
      width — layout zoom, not raster scale, so cards stay sharp */
@@ -694,43 +694,9 @@
     return d;
   }
   function nodeOf(id) { for (var i = 0; i < nodes.length; i++) if (nodes[i].id === id) return nodes[i]; }
-  var delBtn = document.getElementById('flowDel');
   function select(id) {
-    selectedId = id;
     nodes.forEach(function (n) { nodeEls[n.id].classList.toggle('selected', n.id === id); });
-    if (delBtn) delBtn.disabled = !id;
   }
-  function removeNode(id) {
-    var n = nodeOf(id);
-    if (!n || running) return;
-    nodes = nodes.filter(function (x) { return x.id !== id; });
-    edges.filter(function (e) { return e.from === id || e.to === id; }).forEach(function (e) {
-      var els = edgeEls[e.id];
-      if (els) { els.base.remove(); els.pulse.remove(); if (els.label) els.label.remove(); }
-      delete edgeEls[e.id];
-    });
-    edges = edges.filter(function (e) { return e.from !== id && e.to !== id; });
-    nodeEls[id].remove();
-    delete nodeEls[id];
-    if (selectedId === id) select(null);
-    paintEdges();
-  }
-  if (delBtn) {
-    delBtn.disabled = true;
-    delBtn.addEventListener('click', function () {
-      if (selectedId) {
-        removeNode(selectedId);
-        statusEl.textContent = '已删除节点 / 连线同步移除';
-      }
-    });
-  }
-  window.addEventListener('keydown', function (ev) {
-    if ((ev.key === 'Delete' || ev.key === 'Backspace') && selectedId && !running
-        && !/INPUT|TEXTAREA/.test(document.activeElement && document.activeElement.tagName || '')) {
-      removeNode(selectedId);
-      statusEl.textContent = '已删除节点 / 连线同步移除';
-    }
-  });
 
   function portPos(n, out) {
     var elNode = nodeEls[n.id];
@@ -901,10 +867,74 @@
   stageZoom();
   paintEdges();
 
+  /* ============ TITLE SPINE — vertical connector through section
+     titles; scroll fills the line and lights each reached title. */
+  (function () {
+    var spine = document.getElementById('titleSpine');
+    if (!spine) return;
+    var titles = Array.prototype.slice.call(document.querySelectorAll('.hero-title-zh, .sec-head-title'));
+    if (titles.length < 2) return;
+    var line = document.createElement('i');
+    line.className = 'spine-line';
+    var fill = document.createElement('i');
+    fill.className = 'spine-fill';
+    spine.appendChild(line); spine.appendChild(fill);
+    var dots = [];
+    function layout() {
+      spine.innerHTML = ''; spine.appendChild(line); spine.appendChild(fill); dots = [];
+      var main = document.getElementById('main');
+      var mainRect = main.getBoundingClientRect();
+      var mainTop = mainRect.top + window.scrollY, mainLeft = mainRect.left;
+      var pts = titles.map(function (t) {
+        var r = t.getBoundingClientRect();
+        return { el: t, x: r.left - mainLeft, y: r.top + window.scrollY - mainTop + r.height / 2 };
+      });
+      var vbar = document.querySelector('.hero-vbar');
+      var minX = Math.min.apply(null, pts.map(function (p) { return p.x; }));
+      var x = vbar ? vbar.getBoundingClientRect().left - mainLeft - 26 : minX - 30;
+      if (x < 20) x = minX - 30;
+      var top = pts[0].y, bottom = pts[pts.length - 1].y;
+      spine.style.left = x + 'px';
+      spine.style.top = top + 'px';
+      spine.style.height = (bottom - top) + 'px';
+      pts.forEach(function (p) {
+        var d = document.createElement('i');
+        d.className = 'spine-dot';
+        d.style.top = (p.y - top) + 'px';
+        spine.appendChild(d);
+        dots.push({ dot: d, title: p.el, frac: (p.y - top) / (bottom - top) });
+      });
+      spine.dataset.ready = '1';
+      paint();
+    }
+    function paint() {
+      var main = document.getElementById('main');
+      var top = spine.getBoundingClientRect().top + window.scrollY;
+      var h = spine.offsetHeight || 1;
+      var progress = Math.max(0, Math.min(1, (window.scrollY + window.innerHeight * .5 - top) / h));
+      fill.style.transform = 'scaleY(' + progress + ')';
+      dots.forEach(function (n) {
+        var lit = progress >= n.frac - 0.001;
+        n.dot.classList.toggle('lit', lit);
+        n.title.classList.toggle('spine-lit', lit);
+      });
+    }
+    var tick = false;
+    window.addEventListener('scroll', function () {
+      if (tick) return; tick = true;
+      requestAnimationFrame(function () { paint(); tick = false; });
+    }, { passive: true });
+    var rt = false;
+    window.addEventListener('resize', function () {
+      if (rt) return; rt = true;
+      requestAnimationFrame(function () { layout(); rt = false; });
+    }, { passive: true });
+    layout();
+  })();
+
   window.__mgaFlow = {
     nodeCount: function () { return nodes.length; },
     edgeCount: function () { return edges.length; },
-    remove: removeNode,
     running: function () { return running; },
     state: function (id) { return nodeEls[id] ? nodeEls[id].className : ''; },
     pos: function (id) { var n = nodeOf(id); return n ? { x: n.x, y: n.y } : null; }

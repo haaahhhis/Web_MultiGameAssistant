@@ -912,6 +912,25 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 .flow-log > span { letter-spacing: .12em; font-size: 10px; color: #999; }
 @keyframes edgeFlow { to { stroke-dashoffset: -44; } }
 
+/* ============ TITLE SPINE ============ */
+.main { position: relative; }
+.title-spine { position: absolute; width: 2px; pointer-events: none; z-index: 2; display: none; }
+.title-spine[data-ready] { display: block; }
+.title-spine .spine-line { position: absolute; inset: 0 auto 0 0; width: 2px; background: var(--grey-3); }
+.title-spine .spine-fill { position: absolute; inset: 0 auto 0 0; width: 2px; background: var(--accent); transform: scaleY(0); transform-origin: top; }
+.title-spine .spine-dot { position: absolute; left: -4px; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: #fff; border: 2px solid var(--grey-2); transition: border-color .3s, background .3s; }
+.title-spine .spine-dot.lit { border-color: var(--ink); background: var(--accent); }
+.sec-head-title { position: relative; }
+.sec-head-title.spine-lit::before,
+.hero-title-zh.spine-lit::before {
+  content: ""; position: absolute; left: -20px; top: 12%; bottom: 12%;
+  width: 5px; background: var(--accent);
+}
+.hero-title-zh { position: relative; display: inline-block; }
+.sec-head-title.spine-lit .wipe-title.wiped .wipe-title-text,
+.hero-title-zh.spine-lit { background: linear-gradient(transparent 60%, var(--accent) 60%); }
+@media (max-width: 768px) { .title-spine { display: none !important; } }
+
 .section-bridge { position: relative; padding: 28px 7vw 34px; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; background: #fafafa; overflow: hidden; }
 .bridge-meta { display: flex; justify-content: space-between; font: 9px var(--font-mono); letter-spacing: .1em; color: #777; }
 .bridge-wordmark { width: max-content; max-width: 100%; font-family: var(--font-wide); font-size: clamp(27px, 5.7vw, 84px); font-weight: 900; line-height: 1.4; letter-spacing: -.065em; text-transform: uppercase; white-space: nowrap; transform: translate3d(var(--bridge-x, 0px), 0, 0); clip-path: inset(0 100% 0 0); transition: clip-path 1.2s var(--ease-out); }
