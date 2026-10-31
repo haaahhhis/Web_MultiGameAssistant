@@ -654,14 +654,9 @@
   if (!spine) return;
   var titles = Array.prototype.slice.call(document.querySelectorAll('.hero-title-zh, .sec-head-title'));
   if (titles.length < 2) return;
-  var line = document.createElement('i');
-  line.className = 'spine-line';
-  var fill = document.createElement('i');
-  fill.className = 'spine-fill';
-  spine.appendChild(line); spine.appendChild(fill);
-  var dots = [];
+  var dots = [], segs = [];
   function layout() {
-    spine.innerHTML = ''; spine.appendChild(line); spine.appendChild(fill); dots = [];
+    spine.innerHTML = ''; dots = []; segs = [];
     var main = document.getElementById('main');
     var mainRect = main.getBoundingClientRect();
     var mainTop = mainRect.top + window.scrollY, mainLeft = mainRect.left;
@@ -673,10 +668,34 @@
     var minX = Math.min.apply(null, pts.map(function (p) { return p.x; }));
     var x = vbar ? vbar.getBoundingClientRect().left - mainLeft - 26 : minX - 30;
     if (x < 20) x = minX - 30;
-    var top = pts[0].y, bottom = pts[pts.length - 1].y;
+    var top = pts[0].y, bottom = pts[pts.length - 1].y, H = bottom - top;
     spine.style.left = x + 'px';
     spine.style.top = top + 'px';
-    spine.style.height = (bottom - top) + 'px';
+    spine.style.height = H + 'px';
+
+    /* the wire is occluded where it crosses full-width bands
+       (the wordmark bridge) — split it into visible segments */
+    var bands = [];
+    Array.prototype.forEach.call(document.querySelectorAll('.section-bridge'), function (el) {
+      var br = el.getBoundingClientRect();
+      bands.push({ y0: br.top + window.scrollY - mainTop - top, y1: br.bottom + window.scrollY - mainTop - top });
+    });
+    bands.sort(function (a, b) { return a.y0 - b.y0; });
+    var cursor = 0;
+    bands.concat([{ y0: H, y1: H }]).forEach(function (bd) {
+      var y0 = Math.max(0, Math.min(H, bd.y0)), y1 = Math.max(0, Math.min(H, bd.y1));
+      if (cursor < y0) {
+        var seg = document.createElement('i');
+        seg.className = 'spine-seg';
+        seg.style.top = cursor + 'px';
+        seg.style.height = (y0 - cursor) + 'px';
+        var f = document.createElement('i');
+        f.className = 'spine-seg-fill';
+        seg.appendChild(f); spine.appendChild(seg);
+        segs.push({ el: f, y0: cursor, y1: y0 });
+      }
+      cursor = Math.max(cursor, y1);
+    });
     pts.forEach(function (p) {
       var d = document.createElement('i');
       d.className = 'spine-dot';
@@ -688,11 +707,13 @@
     paint();
   }
   function paint() {
-    var main = document.getElementById('main');
     var top = spine.getBoundingClientRect().top + window.scrollY;
     var h = spine.offsetHeight || 1;
     var progress = Math.max(0, Math.min(1, (window.scrollY + window.innerHeight * .5 - top) / h));
-    fill.style.transform = 'scaleY(' + progress + ')';
+    var reach = progress * h;
+    segs.forEach(function (s) {
+      s.el.style.transform = 'scaleY(' + Math.max(0, Math.min(1, (reach - s.y0) / (s.y1 - s.y0))) + ')';
+    });
     dots.forEach(function (n) {
       var lit = progress >= n.frac - 0.001;
       n.dot.classList.toggle('lit', lit);

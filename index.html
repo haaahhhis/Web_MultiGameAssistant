@@ -6,10 +6,10 @@
   <title>MultiGameAssistant — 让 agent 替你管好各个游戏的日常脚本</title>
   <meta name="description" content="MultiGameAssistant（多游戏助手）：通用的游戏脚本管家——任意脚本、任意游戏、任意模型。安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=cd0ec307e919">
+  <link rel="stylesheet" href="assets/css/style.css?v=a3f391f2f577">
   <link rel="stylesheet" href="assets/css/demo.css?v=d27b5e416cbc">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
-  <script src="assets/js/main.js?v=bd38501ce457" defer></script>
+  <script src="assets/js/main.js?v=a7fa65407d0e" defer></script>
   <script src="assets/js/demo.js?v=e7a9b8f914d8" defer></script>
 </head>
 <body>
@@ -100,7 +100,7 @@
         <span class="anno" style="top:4.5%;left:4%">INFO.//MULTIGAMEASSISTANT</span>
         <span class="anno" style="top:8%;right:6%">SYS-01 <i class="tag-blue"></i></span>
         <span class="anno" style="bottom:18%;left:8%">[REC] // 0x2F</span>
-        <span class="anno" style="top:16%;right:6%">DESKTOP.AGENT / DAILY.PIPELINE</span>
+        <span class="anno" style="bottom:12%;right:8%">DESKTOP.AGENT / DAILY.PIPELINE</span>
       </div>
 
       <div class="hero-inner">
@@ -135,6 +135,24 @@
           </div>
           <p class="download-hint" id="downloadHint" aria-live="polite">无法识别时默认 Windows x64；可手动切换架构。</p>
         </div>
+
+        <aside class="hero-board reveal-block" aria-label="运行状态">
+          <p class="hero-board-head"><span>STATUS // SYS-01</span><i class="tag-blue" aria-hidden="true"></i></p>
+          <ul class="hero-board-list">
+            <li><span>VERSION</span><b>v1.0.0 · LATEST</b></li>
+            <li><span>ARCH</span><b>x64 / ARM64</b></li>
+            <li><span>AGENT</span><b>ONLINE</b></li>
+            <li><span>GAMES</span><b>3 CONNECTED</b></li>
+          </ul>
+          <svg class="hero-board-graph" viewBox="0 0 220 110" aria-hidden="true">
+            <path class="hbg-wire" d="M18 86 L76 86 L76 34 L140 34 L140 70 L202 70"/>
+            <path class="hbg-flow" d="M18 86 L76 86 L76 34 L140 34 L140 70 L202 70"/>
+            <rect class="hbg-node" x="14" y="82" width="8" height="8"/>
+            <rect class="hbg-node" x="136" y="30" width="8" height="8"/>
+            <rect class="hbg-node hbg-node-end" x="198" y="66" width="8" height="8"/>
+          </svg>
+          <p class="hero-board-foot">NODE / CONNECT / RUN</p>
+        </aside>
 
       </div>
 
