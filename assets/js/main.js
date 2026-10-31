@@ -165,6 +165,26 @@
     wipeEls.forEach(function (el) { wio.observe(el); });
   }
 
+  var bridge = document.querySelector('.section-bridge');
+  if (bridge && !REDUCED) {
+    var bridgeTick = false;
+    function updateBridge() {
+      var rect = bridge.getBoundingClientRect();
+      var start = window.innerHeight * .82;
+      var end = window.innerHeight * .18 - rect.height;
+      var progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
+      bridge.style.setProperty('--bridge-x', ((1 - progress) * Math.min(180, window.innerWidth * .16)).toFixed(1) + 'px');
+    }
+    function scheduleBridge() {
+      if (bridgeTick) return;
+      bridgeTick = true;
+      requestAnimationFrame(function () { updateBridge(); bridgeTick = false; });
+    }
+    window.addEventListener('scroll', scheduleBridge, { passive: true });
+    window.addEventListener('resize', scheduleBridge);
+    updateBridge();
+  }
+
   /* rail active section tracking */
   var railItems = Array.prototype.slice.call(document.querySelectorAll('.rail-item'));
   var sections = railItems
@@ -259,6 +279,19 @@
   var featCounter = document.getElementById('featureCounter');
   var featIdx = -1;
 
+  var featPanelWrap = document.querySelector('.feat-panel-wrap');
+  if (REDUCED || !('IntersectionObserver' in window)) {
+    featPanelWrap.classList.add('is-visible');
+  } else {
+    var featureObserver = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        featPanelWrap.classList.add('is-visible');
+        featureObserver.disconnect();
+      }
+    }, { threshold: .15 });
+    featureObserver.observe(featPanelWrap);
+  }
+
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
   function renderFeature(i) {
@@ -266,11 +299,17 @@
     featPanelIdx.textContent = pad(i + 1);
     featCounter.textContent = pad(i + 1) + ' / ' + pad(FEATURE_DATA.length);
     scramble(featPanelZh, d.zh, 400);
+    if (!REDUCED) {
+      featPanelZh.classList.remove('scene-enter');
+      void featPanelZh.offsetWidth;
+      featPanelZh.classList.add('scene-enter');
+    }
     featPanelEn.textContent = /MODULE-\d+/.test(d.en) ? d.en : d.en + ' // MODULE-' + pad(i + 1);
     var ul = document.createElement('ul');
-    d.items.forEach(function (item) {
+    d.items.forEach(function (item, index) {
       var li = document.createElement('li');
       li.className = 'feat-item';
+      li.style.setProperty('--item-index', index);
       var mark = document.createElement('span');
       mark.className = 'feat-item-mark';
       mark.setAttribute('aria-hidden', 'true');

@@ -22,9 +22,18 @@ async function assertStyles(page) {
       edgeFill: css('.flow-edges').fill,
       edgeStroke: css('.flow-edges').stroke,
       wordmarkSize: parseFloat(css('.bridge-wordmark').fontSize),
+      wordmark: document.querySelector('.bridge-wordmark').textContent,
+      wordmarkFits: (() => {
+        const mark = document.querySelector('.bridge-wordmark');
+        const bridge = document.querySelector('.section-bridge');
+        const style = getComputedStyle(bridge);
+        return mark.scrollWidth <= bridge.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) + 1;
+      })(),
       architectureLayout: css('.download-options').display,
       architectureBorder: css('.download-options button').borderTopWidth,
-      githubIconSize: css('.rail-gh svg').width,
+      githubIconSize: css('.hero-ctas .btn-github svg').width,
+      githubRail: document.querySelectorAll('.rail-gh').length,
+      featureGrid: getComputedStyle(document.querySelector('.feat-panel-wrap'), '::before').backgroundImage,
       demoControls: css('.demo-top-controls').display,
       overflow: document.documentElement.scrollWidth > innerWidth
     };
@@ -33,10 +42,14 @@ async function assertStyles(page) {
   assert.ok(channels?.[0] >= 245 && channels[1] >= 245 && channels[2] >= 150, `nodes must stay light throughout the active-state transition: ${JSON.stringify(styles)}`);
   assert.equal(styles.edgeFill, 'none', 'connections must be lines, not solid black polygons');
   assert.notEqual(styles.edgeStroke, 'none');
-  assert.ok(styles.wordmarkSize >= 54, 'transition must display the oversized wordmark');
+  assert.ok(styles.wordmarkSize >= 27, 'transition must display the complete wordmark');
+  assert.equal(styles.wordmark, '// MultiGameAssistant');
+  assert.ok(styles.wordmarkFits, 'complete name must fit in the bridge at this viewport');
   assert.equal(styles.architectureLayout, 'flex');
   assert.equal(styles.architectureBorder, '1px');
-  assert.equal(styles.githubIconSize, '22px');
+  assert.equal(styles.githubIconSize, '18px');
+  assert.equal(styles.githubRail, 0);
+  assert.notEqual(styles.featureGrid, 'none');
   assert.equal(styles.demoControls, 'flex');
   assert.equal(styles.overflow, false);
 }
@@ -112,6 +125,31 @@ try {
         return bridge.classList.contains('in') && (clip === 'none' || clip === 'inset(0px)');
       });
       if (shots) await page.screenshot({ path: path.join(shots, `${name}-bridge.png`), animations: 'disabled' });
+      const shift = () => page.locator('.bridge-wordmark').evaluate(el => new DOMMatrixReadOnly(getComputedStyle(el).transform).m41);
+      const before = await shift();
+      await page.evaluate(() => window.scrollBy(0, 180));
+      if (reducedMotion !== 'reduce') {
+        await page.waitForFunction(previous => new DOMMatrixReadOnly(getComputedStyle(document.querySelector('.bridge-wordmark')).transform).m41 < previous - 4, before);
+      }
+      const after = await shift();
+      if (reducedMotion === 'reduce') assert.equal(after, before, 'reduced motion must not move the wordmark');
+      else {
+        assert.ok(after < before - 4, 'downward scroll must move the wordmark left');
+        await page.evaluate(() => window.scrollBy(0, -180));
+        await page.waitForFunction(previous => Math.abs(new DOMMatrixReadOnly(getComputedStyle(document.querySelector('.bridge-wordmark')).transform).m41 - previous) < 2, before);
+      }
+      await page.locator('.feat-panel-wrap').scrollIntoViewIfNeeded();
+      await page.waitForFunction(() => document.querySelector('.feat-panel-wrap').classList.contains('is-visible'));
+      await page.evaluate(() => window.MGAFeature.set(5));
+      await page.waitForFunction(() => document.querySelector('#featPanelZh').textContent === '飞书');
+      const motion = await page.locator('.feat-item').first().evaluate(el => getComputedStyle(el).animationName);
+      assert.equal(motion, reducedMotion === 'reduce' ? 'none' : 'featureArrive');
+      const heading = await page.locator('#featPanelZh').evaluate(el => getComputedStyle(el).animationName);
+      assert.equal(heading, reducedMotion === 'reduce' ? 'none' : 'featureHeading');
+      if (shots) {
+        await page.locator('.feat-panel-wrap').evaluate(el => window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top - 90));
+        await page.screenshot({ path: path.join(shots, `${name}-feishu.png`), animations: 'disabled' });
+      }
       console.log('PASS computed styles:', name);
       passed++;
     } finally { await page.close(); }
