@@ -80,7 +80,7 @@
     labelEl.textContent = 'DEMO // ' + SCEN[i].en;
     if (window.MGAFeature) window.MGAFeature.set(i);
     phoneShow(i === 5);
-    send('select', { idx: i, seek: REDUCED ? 1 : 0 });
+    send('select', { idx: i });
   }
   window.addEventListener('message', function (e) {
     var d = e.data;

@@ -18,7 +18,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 const req = createRequire(process.env.PW_REQUIRE ?? path.resolve(here, '..', 'package.json'));
 const { chromium } = req('playwright-core');
 
-const b = await chromium.launch({ channel: 'chrome', headless: true, args: ['--no-proxy-server'] });
+const b = await chromium.launch({ ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: 'chrome' }), headless: true, args: ['--no-proxy-server', '--no-sandbox'] });
 let fails = 0;
 for (const u of gate.urls) {
   const p = await b.newPage({ viewport: { width: 1280, height: 800 } });

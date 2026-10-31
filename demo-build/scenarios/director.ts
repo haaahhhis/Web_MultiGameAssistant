@@ -100,6 +100,8 @@ async function play(index: number, fraction = 0) {
   location.hash = '#/chat';
   try {
     await sleep(100); clock.assert(generation);
+    const first = scenes[index][0];
+    if (first.kind === 'go') location.hash = first.hash;
     for (const step of scenes[index]) await execute(step, generation, clock.time < target * total);
     await clock.wait(0, generation, progress);
     clock.assert(generation); seeking = false; progress(); post('ended');

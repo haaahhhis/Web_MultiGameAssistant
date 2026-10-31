@@ -1,6 +1,6 @@
 /* In-browser fake ADG gateway. Task/session state is simulated;
    game information and images come from the public API snapshot. */
-import { Requests, Notifications } from '@adg/protocol';
+import { Requests, Notifications, Pipeline } from '@adg/protocol';
 import snapshot from '../../data/demo-games.json';
 import { clock } from '../scenarios/clock.ts';
 import type { RequestMethod, RequestParams, RequestResult, NotificationMethod, NotificationParams } from '@adg/protocol';
@@ -64,7 +64,7 @@ export const world = {
   interventions: [
     { id: 'iv-1', incidentId: 'inc-1', runId: 'run-3', sessionId: 's-iv', title: '干预：三月七小助手 · 材料速刷', mode: 'act' as const, state: 'running' as const, paused: true, startedAt: Date.now() - 880e3 },
   ] as any[],
-  pipeline: {
+  pipeline: Pipeline.parse({
     id: 'morning-daily', name: '每天早上的日常',
     nodes: [
       { id: 'emu', kind: 'script-task', title: 'MAA · 日常任务', scriptId: 'emu-daily', taskId: 'daily', params: {}, position: { x: 60, y: 60 } },
@@ -74,7 +74,7 @@ export const world = {
     ],
     edges: ['emu', 'clear', 'farm'].map((f: string) => ({ from: f, to: 'done', when: 'always' })),
     schedule: { enabled: true, times: ['06:30'], days: [], catchUpMinutes: 30 },
-  } as any,
+  }),
   feishu: { appId: 'cli_a1b2c3d4e5f60718', enabled: true, connected: true, bot: 'MGA 助手', users: [{ openId: 'ou_demo', name: '演示用户' }] },
 };
 
@@ -130,6 +130,7 @@ export function resetWorld() {
   Object.assign(sessionEvents, structuredClone(initialEvents));
   followed.clear();
   lastRun.current = null;
+  emit('approval/resolved', { approvalId: 'ap-1', outcome: 'rejected' });
 }
 export { ev, text };
 
@@ -152,7 +153,7 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
     const events = sessionEvents[p.sessionId] ?? [];
     if (p.sessionId === 's-diag') {
       // unresolved approval re-announces itself to whoever opens the session
-      later(() => push('approval/requested', { approvalId: 'ap-1', sessionId: 's-diag', toolName: 'pwsh', callId: 'c2', reason: '需要你的批准：重启模拟器' }), 50);
+      push('approval/requested', { approvalId: 'ap-1', sessionId: 's-diag', toolName: 'pwsh', callId: 'c2', reason: '需要你的批准：重启模拟器' });
     }
     return ok({
       subscriptionId: 'sub-demo', cursor: events.length, hasMore: false,
@@ -192,7 +193,7 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   'scripts/settings/set': () => ok({ apiBase: 'https://api.github.com', downloadMirror: '', mirrorFallback: true, tokenRef: '', keepVersions: 3, includePrereleases: false, cdkRef: '' }),
   'pipelines/list': () => ok({ items: [{ id: world.pipeline.id, name: world.pipeline.name, nodes: world.pipeline.nodes.length, draft: false, schedule: world.pipeline.schedule }] }),
   'pipelines/get': () => ok(world.pipeline),
-  'pipelines/save': (p) => { Object.assign(world.pipeline, p.pipeline ?? {}); return ok(world.pipeline); },
+  'pipelines/save': (p) => { Object.assign(world.pipeline, p.pipeline); return ok({ pipeline: world.pipeline, check: { ok: true, issues: [], serialized: [] } }); },
   'pipelines/check': () => ok({ ok: true, issues: [{ level: 'info' as const, message: '「MaaEnd·清体力」和「三月七小助手·材料速刷」都要用桌面鼠标键盘，会自动排队依次运行。' }], serialized: [{ a: 'clear', b: 'farm', resource: 'desktop' }], estimateMinutes: 4 }),
   'pipelines/run': (p, push) => {
     const pending = { state: 'pending' as const, runIds: [], attempts: 0 };
@@ -297,6 +298,7 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   'approval/respond': (p: any, push) => {
     push('approval/resolved', { approvalId: p.approvalId ?? 'ap-1', outcome: 'allowed-once' });
     const tail = [
+      ev('approval/decided', { approvalId: 'ap-1', outcome: 'allowed-once' }),
       ev('tool/result', { step: 2, callId: 'c2', isError: false, content: text('模拟器已重启，日常任务重跑成功。') }),
       ev('assistant/message', { step: 2, messageId: 'm3', content: text('模拟器卡在启动页，已重启并重跑成功。下次遇到同样的情况我会直接这样处理，要把这次的做法存成技能吗？') }),
       ev('step/end', { step: 2 }),

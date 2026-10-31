@@ -11,7 +11,7 @@ python -m http.server 8080
 # 打开 http://localhost:8080
 ```
 
-启动前刷新 API 和游戏图片：`node scripts/preview.mjs`（需主仓库依赖，见下文），自动刷新、构建后启动 `127.0.0.1:8080`；用 `PORT` 可换端口。已经提交的静态快照可离线播放，单独启动 Python 静态服务器不会调用外部 API。
+需要更新演示数据时，可在开发机运行 `node scripts/preview.mjs`（需主仓库依赖，见下文），刷新 API、构建后启动 `127.0.0.1:8080`；用 `PORT` 可换端口。这只是本地预览工具，不在 GitHub Pages 上运行。已提交的演示文件不需要重新构建即可托管。
 
 ## 启用 GitHub Pages
 
@@ -19,6 +19,15 @@ python -m http.server 8080
 `https://haaahhhis.github.io/Web_MultiGameAssistant-/`。
 
 > 所有资源路径均为相对路径，可在子路径下正常工作。`.nojekyll` 已包含，用于跳过 Jekyll 处理。
+
+### 功能动画在静态站点上的运行方式
+
+- 浏览器直接加载 `index.html`、`assets/`、`app-demo/`、`data/` 和 `favicon.svg`；动画、点击、输入、暂停、切换和飞书卡片都由浏览器 JavaScript 执行。
+- 假 gateway 在浏览器内应答协议，不建立 WebSocket 连接，不需要软件后端、Node、Python 或真实账号；图片从同一静态站点的 `data/demo-images/` 读取。
+- 游戏 API 只在**开发机重新构建时**刷新；将更新后的 `app-demo/` 与 `data/` 一起提交发布即可。访客打开页面或点演示中的「刷新全部」只读取演示快照，不会实时访问 SRA API。
+- 不用把 `demo-build/`、`scripts/` 或主项目依赖部署到服务器；GitHub Pages 只托管已经生成的文件。
+
+可用 `DEMO_SITE_BASE="https://haaahhhis.github.io/Web_MultiGameAssistant-/"` 运行下文的播放 gate，检查实际发布站点。尚未合并的修改不会出现在该线上地址。
 
 ## 结构
 
@@ -58,9 +67,11 @@ node demo-build/build.mjs   # 使用主仓库自己的 vite/@vitejs/plugin-react
 node ../MultiGameAssistant/node_modules/typescript/bin/tsc -p demo-build/tsconfig.json
 node --test demo-build/scenarios/clock.test.mjs
 PW_REQUIRE="$HOME/.cache/mga-demo-tools/package.json" node demo-build/gate.mjs # 另开终端运行 Python 静态服务器
+PW_REQUIRE="$HOME/.cache/mga-demo-tools/package.json" node demo-build/playback-gate.mjs
 ```
 
 内容 gate 需要 Chrome 与 Playwright：`npm install --prefix "$HOME/.cache/mga-demo-tools" --no-save playwright-core@1.56.1`。不往官网仓库添加运行时依赖。
+若 Chrome 不在默认位置，可给两个 gate 设置 `CHROME_PATH` 为可执行文件路径；`DEMO_SITE_BASE` 可指定播放 gate 的站点地址（尾部带 `/`），`DEMO_SHOTS` 可保存检查截图。
 
 `DEMO_GATE_BASE` 可指定不同的静态部署地址（包含 `app-demo/index.html?validate=1`）。
 
