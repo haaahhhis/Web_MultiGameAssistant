@@ -6,10 +6,10 @@
   <title>MultiGameAssistant — 让 agent 替你管好各个游戏的日常脚本</title>
   <meta name="description" content="MultiGameAssistant（多游戏助手）：通用的游戏脚本管家——任意脚本、任意游戏、任意模型。安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=d7cf8bbefdaf">
+  <link rel="stylesheet" href="assets/css/style.css?v=6145e00096b0">
   <link rel="stylesheet" href="assets/css/demo.css?v=d27b5e416cbc">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
-  <script src="assets/js/main.js?v=58c172b2b14c" defer></script>
+  <script src="assets/js/main.js?v=9b8256a18dd8" defer></script>
   <script src="assets/js/demo.js?v=7fa39360d3c8" defer></script>
 </head>
 <body>
@@ -133,45 +133,16 @@
         </div>
 
         <div class="hero-deco" aria-hidden="true">
-          <div class="flow-board" id="flowBoard" data-stage="0">
-            <div class="flow-topline"><span><i class="tag-blue"></i>PIPELINE / 325</span><span>DEMO GRAPH</span></div>
-            <svg class="flow-canvas" viewBox="0 0 560 400">
-              <g class="flow-edges">
-                <path d="M146 200 H178 V68 Q178 60 186 60 H222"/>
-                <path d="M146 200 H222"/>
-                <path d="M146 200 H178 V332 Q178 340 186 340 H222"/>
-                <path d="M354 60 H386 V192 Q386 200 394 200 H414"/>
-                <path d="M354 200 H414"/>
-                <path d="M354 340 H386 V208 Q386 200 394 200 H414"/>
-              </g>
-              <g class="flow-pulses" fill="none">
-                <path data-flow="1" d="M146 200 H178 V68 Q178 60 186 60 H222"/>
-                <path data-flow="1" d="M146 200 H222"/>
-                <path data-flow="1" d="M146 200 H178 V332 Q178 340 186 340 H222"/>
-                <path data-flow="2" d="M354 60 H386 V192 Q386 200 394 200 H414"/>
-                <path data-flow="2" d="M354 200 H414"/>
-                <path data-flow="2" d="M354 340 H386 V208 Q386 200 394 200 H414"/>
-              </g>
-              <g class="flow-node" data-flow="0" transform="translate(14 164)">
-                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">TRIGGER</text><text class="flow-title" x="12" y="42">每日 06:30</text><text class="flow-meta" x="12" y="60">定时启动</text><circle cx="132" cy="36" r="4"/>
-              </g>
-              <g class="flow-node" data-flow="1" transform="translate(222 24)">
-                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">SCRIPT / 01</text><text class="flow-title" x="12" y="42">MAA</text><text class="flow-meta" x="12" y="60">明日方舟</text><circle cx="0" cy="36" r="4"/><circle cx="132" cy="36" r="4"/>
-              </g>
-              <g class="flow-node" data-flow="1" transform="translate(222 164)">
-                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">SCRIPT / 02</text><text class="flow-title" x="12" y="42">三月七小助手</text><text class="flow-meta" x="12" y="60">崩坏：星穹铁道</text><circle cx="0" cy="36" r="4"/><circle cx="132" cy="36" r="4"/>
-              </g>
-              <g class="flow-node" data-flow="1" transform="translate(222 304)">
-                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">SCRIPT / 03</text><text class="flow-title" x="12" y="42">MaaEnd</text><text class="flow-meta" x="12" y="60">明日方舟：终末地</text><circle cx="0" cy="36" r="4"/><circle cx="132" cy="36" r="4"/>
-              </g>
-              <g class="flow-node" data-flow="2" transform="translate(414 164)">
-                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">NOTIFY</text><text class="flow-title" x="12" y="42">飞书日报</text><text class="flow-meta" x="12" y="60">完成后汇报</text><circle cx="0" cy="36" r="4"/>
-              </g>
-              <text class="flow-annotation" x="20" y="312">NODE → EDGE</text><text class="flow-annotation" x="20" y="330">→ EXECUTION</text>
-            </svg>
-            <div class="flow-bottomline"><span id="flowStatus">01 / 等待定时触发</span><span>EVENT / 799</span></div>
+          <div class="flow-board" id="flowBoard">
+            <div class="flow-topline"><span><i class="tag-blue"></i>PIPELINE / 325</span><span class="flow-actions"><button class="flow-btn" id="flowAdd" type="button">+ 节点</button><button class="flow-btn flow-btn-run" id="flowRun" type="button">▶ 运行</button></span><span>DEMO GRAPH</span></div>
+            <div class="flow-stage" id="flowStage">
+              <div class="flow-stage-inner" id="flowStageInner">
+                <svg class="flow-edges-svg" id="flowEdges" width="560" height="400" aria-hidden="true"></svg>
+              </div>
+            </div>
+            <div class="flow-bottomline"><span id="flowStatus">就绪 / 拖拽节点 · 可添加 · 可运行</span><span>EVENT / 799</span></div>
           </div>
-          <div class="flow-log"><span>SIMULATED EXECUTION</span><p id="flowLog">[06:30:00] 每天早上的日常 · ready</p></div>
+          <div class="flow-log"><span>SIMULATED EXECUTION</span><p id="flowLog">[06:30:00] pipeline / 325 · ready</p></div>
         </div>
       </div>
 
