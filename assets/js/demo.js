@@ -22,17 +22,30 @@
     { zh: '飞书', en: 'FEISHU' }
   ];
 
-  /* logical size + scale */
-  var LW = 1280, LH = 800, LW_M = 1024, LH_M = 720, k = 1;
+  /* logical size + crisp layout zoom
+     — transform: scale() rasterizes the frame (blurry text); setting zoom
+     inside the iframe re-lays out the real DOM at the target size instead,
+     so every element stays vector-sharp and inspectable in devtools. */
+  var LW = 1280, LH = 800, LW_M = 1024, LH_M = 720, k = 1, lw = LW, lh = LH;
+  var ZOOM_OK = 'zoom' in document.documentElement.style;
   var camera = { x: .5, y: .5, zoom: 1 }, zoomEnabled = true;
   var zoomButton = document.getElementById('demoZoom');
   function paintCamera() {
     var z = zoomEnabled ? camera.zoom : 1;
     if (clipEl.clientWidth < 900 && z > 1) z = Math.min(1.4, z + .15);
-    var width = parseFloat(frame.style.width) * k * z, height = parseFloat(frame.style.height) * k * z;
+    var scale = k * z;
+    var width = lw * scale, height = lh * scale;
     var x = Math.min(0, Math.max(clipEl.clientWidth - width, clipEl.clientWidth / 2 - camera.x * width));
     var y = Math.min(0, Math.max(clipEl.clientHeight - height, clipEl.clientHeight / 2 - camera.y * height));
-    frame.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + (k * z) + ')';
+    if (ZOOM_OK) {
+      frame.style.width = width + 'px'; frame.style.height = height + 'px';
+      frame.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      var doc = frame.contentDocument;
+      if (doc && doc.documentElement) doc.documentElement.style.zoom = String(scale);
+    } else {
+      frame.style.width = lw + 'px'; frame.style.height = lh + 'px';
+      frame.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + scale + ')';
+    }
   }
   zoomButton.addEventListener('click', function () {
     zoomEnabled = !zoomEnabled;
@@ -41,13 +54,14 @@
     paintCamera();
   });
   function fit() {
-    var w = clipEl.clientWidth, lw = w < 900 ? LW_M : LW, lh = w < 900 ? LH_M : LH;
+    var w = clipEl.clientWidth;
+    lw = w < 900 ? LW_M : LW; lh = w < 900 ? LH_M : LH;
     k = w / lw;
-    frame.style.width = lw + 'px'; frame.style.height = lh + 'px';
     clipEl.style.height = (lh * k) + 'px';
     paintCamera();
   }
   window.addEventListener('resize', fit); fit();
+  frame.addEventListener('load', paintCamera);
 
   /* tab row */
   function mk(tag, cls, txt, parent) { var el = document.createElement(tag); if (cls) el.className = cls; if (txt != null) el.textContent = txt; if (parent) parent.appendChild(el); return el; }
@@ -137,7 +151,15 @@
 var REPORT_LINES = ['主人，今天的日报来啦喵～', '【明日方舟】打捞方案和恒远津梁都只剩 2 天，10/30 03:59 就结束了，其中恒远津梁活动页那份「点击领取」的奖励还没领，记得去点一下喵～2026「感谢庆典」的前瞻签到和特别招募已经在 10/24 21:30 开始了，这两项可以顺手做起来。', '【明日方舟：终末地】「危机筹备」限时活动 10/29 04:00 开始，「百趣演武」挑战活动 10/29 12:00 开始，这两天留意一下就好喵～', '【崩坏：星穹铁道】日常已完成；版本活动和剩余时间可在游戏页查看喵～'];
   function phoneFit() {
     var narrow = window.matchMedia('(max-width: 768px)').matches;
-    phone.style.transform = (narrow ? 'translate(50%, -50%)' : 'translateY(-50%)') + ' scale(' + Math.min((clipEl.clientHeight - (narrow ? 12 : 36)) / 792, (clipEl.clientWidth * (narrow ? 0.9 : 0.44)) / 360) + ')';
+    var s = Math.min((clipEl.clientHeight - (narrow ? 12 : 36)) / 792, (clipEl.clientWidth * (narrow ? 0.9 : 0.44)) / 360);
+    if (ZOOM_OK) {
+      phone.style.zoom = String(s);
+      phone.style.transform = narrow
+        ? 'translate(' + (180 * s) + 'px, ' + (-396 * s) + 'px)'
+        : 'translateY(' + (-396 * s) + 'px)';
+    } else {
+      phone.style.transform = (narrow ? 'translate(50%, -50%)' : 'translateY(-50%)') + ' scale(' + s + ')';
+    }
   }
   window.addEventListener('resize', phoneFit);
   function phoneRender(elapsed) {
