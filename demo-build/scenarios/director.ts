@@ -54,9 +54,14 @@ function find(target: string): HTMLElement | undefined {
   return candidates.find(el => visible(el) &&
     ((el.textContent ?? '').trim() === target || [...el.childNodes].filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('').trim() === target));
 }
-const cursor = document.createElement('div');
-cursor.id = 'demo-cursor';
-cursor.innerHTML = '<svg viewBox="0 0 20 20" width="28" height="28"><path d="M4 2l12 8-6 1.5L7 18z" fill="#191919" stroke="#fff" stroke-width="1.1"/></svg>';
+function ripple(rect: DOMRect) {
+  const r = document.createElement('i');
+  r.className = 'demo-ripple';
+  r.style.left = rect.left + rect.width / 2 + 'px';
+  r.style.top = rect.top + rect.height / 2 + 'px';
+  document.body.appendChild(r);
+  setTimeout(() => r.remove(), 700);
+}
 /* scrollIntoView would bubble through the iframe and drag the outer page —
    scroll only the scrollable ancestors inside this document instead */
 function reveal(el: HTMLElement) {
@@ -81,9 +86,7 @@ function reveal(el: HTMLElement) {
 function point(el: HTMLElement, instant: boolean) {
   reveal(el);
   if (instant) return;
-  if (!cursor.isConnected) document.body.appendChild(cursor);
-  const rect = el.getBoundingClientRect(); cursor.classList.add('on');
-  cursor.style.left = rect.left + rect.width / 2 + 'px'; cursor.style.top = rect.top + rect.height / 2 + 'px';
+  ripple(el.getBoundingClientRect());
 }
 async function execute(step: Step, generation: number, instant: boolean) {
   const delay = async (ms: number) => { await clock.wait(ms, generation, progress); clock.assert(generation); };
@@ -122,7 +125,7 @@ async function play(index: number, fraction = 0) {
   const target = Math.max(0, Math.min(1, fraction)); seeking = target > 0;
   total = scenes[index].reduce((sum, step) => sum + duration(step), 0);
   clock.seekTo = target * total;
-  cursor.classList.remove('on'); resetWorld(); post('state'); progress();
+  resetWorld(); post('state'); progress();
   // Unmount the previous page so React's local state cannot leak into a replay.
   location.hash = '#/chat';
   try {

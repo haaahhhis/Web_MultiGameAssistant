@@ -28,11 +28,9 @@
      so every element stays vector-sharp and inspectable in devtools. */
   var LW = 1280, LH = 800, LW_M = 1024, LH_M = 720, k = 1, lw = LW, lh = LH;
   var ZOOM_OK = 'zoom' in document.documentElement.style;
-  var camera = { x: .5, y: .5, zoom: 1 }, zoomEnabled = true;
-  var zoomButton = document.getElementById('demoZoom');
+  var camera = { x: .5, y: .5, zoom: 1 };
   function paintCamera() {
-    var z = zoomEnabled ? camera.zoom : 1;
-    if (clipEl.clientWidth < 900 && z > 1) z = Math.min(1.4, z + .15);
+    var z = 1;
     var scale = k * z;
     var width = lw * scale, height = lh * scale;
     var x = Math.min(0, Math.max(clipEl.clientWidth - width, clipEl.clientWidth / 2 - camera.x * width));
@@ -47,12 +45,6 @@
       frame.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + scale + ')';
     }
   }
-  zoomButton.addEventListener('click', function () {
-    zoomEnabled = !zoomEnabled;
-    zoomButton.setAttribute('aria-pressed', String(zoomEnabled));
-    zoomButton.textContent = '局部放大 · ' + (zoomEnabled ? '开' : '关');
-    paintCamera();
-  });
   function fit() {
     var w = clipEl.clientWidth;
     lw = w < 900 ? LW_M : LW; lh = w < 900 ? LH_M : LH;
@@ -118,8 +110,8 @@
     if (e.source !== frame.contentWindow || e.origin !== location.origin || !d || d.src !== 'mga-demo') return;
     if (d.type === 'ready') { paused.ready = true; select(paused.idx); syncPause(); }
     else if (d.idx !== paused.idx) return;
-    else if (d.type === 'camera' && Number.isFinite(d.x) && Number.isFinite(d.y) && Number.isFinite(d.zoom)) {
-      camera = { x: Math.max(0, Math.min(1, d.x)), y: Math.max(0, Math.min(1, d.y)), zoom: Math.max(1, Math.min(1.4, d.zoom)) }; paintCamera();
+    else if (d.type === 'camera' && Number.isFinite(d.x) && Number.isFinite(d.y)) {
+      camera = { x: Math.max(0, Math.min(1, d.x)), y: Math.max(0, Math.min(1, d.y)), zoom: 1 }; paintCamera();
     }
     else if (d.type === 'progress' && Number.isFinite(d.frac)) {
       fills[paused.idx].style.transform = 'scaleX(' + Math.max(0, Math.min(1, d.frac)) + ')';

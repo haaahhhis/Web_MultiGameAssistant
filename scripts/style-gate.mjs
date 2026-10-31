@@ -145,9 +145,10 @@ try {
         await page.waitForFunction(previous => Math.abs(new DOMMatrixReadOnly(getComputedStyle(document.querySelector('.bridge-wordmark')).transform).m41 - previous) < 2, before);
       }
       await page.locator('.feat-panel-wrap').scrollIntoViewIfNeeded();
-      await page.waitForFunction(() => document.querySelector('.feat-panel-wrap').classList.contains('is-visible'));
-      await page.evaluate(() => window.MGAFeature.set(5));
-      await page.waitForFunction(() => document.querySelector('#featPanelZh').textContent === '飞书');
+      await page.waitForFunction(() => document.querySelector('.feat-panel-wrap').classList.contains('is-visible'), null, { polling: 100 });
+      await page.waitForFunction(() => window.__mgaDemo && window.__mgaDemo.state().ready, null, { polling: 100 });
+      await page.evaluate(() => { window.__mgaDemo.pause(); window.MGAFeature.set(5); });
+      await page.waitForFunction(() => document.querySelector('#featPanelZh').textContent === '飞书', null, { polling: 100 });
       const motion = await page.locator('.feat-item').first().evaluate(el => getComputedStyle(el).animationName);
       assert.equal(motion, reducedMotion === 'reduce' ? 'none' : 'featureArrive');
       const heading = await page.locator('#featPanelZh').evaluate(el => getComputedStyle(el).animationName);
