@@ -20,6 +20,14 @@ python -m http.server 8080
 
 > 所有资源路径均为相对路径，可在子路径下正常工作。`.nojekyll` 已包含，用于跳过 Jekyll 处理。
 
+### 发布时的静态资源版本
+
+首页 CSS / JS 地址带文件内容的 SHA-256 前 12 位作为 `?v=`，避免新版 HTML 与浏览器缓存的旧样式混用。资源仍是普通静态文件，不需要服务器逻辑，也不改变现有视觉样式。
+
+修改 `assets/` 下的 CSS / JS 后运行 `node scripts/version-assets.mjs`，并一同提交更新后的 `index.html`。`node demo-build/build.mjs` 也会自动刷新这些版本。PR 和 main 的静态检查会运行 `node scripts/version-assets.mjs --check`，阻止漏更新版本号。
+
+`PW_REQUIRE="$HOME/.cache/mga-demo-tools/package.json" node scripts/style-gate.mjs` 检查桌面 / 移动端 / 减少动态效果的实际计算样式，并用真实 HTTP 缓存复现旧版升级。可用 `DEMO_SITE_BASE` 指定静态子路径、`DEMO_SHOTS` 保存截图。
+
 ### 功能动画在静态站点上的运行方式
 
 - 浏览器直接加载 `index.html`、`assets/`、`app-demo/`、`data/` 和 `favicon.svg`；动画、点击、输入、暂停、切换和飞书卡片都由浏览器 JavaScript 执行。
