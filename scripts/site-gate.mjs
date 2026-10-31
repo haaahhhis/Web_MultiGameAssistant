@@ -49,7 +49,9 @@ try {
   });
   await check('API unavailable uses static snapshot', { offline: true }, async p => assert.match(await p.locator('#releasesStats').innerText(), /本站快照/));
   await check('removed sidebar buttons and mobile layout', { mobile: true }, async p => {
-    assert.equal(await p.locator('.rail-logo, .rail-dl, #railDownload').count(), 0);
+    assert.equal(await p.locator('.rail-logo, .rail-dl, #railDownload, .rail-gh').count(), 0);
+    assert.equal(await p.locator('.hero-ctas .btn-github svg').count(), 1);
+    assert.equal(await p.locator('.mobile-menu-foot .btn-github svg').count(), 1);
     assert.ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     await p.locator('#burger').click();
     assert.equal(await p.locator('#burger').getAttribute('aria-expanded'), 'true');
