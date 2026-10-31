@@ -622,7 +622,7 @@
     }, 1000);
     /* terminal */
     var ccTerm = document.getElementById('ccTerm');
-    var LOGS = ['[06:30:00] pipeline 每天早上的日常 · start', '[06:30:02] agent · 读懂 DailyHelper → 脚本包', '[06:31:40] 桌面日常·清体力 · queued (desktop)', '[06:34:12] incident · 自动重跑 <span class="ok">✓</span>', '[06:35:01] 飞书 · 已推送日报'];
+    var LOGS = ['[06:30:00] pipeline 每天早上的日常 · start', '[06:30:02] agent · 读懂 March7thAssistant → 脚本包', '[06:31:40] MaaEnd·清体力 · queued (desktop)', '[06:34:12] incident · 自动重跑 <span class="ok">✓</span>', '[06:35:01] 飞书 · 已推送日报'];
     var li = 0;
     setInterval(function () {
       var d = document.createElement('div'); d.className = 'tl in';

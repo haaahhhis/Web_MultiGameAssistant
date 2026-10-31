@@ -3,10 +3,12 @@
 import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const MGA = process.env.MGA_REPO ?? path.resolve(here, '..', '..', 'MultiGameAssistant');
 process.env.MGA_REPO = MGA;
+execFileSync(process.execPath, [path.join(here, '../scripts/sync-demo-games.mjs')], { stdio: 'inherit' });
 
 const req = createRequire(path.join(MGA, 'apps/web/package.json'));
 const vitePath = req.resolve('vite');

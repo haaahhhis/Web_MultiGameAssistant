@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const gate = JSON.parse(fs.readFileSync(path.join(here, 'gate.json'), 'utf8'));
+gate.base = process.env.DEMO_GATE_BASE ?? gate.base;
 const shotsDir = process.argv.includes('--shots') ? process.argv[process.argv.indexOf('--shots') + 1] : null;
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
