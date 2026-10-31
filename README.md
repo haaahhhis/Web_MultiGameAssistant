@@ -21,8 +21,9 @@ python -m http.server 8080
 ## 结构
 
 - `index.html` — 单页：首页 / 特色 / 功能介绍 / 版本发布 / 页脚
-- `assets/css/style.css` — 全部样式
-- `assets/js/main.js` — 加载动画、滚动动效、功能切换器、GitHub Releases API 渲染
+- `assets/css/style.css` — 站点样式
+- `assets/css/demo.css` / `assets/js/demo.js` — 功能介绍里用代码绘制的软件界面与 6 个场景的动画演示
+- `assets/js/main.js` — 加载动画、滚动动效、功能详情、GitHub Releases API 渲染
 - `favicon.svg` — 站点图标
 
 版本发布区块在客户端请求 GitHub Releases API（6 秒超时、10 分钟 sessionStorage 缓存），无需后端。

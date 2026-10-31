@@ -50,8 +50,12 @@
      ============================================================ */
   var SCRAMBLE_CHARS = '!<>-_/[]{}=+*^?#01AFX';
 
-  function scramble(el, finalText, duration) {
-    if (REDUCED || !el) { if (el) el.textContent = finalText; return; }
+  function scramble(el, finalText, duration, onDone) {
+    if (REDUCED || !el) {
+      if (el) el.textContent = finalText;
+      if (onDone) onDone();
+      return;
+    }
     var start = performance.now();
     duration = duration || 600;
     function frame(now) {
@@ -66,35 +70,42 @@
         }
       }
       el.textContent = out;
-      if (p < 1) requestAnimationFrame(frame);
-      else el.textContent = finalText;
+      if (p < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        el.textContent = finalText;
+        if (onDone) onDone();
+      }
     }
     requestAnimationFrame(frame);
   }
 
-  /* hero EN title scramble after loader */
-  var heroEn = document.getElementById('heroTitleEn');
-  if (heroEn && !REDUCED) {
-    var enText = heroEn.textContent;
-    setTimeout(function () { scramble(heroEn, enText, 900); }, 400);
-  }
-
-  /* scramble on hover for labelled buttons + mobile menu items */
+  /* scramble on hover for labelled buttons + mobile menu items
+     — reads the label's CURRENT text, locks the element width during the
+     scramble so neighbours don't shift, and ignores re-entry while busy */
   document.querySelectorAll('[data-scramble-label]').forEach(function (el) {
     var label = el.querySelector('.btn-label') || el.querySelector('.mm-zh');
     if (!label) return;
-    var original = label.textContent;
     el.addEventListener('mouseenter', function () {
-      scramble(label, original, 380);
+      if (label.dataset.busy === '1') return;
+      label.dataset.busy = '1';
+      var current = label.textContent;
+      el.style.width = el.getBoundingClientRect().width + 'px';
+      scramble(label, current, 380, function () {
+        el.style.width = '';
+        delete label.dataset.busy;
+      });
     });
   });
   document.querySelectorAll('.mobile-menu-list a').forEach(function (a) {
     var zh = a.querySelector('.mm-zh');
     if (!zh) return;
     a.addEventListener('mouseenter', function () {
-      scramble(zh, zh.dataset.orig || zh.textContent, 380);
+      if (zh.dataset.busy === '1') return;
+      zh.dataset.busy = '1';
+      var current = zh.textContent;
+      scramble(zh, current, 380, function () { delete zh.dataset.busy; });
     });
-    zh.dataset.orig = zh.textContent;
   });
 
   /* ============================================================
@@ -256,24 +267,19 @@
       zh: '飞书', en: 'FEISHU // MODULE-06',
       items: [
         ['长连接机器人', '飞书机器人走长连接，不需要公网地址；接收通知、日报和确认卡片。'],
-        ['飞书里直接对话', '「现在什么状态」「把明日方舟的日常跑一下」——和软件里是同一个 agent。'],
+        ['飞书里直接对话', '「现在什么状态」「把日常跑一下」——和软件里是同一个 agent。'],
         ['接入步骤', '见软件内「设置 → 飞书 → 第一次使用」。']
       ]
     }
   ];
 
-  var featTabs = Array.prototype.slice.call(document.querySelectorAll('.feat-tab'));
-  var featPanel = document.getElementById('featPanel');
   var featPanelZh = document.getElementById('featPanelZh');
   var featPanelEn = document.getElementById('featPanelEn');
   var featPanelIdx = document.getElementById('featPanelIdx');
   var featPanelBody = document.getElementById('featPanelBody');
   var featWipe = document.querySelector('.feat-panel-wipe');
   var featCounter = document.getElementById('featureCounter');
-  var featSwitcher = document.getElementById('featSwitcher');
-  var featIdx = 0;
-  var featTimer = null;
-  var featHover = false;
+  var featIdx = -1;
 
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
@@ -282,7 +288,7 @@
     featPanelIdx.textContent = pad(i + 1);
     featCounter.textContent = pad(i + 1) + ' / ' + pad(FEATURE_DATA.length);
     scramble(featPanelZh, d.zh, 400);
-    featPanelEn.textContent = d.en;
+    featPanelEn.textContent = /MODULE-\d+/.test(d.en) ? d.en : d.en + ' // MODULE-' + pad(i + 1);
     var ul = document.createElement('ul');
     d.items.forEach(function (item) {
       var li = document.createElement('li');
@@ -306,47 +312,21 @@
     featPanelBody.replaceChildren(ul);
   }
 
-  function selectFeature(i, userInitiated) {
-    if (i === featIdx && featPanelBody.children.length) return;
-    featIdx = i;
-    featTabs.forEach(function (t, j) {
-      t.classList.toggle('is-active', j === i);
-      t.setAttribute('aria-selected', String(j === i));
-    });
-    if (REDUCED) {
-      renderFeature(i);
-    } else {
-      featWipe.classList.remove('go');
-      void featWipe.offsetWidth;
-      featWipe.classList.add('go');
-      setTimeout(function () { renderFeature(i); }, 240);
+  window.MGAFeature = {
+    data: FEATURE_DATA,
+    set: function (i) {
+      if (i === featIdx) return;
+      featIdx = i;
+      if (REDUCED) { renderFeature(i); }
+      else {
+        featWipe.classList.remove('go');
+        void featWipe.offsetWidth;
+        featWipe.classList.add('go');
+        setTimeout(function () { renderFeature(i); }, 240);
+      }
     }
-    if (userInitiated) restartFeatTimer();
-  }
-
-  function restartFeatTimer() {
-    clearInterval(featTimer);
-    featTimer = setInterval(function () {
-      if (!featHover) selectFeature((featIdx + 1) % FEATURE_DATA.length, false);
-    }, 8000);
-  }
-
-  featTabs.forEach(function (tab, i) {
-    tab.addEventListener('click', function () { selectFeature(i, true); });
-    tab.addEventListener('keydown', function (e) {
-      var n = null;
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') n = (i + 1) % featTabs.length;
-      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') n = (i - 1 + featTabs.length) % featTabs.length;
-      if (n !== null) { e.preventDefault(); featTabs[n].focus(); selectFeature(n, true); }
-    });
-  });
-  featSwitcher.addEventListener('mouseenter', function () { featHover = true; });
-  featSwitcher.addEventListener('mouseleave', function () { featHover = false; });
-  featSwitcher.addEventListener('focusin', function () { featHover = true; });
-  featSwitcher.addEventListener('focusout', function () { featHover = false; });
-
-  renderFeature(0);
-  restartFeatTimer();
+  };
+  window.MGAFeature.set(0);
 
   /* ============================================================
      Safe mini markdown renderer
@@ -437,8 +417,7 @@
       link.target = '_blank';
       link.rel = 'noopener';
       var name = el('span', null, assetLabel(a.name));
-      var meta = el('span', 'rel-asset-meta',
-        fmtSize(a.size) + (a.download_count != null ? ' · ' + a.download_count + ' 次下载' : ''));
+      var meta = el('span', 'rel-asset-meta', fmtSize(a.size));
       link.appendChild(name);
       link.appendChild(meta);
       wrap.appendChild(link);
@@ -493,19 +472,12 @@
   }
 
   function renderStats(releases, sourceLabel) {
-    var totalDl = releases.reduce(function (sum, r) {
-      return sum + (r.assets || []).reduce(function (s, a) { return s + (a.download_count || 0); }, 0);
-    }, 0);
     statsEl.replaceChildren();
     var s1 = el('span', null);
     s1.appendChild(el('b', null, String(releases.length)));
     s1.appendChild(document.createTextNode('个已发布版本'));
-    var s2 = el('span', null);
-    s2.appendChild(el('b', null, String(totalDl)));
-    s2.appendChild(document.createTextNode('次累计下载'));
     var s3 = el('span', null, 'SOURCE // ' + sourceLabel);
     statsEl.appendChild(s1);
-    statsEl.appendChild(s2);
     statsEl.appendChild(s3);
   }
 
