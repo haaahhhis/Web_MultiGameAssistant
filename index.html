@@ -8,6 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/demo.css">
+  <script src="assets/js/downloads.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/demo.js" defer></script>
 </head>
@@ -30,9 +31,6 @@
 
   <!-- ============ LEFT RAIL (desktop) ============ -->
   <nav class="rail" aria-label="页面导航">
-    <a class="rail-logo" href="#home" aria-label="MultiGameAssistant 首页">
-      <span class="rail-logo-text">M<br>G<br>A</span>
-    </a>
     <ul class="rail-list">
       <li><a class="rail-item is-active" href="#home" data-section="home" aria-label="首页" data-scramble-label="首页">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 10v9h11v-9"/></svg>
@@ -48,10 +46,6 @@
       </a></li>
     </ul>
     <div class="rail-bottom">
-      <a class="rail-dl" id="railDownload" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" aria-label="下载最新版">
-        <span class="rail-dl-mark" aria-hidden="true"></span>
-        <span class="rail-dl-text">下<br>载</span>
-      </a>
       <a class="rail-gh" href="https://github.com/haaahhhis/MultiGameAssistant" target="_blank" rel="noopener" aria-label="GitHub 仓库">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5A9.5 9.5 0 0 0 2.5 12c0 4.2 2.7 7.7 6.5 9 .5.1.6-.2.6-.5v-1.7c-2.6.6-3.2-1.2-3.2-1.2-.4-1.1-1-1.4-1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.1-.2-4.3-1-4.3-4.6 0-1 .4-1.9 1-2.5-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.6 1a9 9 0 0 1 4.7 0c1.8-1.3 2.6-1 2.6-1 .5 1.3.2 2.3.1 2.6.6.6 1 1.5 1 2.5 0 3.6-2.2 4.4-4.3 4.6.3.3.6.9.6 1.8V20c0 .3.2.6.7.5a9.5 9.5 0 0 0 6.5-9A9.5 9.5 0 0 0 12 2.5z"/></svg>
       </a>
@@ -70,6 +64,7 @@
   </header>
   <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <div class="mobile-menu-grid" aria-hidden="true"></div>
+    <span class="menu-wordmark" aria-hidden="true">// MGA</span>
     <ul class="mobile-menu-list">
       <li><a href="#home"><span class="mm-idx">01</span><span class="mm-zh">首页</span><span class="mm-en">HOME</span></a></li>
       <li><a href="#features"><span class="mm-idx">02</span><span class="mm-zh">功能介绍</span><span class="mm-en">FEATURES</span></a></li>
@@ -133,28 +128,55 @@
             <a class="btn btn-primary" id="heroDownload" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" data-scramble-label="下载最新版"><span class="btn-label">下载最新版</span></a>
             <a class="btn btn-outline" href="https://github.com/haaahhhis/MultiGameAssistant" target="_blank" rel="noopener" data-scramble-label="GitHub 仓库"><span class="btn-label">GitHub 仓库</span></a>
           </div>
+          <div class="download-options" role="group" aria-label="Windows 安装包架构">
+            <span>安装包</span>
+            <button type="button" data-download-arch="auto" aria-pressed="true">自动</button>
+            <button type="button" data-download-arch="x64" aria-pressed="false">Windows x64</button>
+            <button type="button" data-download-arch="arm64" aria-pressed="false">Windows ARM64</button>
+          </div>
+          <p class="download-hint" id="downloadHint" aria-live="polite">无法识别时默认 Windows x64；可手动切换架构。</p>
         </div>
 
         <div class="hero-deco" aria-hidden="true">
-          <div class="cmd-core" id="cmdCore">
-            <svg class="cc-rings" viewBox="0 0 400 400">
-              <circle class="cc-ring r1" cx="200" cy="200" r="188"/>
-              <circle class="cc-ring r2" cx="200" cy="200" r="156"/>
-              <circle class="cc-ring r3" cx="200" cy="200" r="120"/>
-              <circle class="cc-ring r4" cx="200" cy="200" r="96"/>
-              <path class="cc-wedge" d="M200 200 L200 44 A156 156 0 0 1 262 62 Z"/>
-              <path class="cc-arc" id="ccArc" d="M200 12 A188 188 0 1 1 199 12" fill="none"/>
-              <g class="cc-deg" font-size="7" font-family="monospace" fill="#8a8a8a"><text x="200" y="10" text-anchor="middle">0°</text><text x="390" y="203" text-anchor="middle">90°</text><text x="200" y="398" text-anchor="middle">180°</text><text x="10" y="203" text-anchor="middle">270°</text></g>
+          <div class="flow-board" id="flowBoard" data-stage="0">
+            <div class="flow-topline"><span><i class="tag-blue"></i>PIPELINE / 325</span><span>DEMO GRAPH</span></div>
+            <svg class="flow-canvas" viewBox="0 0 560 400">
+              <g class="flow-edges">
+                <path d="M146 200 H178 V68 Q178 60 186 60 H222"/>
+                <path d="M146 200 H222"/>
+                <path d="M146 200 H178 V332 Q178 340 186 340 H222"/>
+                <path d="M354 60 H386 V192 Q386 200 394 200 H414"/>
+                <path d="M354 200 H414"/>
+                <path d="M354 340 H386 V208 Q386 200 394 200 H414"/>
+              </g>
+              <g class="flow-pulses" fill="none">
+                <path data-flow="1" d="M146 200 H178 V68 Q178 60 186 60 H222"/>
+                <path data-flow="1" d="M146 200 H222"/>
+                <path data-flow="1" d="M146 200 H178 V332 Q178 340 186 340 H222"/>
+                <path data-flow="2" d="M354 60 H386 V192 Q386 200 394 200 H414"/>
+                <path data-flow="2" d="M354 200 H414"/>
+                <path data-flow="2" d="M354 340 H386 V208 Q386 200 394 200 H414"/>
+              </g>
+              <g class="flow-node" data-flow="0" transform="translate(14 164)">
+                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">TRIGGER</text><text class="flow-title" x="12" y="42">每日 06:30</text><text class="flow-meta" x="12" y="60">定时启动</text><circle cx="132" cy="36" r="4"/>
+              </g>
+              <g class="flow-node" data-flow="1" transform="translate(222 24)">
+                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">SCRIPT / 01</text><text class="flow-title" x="12" y="42">MAA</text><text class="flow-meta" x="12" y="60">明日方舟</text><circle cx="0" cy="36" r="4"/><circle cx="132" cy="36" r="4"/>
+              </g>
+              <g class="flow-node" data-flow="1" transform="translate(222 164)">
+                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">SCRIPT / 02</text><text class="flow-title" x="12" y="42">三月七小助手</text><text class="flow-meta" x="12" y="60">崩坏：星穹铁道</text><circle cx="0" cy="36" r="4"/><circle cx="132" cy="36" r="4"/>
+              </g>
+              <g class="flow-node" data-flow="1" transform="translate(222 304)">
+                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">SCRIPT / 03</text><text class="flow-title" x="12" y="42">MaaEnd</text><text class="flow-meta" x="12" y="60">明日方舟：终末地</text><circle cx="0" cy="36" r="4"/><circle cx="132" cy="36" r="4"/>
+              </g>
+              <g class="flow-node" data-flow="2" transform="translate(414 164)">
+                <rect width="132" height="72" rx="4"/><text class="flow-kind" x="12" y="18">NOTIFY</text><text class="flow-title" x="12" y="42">飞书日报</text><text class="flow-meta" x="12" y="60">完成后汇报</text><circle cx="0" cy="36" r="4"/>
+              </g>
+              <text class="flow-annotation" x="20" y="312">NODE → EDGE</text><text class="flow-annotation" x="20" y="330">→ EXECUTION</text>
             </svg>
-            <div class="cc-hex"><b>MGA</b><span class="cc-next" id="ccNext">NEXT RUN 06:30</span><i class="cc-pip"></i></div>
-            <div class="cc-node" data-cc="0" style="--a:0"><b>导入任意脚本</b><i>ANY SCRIPT</i></div>
-            <div class="cc-node" data-cc="1" style="--a:1"><b>agent 读懂</b><i>ANALYZE</i></div>
-            <div class="cc-node" data-cc="2" style="--a:2"><b>每日流水线</b><i>SCHEDULE</i></div>
-            <div class="cc-node" data-cc="3" style="--a:3"><b>飞书汇报</b><i>PUSH</i></div>
-            <div class="cc-packet" id="ccPacket"></div>
-            <div class="cc-scan"></div>
+            <div class="flow-bottomline"><span id="flowStatus">01 / 等待定时触发</span><span>EVENT / 799</span></div>
           </div>
-          <div class="cc-term" id="ccTerm" aria-hidden="true"></div>
+          <div class="flow-log"><span>SIMULATED EXECUTION</span><p id="flowLog">[06:30:00] 每天早上的日常 · ready</p></div>
         </div>
       </div>
 
@@ -163,6 +185,13 @@
         <span class="hero-scroll-bar" aria-hidden="true"></span>
       </a>
     </section>
+
+    <div class="section-bridge reveal-block" aria-hidden="true">
+      <div class="bridge-meta"><span>01 → 02 / EXPLORE THE SYSTEM</span><span>NODE / CONNECT / RUN</span></div>
+      <div class="bridge-wordmark">// MULTI<span>GAME</span></div>
+      <div class="bridge-track"><i></i><b></b><i></i><b></b><i></i><b></b><i></i></div>
+      <p>从一个节点，到完整日常。<span>YOUR DAILY. CONNECTED.</span></p>
+    </div>
 
     <!-- ============ 03 FEATURES ============ -->
     <section class="features section" id="features" aria-label="功能介绍">
@@ -176,9 +205,9 @@
 
       <div class="feat-layout">
         <div class="demo-outer anno-frame" id="demoOuter">
-          <div class="demo-outer-top" aria-hidden="true">
+          <div class="demo-outer-top">
             <span class="demo-label" id="demoLabel">DEMO // SCRIPTS</span>
-            <span class="demo-rec">[REC]</span>
+            <div class="demo-top-controls"><button class="demo-zoom" id="demoZoom" type="button" aria-pressed="true">局部放大 · 开</button><span class="demo-rec" aria-hidden="true">[REC]</span></div>
           </div>
           <div class="appwin-clip" id="appwinClip">
             <iframe class="appwin-frame" id="demoFrame" title="MultiGameAssistant 界面演示" tabindex="-1" aria-hidden="true"></iframe>

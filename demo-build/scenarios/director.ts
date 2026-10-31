@@ -1,12 +1,13 @@
 import { emit, world, resetWorld, lastRun } from '../gateway/fake.ts';
 import { clock } from './clock.ts';
 
-type Step = { kind: 'wait'; ms: number } | { kind: 'go'; hash: string } | { kind: 'click'; target: string } | { kind: 'type'; target: string; text: string } | { kind: 'effect'; run: () => void };
+type Step = { kind: 'wait'; ms: number } | { kind: 'go'; hash: string } | { kind: 'click'; target: string } | { kind: 'type'; target: string; text: string } | { kind: 'focus'; target: string; zoom: number } | { kind: 'effect'; run: () => void };
 const wait = (ms: number): Step => ({ kind: 'wait', ms });
 const go = (hash: string): Step => ({ kind: 'go', hash });
 const click = (target: string): Step => ({ kind: 'click', target });
 const type = (target: string, text: string): Step => ({ kind: 'type', target, text });
 const effect = (run: () => void): Step => ({ kind: 'effect', run });
+const focus = (target: string, zoom = 1.2): Step => ({ kind: 'focus', target, zoom });
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 let current = -1, total = 0, seeking = false;
 const post = (type: string, payload: object = {}) => parent.postMessage({ src: 'mga-demo', type, idx: current, ...payload }, location.origin);
@@ -32,20 +33,20 @@ function incident(resolved: boolean) {
   emit('runs/state', world.runs[2]);
 }
 const scenes: Step[][] = [
-  [go('#/p/scripts'), wait(700), click('导入本地项目'), type('#import-path', 'D:\\Scripts\\March7thAssistant'),
+  [go('#/p/scripts'), wait(700), click('导入本地项目'), focus('#import-path'), type('#import-path', 'D:\\Scripts\\March7thAssistant'),
     type('#import-name', '三月七小助手'), click('导入'), wait(900), click('让 AI 总结'), wait(3200)],
-  [go('#/p/pipelines/morning-daily'), wait(1100), click('定时与失败'), wait(2200), click('检查'), wait(1600), click('运行'), wait(700),
+  [go('#/p/pipelines/morning-daily'), wait(1100), focus('.pipeline-editor'), click('定时与失败'), wait(2200), click('检查'), wait(1600), click('运行'), wait(700),
     effect(() => runPhase({ emu: nodeRun('running'), clear: nodeRun('running'), farm: nodeRun('waiting', '等待桌面资源') })), wait(2200),
     effect(() => runPhase({ emu: nodeRun('succeeded'), clear: nodeRun('succeeded'), farm: nodeRun('running') })), wait(2200),
     effect(() => runPhase({ farm: nodeRun('succeeded'), done: nodeRun('succeeded') }, 'succeeded')), click('运行记录'), wait(2400)],
-  [go('#/p/runs'), wait(1000), effect(() => incident(false)), wait(2400), click('.incident-title'), wait(2400),
+  [go('#/p/runs'), wait(1000), effect(() => incident(false)), focus('.incident-title'), wait(2400), click('.incident-title'), wait(2400),
     effect(() => incident(true)), wait(3000)],
-  [go('#/p/games'), click('刷新全部'), wait(900), click('崩坏：星穹铁道'), wait(3500),
-    click('更多游戏'), wait(600), click('.catalog-grid label:last-child input'), wait(1000), click('更多游戏'), click('鸣潮'), wait(3000)],
-  [go('#/s/s-diag'), wait(2000), click('允许本次'), wait(4200)],
+  [go('#/p/games/farecho'), click('刷新全部'), wait(900), focus('.version-card'), wait(3400),
+    click('明日方舟：终末地'), focus('.version-card'), wait(3400), click('崩坏：星穹铁道'), focus('.version-card'), wait(3400)],
+  [go('#/s/s-diag'), wait(2000), focus('允许本次'), click('允许本次'), wait(4200)],
   [go('#/settings/feishu'), wait(1200), click('重新检查'), wait(9000)],
 ];
-const duration = (s: Step) => s.kind === 'wait' ? s.ms : s.kind === 'type' ? 750 + s.text.length * 60 : s.kind === 'effect' ? 0 : 900;
+const duration = (s: Step) => s.kind === 'wait' ? s.ms : s.kind === 'type' ? 750 + s.text.length * 60 : s.kind === 'effect' || s.kind === 'focus' ? 0 : 900;
 function find(target: string): HTMLElement | undefined {
   const visible = (el: HTMLElement) => el.getClientRects().length > 0;
   try { const el = document.querySelector<HTMLElement>(target); if (el && visible(el)) return el; } catch { /* text target */ }
@@ -76,6 +77,11 @@ async function execute(step: Step, generation: number, instant: boolean) {
     await sleep(50);
   }
   if (!el || (el as HTMLButtonElement).disabled) throw new Error('找不到演示操作：' + step.target);
+  if (step.kind === 'focus') {
+    const rect = el.getBoundingClientRect();
+    post('camera', { x: (rect.left + rect.width / 2) / innerWidth, y: (rect.top + rect.height / 2) / innerHeight, zoom: step.zoom });
+    return;
+  }
   await delay(0); point(el, instant); await delay(600);
   if (step.kind === 'click') {
     el.click(); await sleep(100); clock.assert(generation); await delay(300);
@@ -110,7 +116,12 @@ async function play(index: number, fraction = 0) {
     seeking = false; console.error('[director]', error); post('error', { message: String(error) });
   }
 }
-export function startDirector() {
+export async function startDirector() {
+  for (let attempt = 0; !document.querySelector('.app .rail-connection.open'); attempt++) {
+    if (attempt >= 100) throw new Error('演示界面未完成初始化');
+    await sleep(50);
+  }
+  await sleep(0);
   addEventListener('message', e => {
     if (e.source !== parent || e.origin !== location.origin || e.data?.src !== 'mga-site') return;
     const d = e.data;
@@ -119,8 +130,8 @@ export function startDirector() {
     else if (d.type === 'pause') clock.paused = true;
     else if (d.type === 'resume') clock.paused = false;
   });
-  post('ready');
   (window as any).__mgaDemo = { select: play, seek: (f: number) => play(current < 0 ? 0 : current, f),
     pause: () => { clock.paused = true; }, play: () => { clock.paused = false; },
     state: () => ({ current, vt: clock.time, total, paused: clock.paused, seeking }) };
+  post('ready');
 }

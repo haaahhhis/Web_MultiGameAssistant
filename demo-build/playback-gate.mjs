@@ -39,18 +39,26 @@ async function check(name, run) {
     await page.close();
   }
 }
-const ends = ['三月七小助手是崩坏：星穹铁道的日常助手', '成功', '已关闭公告弹窗', '鸣潮', '已重启并重跑成功', 'MGA 助手'];
+const ends = ['三月七小助手是崩坏：星穹铁道的日常助手', '成功', '已关闭公告弹窗', '崩坏：星穹铁道', '已重启并重跑成功', 'MGA 助手'];
 try {
   for (let index = 0; index < 6; index++) await check('scene-' + index, async page => {
     await page.goto(base + 'app-demo/index.html?validate=1');
     await page.waitForFunction(() => window.__mgaDemo);
-    await page.evaluate(index => window.__mgaDemo.select(index), index);
+    await page.evaluate(index => { void window.__mgaDemo.select(index); }, index);
+    if (index === 3) {
+      for (const game of ['明日方舟', '明日方舟：终末地', '崩坏：星穹铁道']) {
+        await page.waitForFunction(name => document.querySelector('.games-page .breadcrumb h1')?.textContent === name, game);
+        await page.waitForFunction(() => { const image = document.querySelector('.version-art'); return image?.complete && image.naturalWidth > 0; });
+      }
+    }
     await page.waitForFunction(text => document.body.innerText.includes(text), ends[index]);
+    await page.waitForFunction(() => { const s = window.__mgaDemo.state(); return s.total > 0 && Math.abs(s.vt - s.total) < 1; }, null, { timeout: 30000 });
     const state = await page.evaluate(() => window.__mgaDemo.state());
     assert.ok(Math.abs(state.vt - state.total) < 1, JSON.stringify(state));
     if (index === 3) {
       await page.waitForFunction(() => [...document.images].some(i => i.src.startsWith('data:image/') && i.complete && i.naturalWidth > 0));
-      assert.ok(await page.locator('.game-tab[aria-selected="true"]').innerText().then(t => t.includes('鸣潮')));
+      assert.ok(await page.locator('.game-tab[aria-selected="true"]').innerText().then(t => t.includes('崩坏：星穹铁道')));
+      assert.ok(!(await page.locator('.games-page').innerText()).includes('鸣潮'));
     }
   });
   await check('pause-switch-seek', async page => {
@@ -81,6 +89,7 @@ try {
     await page.waitForFunction(() => document.querySelectorAll('#fsReportBody > div').length === 4);
     await page.getByRole('button', { name: '暂停演示', exact: true }).click();
     const frame = page.frames().find(f => f.url().includes('/app-demo/'));
+    await frame.waitForFunction(() => window.__mgaDemo.state().paused);
     const time = await frame.evaluate(() => window.__mgaDemo.state().vt);
     await page.waitForTimeout(400);
     assert.equal(await frame.evaluate(() => window.__mgaDemo.state().vt), time);

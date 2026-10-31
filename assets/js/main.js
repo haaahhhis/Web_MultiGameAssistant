@@ -375,8 +375,9 @@
     return mb >= 100 ? Math.round(mb) + ' MB' : mb.toFixed(1) + ' MB';
   }
   function assetLabel(name) {
-    if (/arm64/i.test(name)) return 'Windows ARM64';
-    if (/\.exe$/i.test(name)) return 'Windows x64（大多数电脑）';
+    var arch = MGADownloads.assetArchitecture(name);
+    if (arch === 'arm64') return 'Windows ARM64';
+    if (arch === 'x64') return 'Windows x64（大多数电脑）';
     return name;
   }
 
@@ -477,34 +478,42 @@
   }
 
   function pickLatest(releases) {
-    var stable = releases.filter(function (r) { return !r.prerelease; });
-    return stable[0] || releases[0];
+    return MGADownloads.latest(releases);
   }
 
-  function findX64Asset(rel) {
-    if (!rel || !rel.assets) return null;
-    return rel.assets.find(function (a) { return /\.exe$/i.test(a.name) && !/arm64/i.test(a.name); })
-        || rel.assets.find(function (a) { return /\.exe$/i.test(a.name); })
-        || null;
-  }
+  var downloadMode = 'auto', detectedArchitecture = { arch: 'x64', detected: false }, downloadReleases = [];
+  document.querySelectorAll('[data-download-arch]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      downloadMode = button.dataset.downloadArch;
+      document.querySelectorAll('[data-download-arch]').forEach(function (b) { b.setAttribute('aria-pressed', String(b === button)); });
+      updateDownloadLinks(downloadReleases);
+    });
+  });
+  MGADownloads.detect(navigator).then(function (result) { detectedArchitecture = result; updateDownloadLinks(downloadReleases); });
 
   function updateDownloadLinks(releases) {
+    downloadReleases = releases;
     var latest = pickLatest(releases);
     if (!latest) return;
-    var asset = findX64Asset(latest);
+    var arch = downloadMode === 'auto' ? detectedArchitecture.arch : downloadMode;
+    var asset = MGADownloads.chooseAsset(latest, arch);
     var href = asset ? asset.browser_download_url : RELEASES_PAGE;
-    var label = '下载最新版 ' + latest.tag_name;
+    var actual = asset && MGADownloads.assetArchitecture(asset.name);
+    var label = asset ? '下载 ' + latest.tag_name + ' · Windows ' + (actual === 'arm64' ? 'ARM64' : 'x64') : '查看 ' + latest.tag_name + ' 下载';
     var hero = document.getElementById('heroDownload');
     hero.href = href;
     hero.querySelector('.btn-label').textContent = label;
-    document.getElementById('railDownload').href = href;
     var mm = document.getElementById('mobileMenuDownload');
     mm.href = href;
     mm.textContent = label;
+    var hint = document.getElementById('downloadHint');
+    if (!asset) hint.textContent = '该版本没有可匹配的 Windows 安装包，请在发布页选择；不会链接到旧版本。';
+    else if (actual !== arch) hint.textContent = '该版本未提供 ARM64 包，已回退到 Windows x64；也可在下方版本发布区查看全部文件。';
+    else hint.textContent = (downloadMode !== 'auto' ? '已手动选择' : detectedArchitecture.detected ? '检测到' : '无法识别或非 Windows 设备，默认') + ' Windows ' + (actual === 'arm64' ? 'ARM64' : 'x64') + ' · 支持 Windows 10 / 11';
   }
 
   function handleReleases(releases, sourceLabel) {
-    var visible = (releases || []).filter(function (r) { return !r.draft; });
+    var visible = (releases || []).filter(function (r) { return r && !r.draft && typeof r.tag_name === 'string'; }).sort(function (a, b) { return (Date.parse(b.published_at) || 0) - (Date.parse(a.published_at) || 0); });
     if (!visible.length) {
       renderState('暂无发布版本', '仓库还没有公开发布的版本，可以去 GitHub 查看进展。', true);
       return;
@@ -595,50 +604,27 @@
 })();
 
 
-  /* ============================================================
-    COMMAND CORE — rings, packet, countdown, terminal, tilt
-     ============================================================ */
-  var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var TOUCH = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-  var cc = document.getElementById('cmdCore');
-  if (cc && !REDUCED) {
-    var ccNodes = cc.querySelectorAll('.cc-node'), ccPkt = document.getElementById('ccPacket');
-    var ccCenter = 230, ccR = 188, ccAng = 0, ccIdx = 0;
-    ccNodes[0].classList.add('lit');
-    (function ccMove() {
-      ccAng = (ccAng + 0.008) % (Math.PI * 2);
-      var a = ccAng - Math.PI / 2;
-      ccPkt.style.left = (ccCenter + Math.cos(a) * ccR - 4) + 'px';
-      ccPkt.style.top = (ccCenter + Math.sin(a) * ccR - 4) + 'px';
-      var seg = Math.floor(((ccAng + Math.PI / 4) % (Math.PI * 2)) / (Math.PI / 2)) % 4;
-      if (seg !== ccIdx) { ccIdx = seg; ccNodes.forEach(function (n, j) { n.classList.toggle('lit', j === seg); }); }
-      requestAnimationFrame(ccMove);
-    })();
-    /* countdown */
-    var ccNext = document.getElementById('ccNext');
-    setInterval(function () {
-      var t = 630 - (Math.floor(Date.now() / 1000) % 1800);
-      ccNext.textContent = 'NEXT RUN\n06:30 · ' + Math.floor(t / 60) + ':' + ('0' + t % 60).slice(-2);
-    }, 1000);
-    /* terminal */
-    var ccTerm = document.getElementById('ccTerm');
-    var LOGS = ['[06:30:00] pipeline 每天早上的日常 · start', '[06:30:02] agent · 读懂 March7thAssistant → 脚本包', '[06:31:40] MaaEnd·清体力 · queued (desktop)', '[06:34:12] incident · 自动重跑 <span class="ok">✓</span>', '[06:35:01] 飞书 · 已推送日报'];
-    var li = 0;
-    setInterval(function () {
-      var d = document.createElement('div'); d.className = 'tl in';
-      d.innerHTML = LOGS[li % LOGS.length]; ccTerm.appendChild(d);
-      while (ccTerm.children.length > 4) ccTerm.firstChild.remove();
-      li++;
-    }, 1800);
-    /* tilt */
-    if (!TOUCH) {
-      var hero = document.getElementById('home'), tx = 0, ty = 0, traf = false;
-      hero.addEventListener('pointermove', function (e) {
-        tx = (e.clientX / innerWidth - .5) * 10; ty = (e.clientY / innerHeight - .5) * -8;
-        if (traf) return; traf = true;
-        requestAnimationFrame(function () { cc.style.transform = 'rotateY(' + tx + 'deg) rotateX(' + ty + 'deg)'; traf = false; });
-      }, { passive: true });
-    }
-  } else if (cc) {
-    document.getElementById('ccNext').textContent = 'NEXT RUN 06:30';
+(function () {
+  'use strict';
+  var board = document.getElementById('flowBoard');
+  if (!board) return;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stages = ['01 / 等待定时触发', '02 / 节点执行 · 资源冲突时排队', '03 / 汇总结果 → 飞书'];
+  var logs = ['[06:30:00] pipeline / 325 · ready', '[06:30:02] MAA → 三月七小助手 → MaaEnd', '[06:35:01] event / 799 · 日报已生成'];
+  var stage = 0, timer = null, visible = false;
+  function render() {
+    board.dataset.stage = stage;
+    board.querySelectorAll('[data-flow]').forEach(function (node) { node.classList.toggle('active', Number(node.dataset.flow) === stage); });
+    document.getElementById('flowStatus').textContent = stages[stage];
+    document.getElementById('flowLog').textContent = logs[stage];
   }
+  function sync() {
+    clearInterval(timer); timer = null;
+    board.classList.toggle('is-running', visible && !document.hidden && !reduced);
+    if (visible && !document.hidden && !reduced) timer = setInterval(function () { stage = (stage + 1) % stages.length; render(); }, 2600);
+  }
+  render();
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; sync(); }, { threshold: .15 }).observe(board);
+  else { visible = true; sync(); }
+  document.addEventListener('visibilitychange', sync);
+})();

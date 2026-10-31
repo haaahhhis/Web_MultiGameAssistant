@@ -12,9 +12,11 @@ try { localStorage.setItem('adg.theme', 'light'); } catch { }
 const _focus = HTMLElement.prototype.focus;
 HTMLElement.prototype.focus = function (opts?: FocusOptions) { _focus.call(this, Object.assign({}, opts, { preventScroll: true })); };
 
+if (!location.hash) history.replaceState(null, '', location.pathname + location.search + '#/p/scripts');
+
 // resolved via vite alias @mga-web -> <MGA_REPO>/apps/web/src
 (async () => {
   // @ts-ignore
   await import('@mga-web/main.tsx');
-  startDirector();
+  await startDirector();
 })();

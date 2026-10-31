@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 jobs:
   sync:
@@ -22,6 +23,7 @@ jobs:
         run: node scripts/sync-releases.mjs
 
       - name: Commit and push if changed
+        id: snapshot
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -31,4 +33,15 @@ jobs:
             git add data/releases.json
             git commit -m "chore: sync releases snapshot"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish the updated snapshot on branch-based Pages
+        if: steps.snapshot.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          build_type=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.build_type')
+          if [ "$build_type" = "legacy" ]; then
+            gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds"
           fi
