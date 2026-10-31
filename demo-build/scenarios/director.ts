@@ -56,9 +56,30 @@ function find(target: string): HTMLElement | undefined {
 }
 const cursor = document.createElement('div');
 cursor.id = 'demo-cursor';
-cursor.innerHTML = '<svg viewBox="0 0 20 20" width="20" height="20"><path d="M4 2l12 8-6 1.5L7 18z" fill="#191919" stroke="#fff" stroke-width="1.2"/></svg>';
+cursor.innerHTML = '<svg viewBox="0 0 20 20" width="28" height="28"><path d="M4 2l12 8-6 1.5L7 18z" fill="#191919" stroke="#fff" stroke-width="1.1"/></svg>';
+/* scrollIntoView would bubble through the iframe and drag the outer page —
+   scroll only the scrollable ancestors inside this document instead */
+function reveal(el: HTMLElement) {
+  let node = el.parentElement;
+  while (node) {
+    const p = node.getBoundingClientRect(), r = el.getBoundingClientRect();
+    if (node.scrollHeight > node.clientHeight + 1) {
+      if (r.top < p.top) node.scrollTop -= p.top - r.top + 12;
+      else if (r.bottom > p.bottom) node.scrollTop += r.bottom - p.bottom + 12;
+    }
+    if (node.scrollWidth > node.clientWidth + 1) {
+      if (r.left < p.left) node.scrollLeft -= p.left - r.left + 12;
+      else if (r.right > p.right) node.scrollLeft += r.right - p.right + 12;
+    }
+    node = node.parentElement;
+  }
+  const r = el.getBoundingClientRect();
+  const root = document.scrollingElement ?? document.documentElement;
+  if (r.top < 0) root.scrollTop += r.top - 12;
+  else if (r.bottom > innerHeight) root.scrollTop += r.bottom - innerHeight + 12;
+}
 function point(el: HTMLElement, instant: boolean) {
-  el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+  reveal(el);
   if (instant) return;
   if (!cursor.isConnected) document.body.appendChild(cursor);
   const rect = el.getBoundingClientRect(); cursor.classList.add('on');

@@ -6,7 +6,7 @@
   <title>MultiGameAssistant — 让 agent 替你管好各个游戏的日常脚本</title>
   <meta name="description" content="MultiGameAssistant（多游戏助手）：通用的游戏脚本管家——任意脚本、任意游戏、任意模型。安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=5520e543e64e">
+  <link rel="stylesheet" href="assets/css/style.css?v=e9c9bbf0ac59">
   <link rel="stylesheet" href="assets/css/demo.css?v=d27b5e416cbc">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
   <script src="assets/js/main.js?v=56a6309b113d" defer></script>
@@ -35,6 +35,9 @@
       <li><a class="rail-item is-active" href="#home" data-section="home" aria-label="首页" data-scramble-label="首页">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 10v9h11v-9"/></svg>
       </a></li>
+      <li><a class="rail-item" href="#pipeline" data-section="pipeline" aria-label="编排演示" data-scramble-label="编排">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 12h9"/><path d="M12 6v4"/><circle cx="12" cy="5" r="1.6"/></svg>
+      </a></li>
       <li><a class="rail-item" href="#features" data-section="features" aria-label="功能介绍" data-scramble-label="功能">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><path d="M13 16.5h7M16.5 13v7"/></svg>
       </a></li>
@@ -62,9 +65,10 @@
     <span class="menu-wordmark" aria-hidden="true">// MGA</span>
     <ul class="mobile-menu-list">
       <li><a href="#home"><span class="mm-idx">01</span><span class="mm-zh">首页</span><span class="mm-en">HOME</span></a></li>
-      <li><a href="#features"><span class="mm-idx">02</span><span class="mm-zh">功能介绍</span><span class="mm-en">FEATURES</span></a></li>
-      <li><a href="#releases"><span class="mm-idx">03</span><span class="mm-zh">版本发布</span><span class="mm-en">RELEASES</span></a></li>
-      <li><a href="#footer"><span class="mm-idx">04</span><span class="mm-zh">页脚信息</span><span class="mm-en">INFO</span></a></li>
+      <li><a href="#pipeline"><span class="mm-idx">02</span><span class="mm-zh">编排演示</span><span class="mm-en">PIPELINE</span></a></li>
+      <li><a href="#features"><span class="mm-idx">03</span><span class="mm-zh">功能介绍</span><span class="mm-en">FEATURES</span></a></li>
+      <li><a href="#releases"><span class="mm-idx">04</span><span class="mm-zh">版本发布</span><span class="mm-en">RELEASES</span></a></li>
+      <li><a href="#footer"><span class="mm-idx">05</span><span class="mm-zh">页脚信息</span><span class="mm-en">INFO</span></a></li>
     </ul>
     <div class="mobile-menu-foot">
       <a class="btn btn-accent" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" id="mobileMenuDownload">下载最新版</a>
@@ -135,18 +139,6 @@
           <p class="download-hint" id="downloadHint" aria-live="polite">无法识别时默认 Windows x64；可手动切换架构。</p>
         </div>
 
-        <div class="hero-deco">
-          <div class="flow-board" id="flowBoard">
-            <div class="flow-topline"><span class="flow-tag">PIPELINE / 325</span><span class="flow-actions"><button class="flow-btn" id="flowAdd" type="button">+ 节点</button><button class="flow-btn" id="flowDel" type="button" disabled>− 节点</button><button class="flow-btn flow-btn-run" id="flowRun" type="button">▶ 运行</button></span><span>DEMO GRAPH</span></div>
-            <div class="flow-stage" id="flowStage">
-              <div class="flow-stage-inner" id="flowStageInner">
-                <svg class="flow-edges-svg" id="flowEdges" width="560" height="400" aria-hidden="true"></svg>
-              </div>
-            </div>
-            <div class="flow-bottomline"><span id="flowStatus">就绪 / 拖拽节点 · 可添加 · 可运行</span><span>EVENT / 799</span></div>
-          </div>
-          <div class="flow-log"><span>SIMULATED EXECUTION</span><p id="flowLog">[06:30:00] pipeline / 325 · ready</p></div>
-        </div>
       </div>
 
       <a class="hero-scroll" href="#features" aria-label="向下滚动到功能介绍">
@@ -162,6 +154,29 @@
       <p>从一个节点，到完整日常。<span>YOUR DAILY. CONNECTED.</span></p>
     </div>
 
+    <!-- ============ 02 PIPELINE ============ -->
+    <section class="pipeline section" id="pipeline" aria-label="编排演示">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <header class="sec-head reveal-block">
+        <span class="sec-head-en" aria-hidden="true">PIPELINE</span>
+        <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>pipeline // node.graph</p>
+        <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 编排演示</span></span></h2>
+        <p class="sec-head-counter">02 / 05</p>
+      </header>
+      <div class="pipe-wrap">
+        <div class="flow-board" id="flowBoard">
+          <div class="flow-topline"><span class="flow-tag">PIPELINE / 325</span><span class="flow-actions"><button class="flow-btn" id="flowAdd" type="button">+ 节点</button><button class="flow-btn" id="flowDel" type="button" disabled>− 节点</button><button class="flow-btn flow-btn-run" id="flowRun" type="button">▶ 运行</button></span><span>DEMO GRAPH</span></div>
+          <div class="flow-stage" id="flowStage">
+            <div class="flow-stage-inner" id="flowStageInner">
+              <svg class="flow-edges-svg" id="flowEdges" width="560" height="400" aria-hidden="true"></svg>
+            </div>
+          </div>
+          <div class="flow-bottomline"><span id="flowStatus">就绪 / 拖拽节点 · 可添加 · 可删除 · 可运行</span><span>EVENT / 799</span></div>
+        </div>
+        <div class="flow-log"><span>SIMULATED EXECUTION</span><p id="flowLog">[06:30:00] pipeline / 325 · ready</p></div>
+      </div>
+    </section>
+
     <!-- ============ 03 FEATURES ============ -->
     <section class="features section" id="features" aria-label="功能介绍">
       <div class="bg-grid" aria-hidden="true"></div>
@@ -169,7 +184,7 @@
         <span class="sec-head-en" aria-hidden="true">FEATURES</span>
         <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>features // module.list</p>
         <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 功能介绍</span></span></h2>
-        <p class="sec-head-counter">02 / 04</p>
+        <p class="sec-head-counter">03 / 05</p>
       </header>
 
       <div class="feat-layout">
@@ -218,7 +233,7 @@
             <span class="sec-head-en" aria-hidden="true">RELEASES</span>
             <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>releases // github.api</p>
             <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 版本发布</span></span></h2>
-            <p class="sec-head-counter">03 / 04</p>
+            <p class="sec-head-counter">04 / 05</p>
           </header>
 
           <div class="releases-stats" id="releasesStats" aria-live="polite"></div>
