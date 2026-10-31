@@ -6,10 +6,10 @@
   <title>MultiGameAssistant — 让 agent 替你管好各个游戏的日常脚本</title>
   <meta name="description" content="MultiGameAssistant（多游戏助手）：通用的游戏脚本管家——任意脚本、任意游戏、任意模型。安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=6145e00096b0">
+  <link rel="stylesheet" href="assets/css/style.css?v=4f2f03ffe840">
   <link rel="stylesheet" href="assets/css/demo.css?v=d27b5e416cbc">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
-  <script src="assets/js/main.js?v=9b8256a18dd8" defer></script>
+  <script src="assets/js/main.js?v=56a6309b113d" defer></script>
   <script src="assets/js/demo.js?v=7fa39360d3c8" defer></script>
 </head>
 <body>
@@ -132,9 +132,9 @@
           <p class="download-hint" id="downloadHint" aria-live="polite">无法识别时默认 Windows x64；可手动切换架构。</p>
         </div>
 
-        <div class="hero-deco" aria-hidden="true">
+        <div class="hero-deco">
           <div class="flow-board" id="flowBoard">
-            <div class="flow-topline"><span><i class="tag-blue"></i>PIPELINE / 325</span><span class="flow-actions"><button class="flow-btn" id="flowAdd" type="button">+ 节点</button><button class="flow-btn flow-btn-run" id="flowRun" type="button">▶ 运行</button></span><span>DEMO GRAPH</span></div>
+            <div class="flow-topline"><span class="flow-tag">PIPELINE / 325</span><span class="flow-actions"><button class="flow-btn" id="flowAdd" type="button">+ 节点</button><button class="flow-btn" id="flowDel" type="button" disabled>− 节点</button><button class="flow-btn flow-btn-run" id="flowRun" type="button">▶ 运行</button></span><span>DEMO GRAPH</span></div>
             <div class="flow-stage" id="flowStage">
               <div class="flow-stage-inner" id="flowStageInner">
                 <svg class="flow-edges-svg" id="flowEdges" width="560" height="400" aria-hidden="true"></svg>
