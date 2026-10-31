@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MultiGameAssistant 多游戏助手 — 让 agent 替你管好各个游戏的日常脚本</title>
-  <meta name="description" content="MultiGameAssistant（多游戏助手）：安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
+  <meta name="description" content="MultiGameAssistant（多游戏助手）：通用的游戏脚本管家——任意脚本、任意游戏、任意模型。安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/main.js" defer></script>
@@ -35,11 +35,11 @@
       <li><a class="rail-item is-active" href="#home" data-section="home" aria-label="首页" data-scramble-label="首页">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 10v9h11v-9"/></svg>
       </a></li>
+      <li><a class="rail-item" href="#highlights" data-section="highlights" aria-label="特色" data-scramble-label="特色">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3.5 14 10l6.5 2L14 14l-2 6.5L10 14l-6.5-2L10 10z"/></svg>
+      </a></li>
       <li><a class="rail-item" href="#features" data-section="features" aria-label="功能介绍" data-scramble-label="功能">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><path d="M13 16.5h7M16.5 13v7"/></svg>
-      </a></li>
-      <li><a class="rail-item" href="#support" data-section="support" aria-label="内置支持" data-scramble-label="支持">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3.5 5 6.5v5c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9v-5l-7-3z"/><path d="M9 11.5l2.2 2.2L15.5 9"/></svg>
       </a></li>
       <li><a class="rail-item" href="#releases" data-section="releases" aria-label="版本发布" data-scramble-label="发布">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v10"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>
@@ -73,8 +73,8 @@
     <div class="mobile-menu-grid" aria-hidden="true"></div>
     <ul class="mobile-menu-list">
       <li><a href="#home"><span class="mm-idx">01</span><span class="mm-zh">首页</span><span class="mm-en">HOME</span></a></li>
-      <li><a href="#features"><span class="mm-idx">02</span><span class="mm-zh">功能介绍</span><span class="mm-en">FEATURES</span></a></li>
-      <li><a href="#support"><span class="mm-idx">03</span><span class="mm-zh">内置支持</span><span class="mm-en">SUPPORT</span></a></li>
+      <li><a href="#highlights"><span class="mm-idx">02</span><span class="mm-zh">特色</span><span class="mm-en">HIGHLIGHTS</span></a></li>
+      <li><a href="#features"><span class="mm-idx">03</span><span class="mm-zh">功能介绍</span><span class="mm-en">FEATURES</span></a></li>
       <li><a href="#releases"><span class="mm-idx">04</span><span class="mm-zh">版本发布</span><span class="mm-en">RELEASES</span></a></li>
       <li><a href="#footer"><span class="mm-idx">05</span><span class="mm-zh">页脚信息</span><span class="mm-en">INFO</span></a></li>
     </ul>
@@ -125,10 +125,12 @@
           </h1>
           <p class="hero-tagline reveal-line">「让 agent 替你管好各个游戏的日常脚本」</p>
           <p class="hero-desc reveal-line">安装脚本、读懂脚本怎么用、把几个游戏的日常排成每天定时自动跑的流水线、盯着运行出的问题并动手处理、查各游戏的活动和你的进度，再通过飞书告诉你结果。</p>
-          <ul class="hero-chips" aria-label="运行环境">
-            <li class="chip">Windows 10 / 11</li>
-            <li class="chip">x64 / ARM64</li>
-            <li class="chip">DeepSeek Harness</li>
+          <p class="hero-desc hero-desc-strong reveal-line">「不绑定某个游戏、某个脚本或某家模型——你用什么，它就管什么。」</p>
+          <ul class="hero-chips" aria-label="特点与运行环境">
+            <li class="chip">任意脚本</li>
+            <li class="chip">任意游戏</li>
+            <li class="chip">任意模型</li>
+            <li class="chip">Windows 10 / 11 · x64 / ARM64</li>
           </ul>
           <div class="hero-ctas">
             <a class="btn btn-primary" id="heroDownload" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" data-scramble-label="下载最新版"><span class="btn-label">下载最新版</span></a>
@@ -139,22 +141,22 @@
         <div class="hero-deco" aria-hidden="true">
           <div class="pipeline-stack" id="pipelineStack">
             <div class="pl-card" data-depth="0.02">
-              <div class="pl-card-head"><span class="pl-dot is-running"></span><span class="pl-name">MAA</span><span class="pl-tag">明日方舟</span></div>
+              <div class="pl-card-head"><span class="pl-dot is-running"></span><span class="pl-name">导入任意脚本</span><span class="pl-tag">ANY SCRIPT</span></div>
               <div class="pl-card-body"><span class="pl-line"></span><span class="pl-line short"></span></div>
             </div>
-            <div class="pl-conn"><i></i><span class="pl-conn-label">NEXT →</span></div>
+            <div class="pl-conn"><i></i><span class="pl-conn-label">ANALYZE →</span></div>
             <div class="pl-card" data-depth="0.035">
-              <div class="pl-card-head"><span class="pl-dot is-running"></span><span class="pl-name">MaaEnd</span><span class="pl-tag">终末地</span></div>
+              <div class="pl-card-head"><span class="pl-dot is-running"></span><span class="pl-name">agent 读懂 · 生成脚本包</span><span class="pl-tag">AI</span></div>
               <div class="pl-card-body"><span class="pl-line"></span><span class="pl-line short"></span></div>
             </div>
-            <div class="pl-conn"><i></i><span class="pl-conn-label">NEXT →</span></div>
+            <div class="pl-conn"><i></i><span class="pl-conn-label">SCHEDULE →</span></div>
             <div class="pl-card" data-depth="0.05">
-              <div class="pl-card-head"><span class="pl-dot is-wait"></span><span class="pl-name">三月七小助手</span><span class="pl-tag">星穹铁道</span></div>
+              <div class="pl-card-head"><span class="pl-dot is-wait"></span><span class="pl-name">每日流水线 · 自动看护</span><span class="pl-tag">定时</span></div>
               <div class="pl-card-body"><span class="pl-line"></span><span class="pl-line short"></span></div>
             </div>
             <div class="pl-conn"><i></i><span class="pl-conn-label">NOTIFY →</span></div>
             <div class="pl-card pl-card-accent" data-depth="0.065">
-              <div class="pl-card-head"><span class="pl-dot is-done"></span><span class="pl-name">飞书通知</span><span class="pl-tag dark">PUSH</span></div>
+              <div class="pl-card-head"><span class="pl-dot is-done"></span><span class="pl-name">飞书汇报</span><span class="pl-tag dark">PUSH</span></div>
               <div class="pl-card-body"><span class="pl-line light"></span></div>
             </div>
           </div>
@@ -162,20 +164,74 @@
         </div>
       </div>
 
-      <a class="hero-scroll" href="#features" aria-label="向下滚动到功能介绍">
+      <a class="hero-scroll" href="#highlights" aria-label="向下滚动到特色">
         <span class="hero-scroll-text">SCROLL</span>
         <span class="hero-scroll-bar" aria-hidden="true"></span>
       </a>
     </section>
 
-    <!-- ============ 02 FEATURES ============ -->
+    <!-- ============ 02 HIGHLIGHTS ============ -->
+    <section class="highlights section" id="highlights" aria-label="特色">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <div class="bg-hatch hl-hatch" aria-hidden="true"></div>
+      <div class="dotpatch hl-dots" aria-hidden="true"></div>
+      <header class="sec-head reveal-block">
+        <span class="sec-head-en" aria-hidden="true">HIGHLIGHTS</span>
+        <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>highlights // why.mga</p>
+        <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 通用，且有自己的办法</span></span></h2>
+        <p class="sec-head-counter">02 / 05</p>
+      </header>
+
+      <div class="hl-grid">
+        <article class="hl-card hl-card-key corner-frame reveal-block">
+          <p class="hl-idx">01</p>
+          <p class="hl-keyword">ANY SCRIPT</p>
+          <h3 class="hl-title">任意脚本</h3>
+          <p class="hl-desc">没见过的脚本也能用：agent 会读它的说明和代码，弄清怎么启动、有哪些任务、配置在哪、日志怎么看，写成「脚本包」，你确认后就像内置脚本一样安装、更新、编排。</p>
+        </article>
+        <article class="hl-card hl-card-key corner-frame reveal-block">
+          <p class="hl-idx">02</p>
+          <p class="hl-keyword">ANY GAME</p>
+          <h3 class="hl-title">任意游戏</h3>
+          <p class="hl-desc">SRA 公共 API 支持的 18 个游戏可直接关注；其他游戏输入名字，agent 会去找它的 Wiki 和官网，自动建好游戏包，活动日历和进度一起管。</p>
+        </article>
+        <article class="hl-card hl-card-key corner-frame reveal-block">
+          <p class="hl-idx">03</p>
+          <p class="hl-keyword">ANY MODEL</p>
+          <h3 class="hl-title">任意模型</h3>
+          <p class="hl-desc">基于 DeepSeek Harness，模型自己选：DeepSeek、Claude、ChatGPT、Gemini、国内各家，或者本机的 Ollama。</p>
+        </article>
+        <article class="hl-card corner-frame reveal-block">
+          <p class="hl-idx">04</p>
+          <p class="hl-keyword">SELF-HEALING</p>
+          <h3 class="hl-title">出了问题自己处理</h3>
+          <p class="hl-desc">出错、卡住、超时先按脚本包里的办法重跑、等待或重启模拟器；还不行就交给 agent 截图看画面、动手排除，再让脚本继续。</p>
+        </article>
+        <article class="hl-card corner-frame reveal-block">
+          <p class="hl-idx">05</p>
+          <p class="hl-keyword">SKILLS</p>
+          <h3 class="hl-title">越用越省</h3>
+          <p class="hl-desc">一件新事做成后可以存成技能，下次照着做、少调用模型；技能库按你关注的游戏和装了的脚本推荐下载。</p>
+        </article>
+        <article class="hl-card corner-frame reveal-block">
+          <p class="hl-idx">06</p>
+          <p class="hl-keyword">NON-INVASIVE</p>
+          <h3 class="hl-title">不改脚本，不动你的设置</h3>
+          <p class="hl-desc">不修改脚本的代码；运行用的是本软件保存的配置副本，你在脚本自己界面里的设置不受影响，权限可以按范围逐项控制。</p>
+        </article>
+      </div>
+
+      <p class="hl-note reveal-block">REMOTE // 飞书里也能直接问「现在什么状态」「把日常跑一下」，和软件里是同一个 agent。</p>
+    </section>
+
+    <!-- ============ 03 FEATURES ============ -->
     <section class="features section" id="features" aria-label="功能介绍">
       <div class="bg-grid" aria-hidden="true"></div>
       <header class="sec-head reveal-block">
         <span class="sec-head-en" aria-hidden="true">FEATURES</span>
         <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>features // module.list</p>
         <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 功能介绍</span></span></h2>
-        <p class="sec-head-counter" id="featureCounter">01 / 06</p>
+        <p class="sec-head-counter">03 / 05</p>
       </header>
 
       <div class="feat-switcher" id="featSwitcher">
@@ -213,6 +269,7 @@
               <div class="feat-panel-titles">
                 <h3 class="feat-panel-zh" id="featPanelZh">脚本</h3>
                 <p class="feat-panel-en" id="featPanelEn">SCRIPTS // MODULE-01</p>
+                <p class="feat-panel-count" id="featureCounter">01 / 06</p>
               </div>
             </div>
             <div class="feat-panel-body" id="featPanelBody"><!-- filled by JS from FEATURE_DATA --></div>
@@ -221,46 +278,7 @@
         </div>
       </div>
 
-      <p class="feat-note reveal-block">脚本本身（MAA、MaaEnd、三月七小助手等）来自各自项目，本软件负责安装、配置、调度和看护，不修改脚本的代码。</p>
-    </section>
-
-    <!-- ============ 03 SUPPORT ============ -->
-    <section class="support section" id="support" aria-label="内置支持">
-      <div class="bg-grid" aria-hidden="true"></div>
-      <div class="bg-hatch support-hatch" aria-hidden="true"></div>
-      <div class="dotpatch support-dots" aria-hidden="true"></div>
-      <header class="sec-head reveal-block">
-        <span class="sec-head-en" aria-hidden="true">SUPPORT</span>
-        <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>support // built-in.scripts</p>
-        <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 内置支持</span></span></h2>
-        <p class="sec-head-counter">03 / 05</p>
-      </header>
-
-      <div class="support-cards">
-        <a class="support-card corner-frame reveal-block" href="https://github.com/MaaAssistantArknights/MaaAssistantArknights" target="_blank" rel="noopener">
-          <p class="support-card-idx">SCRIPT.01</p>
-          <h3 class="support-card-name">MAA</h3>
-          <p class="support-card-sub">明日方舟小助手</p>
-          <p class="support-card-game"><span class="tag-blue" aria-hidden="true"></span>明日方舟</p>
-          <span class="support-card-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="support-card corner-frame reveal-block" href="https://github.com/MaaEnd/MaaEnd" target="_blank" rel="noopener">
-          <p class="support-card-idx">SCRIPT.02</p>
-          <h3 class="support-card-name">MaaEnd</h3>
-          <p class="support-card-sub">Arknights: Endfield</p>
-          <p class="support-card-game"><span class="tag-blue" aria-hidden="true"></span>明日方舟：终末地</p>
-          <span class="support-card-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="support-card corner-frame reveal-block" href="https://github.com/moesnow/March7thAssistant" target="_blank" rel="noopener">
-          <p class="support-card-idx">SCRIPT.03</p>
-          <h3 class="support-card-name">三月七小助手</h3>
-          <p class="support-card-sub">March7thAssistant</p>
-          <p class="support-card-game"><span class="tag-blue" aria-hidden="true"></span>崩坏：星穹铁道</p>
-          <span class="support-card-arrow" aria-hidden="true">↗</span>
-        </a>
-      </div>
-
-      <p class="support-note reveal-block">内置游戏包：明日方舟（PRTS）、明日方舟：终末地（SRA 公共 API）、崩坏：星穹铁道（SRA 公共 API 和 B 站游戏 WIKI）；其他脚本可导入后让 agent 分析，其他游戏可在「更多游戏」里关注。</p>
+      <p class="feat-note reveal-block">脚本本身来自各自的开源项目，本软件负责安装、配置、调度和看护，不修改脚本的代码。</p>
     </section>
 
     <!-- ============ 04 RELEASES ============ -->

@@ -20,7 +20,7 @@ python -m http.server 8080
 
 ## 结构
 
-- `index.html` — 单页：首页 / 功能介绍 / 内置支持 / 版本发布 / 页脚
+- `index.html` — 单页：首页 / 特色 / 功能介绍 / 版本发布 / 页脚
 - `assets/css/style.css` — 全部样式
 - `assets/js/main.js` — 加载动画、滚动动效、功能切换器、GitHub Releases API 渲染
 - `favicon.svg` — 站点图标
