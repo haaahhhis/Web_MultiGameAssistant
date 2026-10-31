@@ -678,7 +678,7 @@
     { id: 'e5', from: 'n2', to: 'n5', when: '结束后' }, { id: 'e6', from: 'n3', to: 'n5', when: '结束后' },
     { id: 'e7', from: 'n5', to: 'n4', when: '结束后' }
   ];
-  var nodeEls = {}, edgeEls = {}, addSeq = 0, running = false;
+  var nodeEls = {}, edgeEls = {}, addSeq = 0, running = false, selectedId = null;
 
   /* inner stage stays 560 logical px wide and is zoomed to the real
      width — layout zoom, not raster scale, so cards stay sharp */
@@ -694,9 +694,43 @@
     return d;
   }
   function nodeOf(id) { for (var i = 0; i < nodes.length; i++) if (nodes[i].id === id) return nodes[i]; }
+  var delBtn = document.getElementById('flowDel');
   function select(id) {
+    selectedId = id;
     nodes.forEach(function (n) { nodeEls[n.id].classList.toggle('selected', n.id === id); });
+    if (delBtn) delBtn.disabled = !id;
   }
+  function removeNode(id) {
+    var n = nodeOf(id);
+    if (!n || running) return;
+    nodes = nodes.filter(function (x) { return x.id !== id; });
+    edges.filter(function (e) { return e.from === id || e.to === id; }).forEach(function (e) {
+      var els = edgeEls[e.id];
+      if (els) { els.base.remove(); els.pulse.remove(); if (els.label) els.label.remove(); }
+      delete edgeEls[e.id];
+    });
+    edges = edges.filter(function (e) { return e.from !== id && e.to !== id; });
+    nodeEls[id].remove();
+    delete nodeEls[id];
+    if (selectedId === id) select(null);
+    paintEdges();
+  }
+  if (delBtn) {
+    delBtn.disabled = true;
+    delBtn.addEventListener('click', function () {
+      if (selectedId) {
+        removeNode(selectedId);
+        statusEl.textContent = '已删除节点 / 连线同步移除';
+      }
+    });
+  }
+  window.addEventListener('keydown', function (ev) {
+    if ((ev.key === 'Delete' || ev.key === 'Backspace') && selectedId && !running
+        && !/INPUT|TEXTAREA/.test(document.activeElement && document.activeElement.tagName || '')) {
+      removeNode(selectedId);
+      statusEl.textContent = '已删除节点 / 连线同步移除';
+    }
+  });
 
   function portPos(n, out) {
     var elNode = nodeEls[n.id];
@@ -790,7 +824,8 @@
     });
   }
 
-  document.getElementById('flowAdd').addEventListener('click', function () {
+  var addBtn = document.getElementById('flowAdd');
+  addBtn.addEventListener('click', function () {
     if (running) return;
     addSeq++;
     var n = {
@@ -799,10 +834,13 @@
       x: 122, y: 60 + (addSeq * 72) % 280
     };
     nodes.push(n);
-    var eIn = { id: 'eu' + addSeq + 'a', from: 't1', to: n.id, when: '成功后' };
-    var eOut = { id: 'eu' + addSeq + 'b', from: n.id, to: 'n5', when: '结束后' };
-    edges.push(eIn); edges.push(eOut);
-    buildNode(n); buildEdge(eIn); buildEdge(eOut);
+    var srcId = nodeOf('t1') ? 't1' : (nodes[0] && nodes[0].id);
+    var dstId = nodeOf('n5') ? 'n5' : (nodeOf('n4') ? 'n4' : null);
+    var eIn = srcId && srcId !== n.id ? { id: 'eu' + addSeq + 'a', from: srcId, to: n.id, when: '成功后' } : null;
+    var eOut = dstId && dstId !== n.id ? { id: 'eu' + addSeq + 'b', from: n.id, to: dstId, when: '结束后' } : null;
+    buildNode(n);
+    if (eIn) { edges.push(eIn); buildEdge(eIn); }
+    if (eOut) { edges.push(eOut); buildEdge(eOut); }
     paintEdges();
     select(n.id);
     statusEl.textContent = '已添加节点 / 拖拽调整位置';
@@ -866,6 +904,7 @@
   window.__mgaFlow = {
     nodeCount: function () { return nodes.length; },
     edgeCount: function () { return edges.length; },
+    remove: removeNode,
     running: function () { return running; },
     state: function (id) { return nodeEls[id] ? nodeEls[id].className : ''; },
     pos: function (id) { var n = nodeOf(id); return n ? { x: n.x, y: n.y } : null; }

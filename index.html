@@ -6,10 +6,10 @@
   <title>MultiGameAssistant — 让 agent 替你管好各个游戏的日常脚本</title>
   <meta name="description" content="MultiGameAssistant（多游戏助手）：通用的游戏脚本管家——任意脚本、任意游戏、任意模型。安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=6145e00096b0">
+  <link rel="stylesheet" href="assets/css/style.css?v=5520e543e64e">
   <link rel="stylesheet" href="assets/css/demo.css?v=d27b5e416cbc">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
-  <script src="assets/js/main.js?v=9b8256a18dd8" defer></script>
+  <script src="assets/js/main.js?v=56a6309b113d" defer></script>
   <script src="assets/js/demo.js?v=7fa39360d3c8" defer></script>
 </head>
 <body>
@@ -104,15 +104,18 @@
 
       <div class="hero-inner">
         <div class="hero-copy">
+          <span class="hero-vbar" aria-hidden="true"><i>MGA — V1 SERIES</i></span>
           <p class="hero-eyebrow reveal-line"><span class="tag-blue" aria-hidden="true"></span>INFO.//DESKTOP AGENT — v1 SERIES</p>
           <h1 class="hero-title">
             <span class="hero-en-line"><span class="hero-en-word"><span class="glyph" style="--d:.00s">M</span><span class="glyph" style="--d:.04s">u</span><span class="glyph" style="--d:.08s">l</span><span class="glyph" style="--d:.12s">t</span><span class="glyph" style="--d:.16s">i</span><span class="glyph" style="--d:.20s">G</span><span class="glyph" style="--d:.24s">a</span><span class="glyph" style="--d:.28s">m</span><span class="glyph" style="--d:.32s">e</span></span></span>
             <span class="hero-en-line hero-en-accent"><span class="hero-en-word"><span class="glyph" style="--d:.38s">A</span><span class="glyph" style="--d:.42s">s</span><span class="glyph" style="--d:.46s">s</span><span class="glyph" style="--d:.50s">i</span><span class="glyph" style="--d:.54s">s</span><span class="glyph" style="--d:.58s">t</span><span class="glyph" style="--d:.62s">a</span><span class="glyph" style="--d:.66s">n</span><span class="glyph" style="--d:.70s">t</span></span></span>
             <span class="hero-title-zh">多游戏助手</span>
           </h1>
+          <p class="hero-meta reveal-line">// 桌面 AGENT · 多游戏日常自动化 <span>DAILY.PIPELINE / 325</span></p>
           <p class="hero-tagline reveal-line">「让 agent 替你管好各个游戏的日常脚本」</p>
           <p class="hero-desc reveal-line">MultiGameAssistant 是一款 Windows 桌面软件，用 AI agent 替你管好各个游戏的自动化脚本：帮你安装和更新脚本、读懂脚本怎么用，把几个游戏的日常排成每天定时自动运行的流水线；运行中出错或卡住，先自己处理，处理不了再由 agent 看画面动手排查；它还会整理各游戏的活动和你的进度，最后通过飞书把结果告诉你。</p>
           <p class="hero-desc hero-desc-strong reveal-line">「不绑定某个游戏、某个脚本或某家模型——你用什么，它就管什么。」</p>
+          <div class="hero-rule" aria-hidden="true"></div>
           <ul class="hero-chips" aria-label="特点与运行环境">
             <li class="chip">任意脚本</li>
             <li class="chip">任意游戏</li>
@@ -132,9 +135,9 @@
           <p class="download-hint" id="downloadHint" aria-live="polite">无法识别时默认 Windows x64；可手动切换架构。</p>
         </div>
 
-        <div class="hero-deco" aria-hidden="true">
+        <div class="hero-deco">
           <div class="flow-board" id="flowBoard">
-            <div class="flow-topline"><span><i class="tag-blue"></i>PIPELINE / 325</span><span class="flow-actions"><button class="flow-btn" id="flowAdd" type="button">+ 节点</button><button class="flow-btn flow-btn-run" id="flowRun" type="button">▶ 运行</button></span><span>DEMO GRAPH</span></div>
+            <div class="flow-topline"><span class="flow-tag">PIPELINE / 325</span><span class="flow-actions"><button class="flow-btn" id="flowAdd" type="button">+ 节点</button><button class="flow-btn" id="flowDel" type="button" disabled>− 节点</button><button class="flow-btn flow-btn-run" id="flowRun" type="button">▶ 运行</button></span><span>DEMO GRAPH</span></div>
             <div class="flow-stage" id="flowStage">
               <div class="flow-stage-inner" id="flowStageInner">
                 <svg class="flow-edges-svg" id="flowEdges" width="560" height="400" aria-hidden="true"></svg>
