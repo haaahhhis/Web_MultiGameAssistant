@@ -1,233 +1,126 @@
-// demo-build/scenarios/director.ts
-// Stage 2: virtual-clock scenario engine driving the REAL UI + fake gateway.
 import { emit, world, resetWorld, lastRun } from '../gateway/fake.ts';
-import type { NotificationMethod } from '@adg/protocol';
+import { clock } from './clock.ts';
 
-type Ctx = { wait: (ms: number) => Promise<void>; click: (q: string) => Promise<void>; type: (q: string, text: string) => Promise<void>; go: (hash: string) => Promise<void>; };
-const post = (type: string, payload: any = {}) => { try { parent.postMessage({ src: 'mga-demo', type, ...payload }, '*'); } catch { } };
-const q = (sel: string) => document.querySelector(sel) as HTMLElement | null;
-const qi = (sel: string) => document.querySelector(sel) as HTMLInputElement | null;
-const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
-
-
-/* visible-element lookup: exact text first, then substring */
-const visible = (e: HTMLElement) => e.offsetParent !== null || getComputedStyle(e).position === 'fixed';
-function find(sel: string): HTMLElement | null {
-  try { const e = q(sel); if (e && visible(e)) return e; } catch { }
-  const all = [...document.querySelectorAll<HTMLElement>('button,[role=button],[role=tab],a,li,[class*=card],[class*=item]')].filter(e => visible(e) && !e.closest('nav.rail'));
-  const txt = (e: HTMLElement) => (e.textContent ?? '').trim();
-  if (sel === '允许本次') return all.find(e => txt(e) === '允许本次') ?? all.find(e => txt(e).includes('允许') && !txt(e).includes('已允许')) ?? null;
-  return all.find(e => txt(e) === sel) ?? all.find(e => txt(e).includes(sel)) ?? null;
+type Step = { kind: 'wait'; ms: number } | { kind: 'go'; hash: string } | { kind: 'click'; target: string } | { kind: 'type'; target: string; text: string } | { kind: 'effect'; run: () => void };
+const wait = (ms: number): Step => ({ kind: 'wait', ms });
+const go = (hash: string): Step => ({ kind: 'go', hash });
+const click = (target: string): Step => ({ kind: 'click', target });
+const type = (target: string, text: string): Step => ({ kind: 'type', target, text });
+const effect = (run: () => void): Step => ({ kind: 'effect', run });
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+let current = -1, total = 0, seeking = false;
+const post = (type: string, payload: object = {}) => parent.postMessage({ src: 'mga-demo', type, idx: current, ...payload }, location.origin);
+const progress = () => post('progress', { frac: total ? Math.min(1, clock.time / total) : 0, elapsed: clock.time });
+const nodeRun = (state: string, detail?: string) => ({ state, runIds: [], attempts: state === 'pending' ? 0 : 1, ...(detail ? { detail } : {}) });
+function runPhase(nodes: Record<string, ReturnType<typeof nodeRun>>, state = 'running') {
+  const run = lastRun.current;
+  if (!run) throw new Error('流水线尚未启动');
+  Object.assign(run, { nodes: { ...run.nodes, ...nodes }, state, ...(state === 'running' ? {} : { endedAt: Date.now() }) });
+  emit('pipelines/run', run);
 }
-/* demo cursor (styles in demo-build/index.html) */
+function incident(resolved: boolean) {
+  const item = world.incidents[0];
+  Object.assign(item, { status: resolved ? 'resolved' : 'open', updatedAt: Date.now(), detail: '画面停在活动公告弹窗',
+    ...(resolved ? { resolution: 'agent 关闭活动公告，脚本已继续' } : {}),
+    steps: resolved ? [...item.steps, { at: Date.now(), action: 'resolve', by: 'agent', ok: true, detail: '关闭公告弹窗，继续执行' }] : item.steps });
+  emit('monitor/incident', item);
+  Object.assign(world.interventions[0], { state: resolved ? 'resolved' : 'running', paused: !resolved,
+    ...(resolved ? { endedAt: Date.now(), resolution: 'resolved', summary: '已关闭公告弹窗，脚本继续执行。' } : {}) });
+  emit('intervene/changed', world.interventions[0]);
+  Object.assign(world.runs[2], { state: 'running' });
+  delete world.runs[2].endedAt;
+  emit('runs/state', world.runs[2]);
+}
+const scenes: Step[][] = [
+  [go('#/p/scripts'), wait(700), click('导入本地项目'), type('#import-path', 'D:\\Scripts\\March7thAssistant'),
+    type('#import-name', '三月七小助手'), click('导入'), wait(900), click('让 AI 总结'), wait(3200)],
+  [go('#/p/pipelines/morning-daily'), wait(1100), click('定时与失败'), wait(2200), click('检查'), wait(1600), click('运行'), wait(700),
+    effect(() => runPhase({ emu: nodeRun('running'), clear: nodeRun('running'), farm: nodeRun('waiting', '等待桌面资源') })), wait(2200),
+    effect(() => runPhase({ emu: nodeRun('succeeded'), clear: nodeRun('succeeded'), farm: nodeRun('running') })), wait(2200),
+    effect(() => runPhase({ farm: nodeRun('succeeded'), done: nodeRun('succeeded') }, 'succeeded')), click('运行记录'), wait(2400)],
+  [go('#/p/runs'), wait(1000), effect(() => incident(false)), wait(2400), click('.incident-title'), wait(2400),
+    effect(() => incident(true)), wait(3000)],
+  [go('#/p/games'), click('刷新全部'), wait(900), click('崩坏：星穹铁道'), wait(3500),
+    click('更多游戏'), wait(600), click('.catalog-grid label:last-child input'), wait(1000), click('更多游戏'), click('鸣潮'), wait(3000)],
+  [go('#/s/s-diag'), wait(2000), click('允许本次'), wait(4200)],
+  [go('#/settings/feishu'), wait(1200), click('重新检查'), wait(9000)],
+];
+const duration = (s: Step) => s.kind === 'wait' ? s.ms : s.kind === 'type' ? 750 + s.text.length * 60 : s.kind === 'effect' ? 0 : 900;
+function find(target: string): HTMLElement | undefined {
+  const visible = (el: HTMLElement) => el.getClientRects().length > 0;
+  try { const el = document.querySelector<HTMLElement>(target); if (el && visible(el)) return el; } catch { /* text target */ }
+  const candidates = [...document.querySelectorAll<HTMLElement>('.main button,.main [role=tab],.main a,.main label'), ...document.querySelectorAll<HTMLElement>('button,[role=tab],a,label')];
+  return candidates.find(el => visible(el) &&
+    ((el.textContent ?? '').trim() === target || [...el.childNodes].filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('').trim() === target));
+}
 const cursor = document.createElement('div');
 cursor.id = 'demo-cursor';
 cursor.innerHTML = '<svg viewBox="0 0 20 20" width="20" height="20"><path d="M4 2l12 8-6 1.5L7 18z" fill="#191919" stroke="#fff" stroke-width="1.2"/></svg>';
-const center = (el: HTMLElement) => { const r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; };
-async function pointAt(el: HTMLElement) {
+function point(el: HTMLElement, instant: boolean) {
+  el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+  if (instant) return;
   if (!cursor.isConnected) document.body.appendChild(cursor);
-  const p = center(el);
-  cursor.classList.add('on');
-  cursor.style.left = p.x + 'px'; cursor.style.top = p.y + 'px';
-  await sleep(600);
+  const rect = el.getBoundingClientRect(); cursor.classList.add('on');
+  cursor.style.left = rect.left + rect.width / 2 + 'px'; cursor.style.top = rect.top + rect.height / 2 + 'px';
 }
-function ripple(el: HTMLElement) {
-  const p = center(el), r = document.createElement('div');
-  r.className = 'demo-ripple'; r.style.left = p.x + 'px'; r.style.top = p.y + 'px';
-  document.body.appendChild(r); setTimeout(() => r.remove(), 700);
+async function execute(step: Step, generation: number, instant: boolean) {
+  const delay = async (ms: number) => { await clock.wait(ms, generation, progress); clock.assert(generation); };
+  await delay(0);
+  if (step.kind === 'effect') { step.run(); return; }
+  if (step.kind === 'wait') { await delay(step.ms); return; }
+  if (step.kind === 'go') { location.hash = step.hash; await sleep(100); clock.assert(generation); await delay(900); return; }
+  let el: HTMLElement | undefined;
+  for (let attempt = 0; attempt < 40; attempt++) {
+    clock.assert(generation); el = find(step.target);
+    if (el && !(el as HTMLButtonElement).disabled) break;
+    await sleep(50);
+  }
+  if (!el || (el as HTMLButtonElement).disabled) throw new Error('找不到演示操作：' + step.target);
+  await delay(0); point(el, instant); await delay(600);
+  if (step.kind === 'click') {
+    el.click(); await sleep(100); clock.assert(generation); await delay(300);
+  } else {
+    if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)) throw new Error('不是输入框：' + step.target);
+    el.focus({ preventScroll: true });
+    const proto = el instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+    const setter = Object.getOwnPropertyDescriptor(proto, 'value')!.set!;
+    setter.call(el, '');
+    for (const char of step.text) { await delay(60); setter.call(el, el.value + char); el.dispatchEvent(new Event('input', { bubbles: true })); }
+    el.dispatchEvent(new Event('change', { bubbles: true })); await delay(150);
+  }
 }
-
-/* virtual clock: every op advances `vt`; seek() runs with zero waits until vt>=target */
-let vt = 0, total = 0, fast = false, pausedFlag = false, token = 0;
-function mkCtx(dry: boolean): Ctx {
-  const my = token;
-  const isDead = () => my !== token;
-  return {
-    wait: async (ms) => {
-      const start = vt;
-      vt += ms;
-      if (dry || fast && vt < seekTo) return;
-      let done = 0, last = performance.now();
-      for (;;) {
-        if (isDead()) throw 'dead';
-        const t = performance.now();
-        if (!pausedFlag) done += t - last;
-        last = t;
-        post('progress', { frac: Math.min(1, (start + Math.min(done, ms)) / total) });
-        if (done >= ms) return;
-        await sleep(50);
-      }
-    },
-    click: async (sel) => {
-      vt += 900;
-      if (dry || (fast && vt < seekTo)) return;
-      if (isDead()) throw 'dead';
-      const el = find(sel);
-      if (!el) { console.warn('[director] missing target: ' + sel); await sleep(900); return; }
-      await pointAt(el);
-      if (isDead()) throw 'dead';
-      ripple(el); el.click(); await sleep(250);
-    },
-    type: async (sel, text) => {
-      vt += 700 + text.length * 60;
-      if (dry || (fast && vt < seekTo)) return;
-      if (isDead()) throw 'dead';
-      const el = qi(sel) ?? qi('textarea') ?? qi('input');
-      if (!el) { console.warn('[director] missing target: ' + sel); return; }
-      await pointAt(el);
-      el.focus();
-      const proto = el instanceof HTMLTextAreaElement ? HTMLTextAreaElement : HTMLInputElement;
-      const setter = Object.getOwnPropertyDescriptor(proto.prototype, 'value')!.set!;
-      for (const ch of text) { if (isDead()) throw 'dead'; setter.call(el, el.value + ch); el.dispatchEvent(new Event('input', { bubbles: true })); await sleep(60); }
-      el.dispatchEvent(new Event('change', { bubbles: true }));
-      await sleep(150);
-    },
-    go: async (hash) => { vt += 900; if (dry || (fast && vt < seekTo)) return; if (isDead()) throw 'dead'; location.hash = hash; await sleep(800); },
-  };
-}
-
-let seekTo = 0;
-type SCEN = { setup: () => Promise<void>; run: (ctx: Ctx) => Promise<void>; };
-const SCEN: SCEN[] = [];
-
-const now = () => Date.now();
-
-/* 1. 脚本 — import DailyHelper via the real import flow, then open it */
-SCEN.push({
-  setup: async () => { resetWorld(); emit('scripts/changed', {}); location.hash = '#/p/scripts'; await sleep(500); },
-  run: async (c) => {
-    await c.go('#/p/scripts');
-    await c.wait(700);
-    await c.click('导入本地项目');
-    await c.wait(300);
-    const field = qi('input[placeholder]'); if (field) field.placeholder = '例如 D:\\Scripts\\DailyHelper';
-    await c.type('input[type=text],input:not([type])', 'D:\\Scripts\\DailyHelper');
-    await c.wait(300);
-    await c.click('导入');
-    await c.wait(1400);
-    await c.click('DailyHelper');
-    await c.wait(900);
-    await c.click('让 AI 总结');
-    await c.wait(3600);
-  },
-});
-
-/* 2. 编排与定时 — 运行 → node states progress → 运行记录 */
-const nodeRun = (state: string, detail?: string) => ({ state, runIds: [], attempts: state === 'pending' ? 0 : 1, ...(detail ? { detail } : {}) });
-function runPhase(nodes: Record<string, any>, state = 'running') {
-  const r = lastRun.current;
-  if (!r) return;
-  r.nodes = { ...r.nodes, ...nodes }; r.state = state;
-  if (state !== 'running') r.endedAt = now();
-  emit('pipelines/run', { ...r } as any);
-}
-SCEN.push({
-  setup: async () => { resetWorld(); location.hash = '#/p/pipelines/morning-daily'; await sleep(600); },
-  run: async (c) => {
-    await c.go('#/p/pipelines/morning-daily');
-    await c.wait(1400);
-    await c.click('运行');
-    await c.wait(900);
-    runPhase({ emu: nodeRun('running'), clear: nodeRun('running'), farm: nodeRun('waiting', '等桌面空出来') });
-    await c.wait(2200);
-    runPhase({ emu: nodeRun('succeeded'), clear: nodeRun('succeeded'), farm: nodeRun('running') });
-    await c.wait(2200);
-    runPhase({ farm: nodeRun('succeeded'), done: nodeRun('succeeded') }, 'succeeded');
-    await c.wait(1200);
-    await c.click('运行记录');
-    await c.wait(2200);
-  },
-});
-
-/* 3. 监控与干预 — log error → incident → intervention → resolved */
-SCEN.push({
-  setup: async () => { location.hash = '#/p/runs'; await sleep(600); },
-  run: async (c) => {
-    await c.go('#/p/runs');
-    await c.wait(900);
-    for (const [i, t] of ['[09:00:02] 材料速刷 第 1 次完成', '[09:00:12] 第 2 次完成', '[09:00:21] 出错：画面停在活动公告弹窗'].entries()) {
-      await c.wait(1400);
-      emit('runs/log' as NotificationMethod, { runId: 'run-3', lines: [{ runId: 'run-3', at: now(), source: 'script', text: t }] } as any);
-      if (i === 2) {
-        await c.wait(600);
-        emit('monitor/incident' as NotificationMethod, { id: 'inc-1', runId: 'run-3', scriptId: 'inspect-daily', scriptName: '每日巡检', taskId: 'farm', taskTitle: '材料速刷', kind: 'error', state: 'open', title: '每日巡检 · 材料速刷：出错', reason: '画面停在活动公告弹窗', severity: 'error', tag: 'error', detail: '画面停在活动公告弹窗', lines: ['[09:00:21] 出错：画面停在活动公告弹窗'], status: 'open', createdAt: now(), updatedAt: now(), screenshot: true, steps: [{ at: now(), action: 'screenshot', by: 'rule', ok: true, detail: '截图已存' }] } as any);
-        await c.wait(1000);
-        emit('intervene/changed' as NotificationMethod, { id: 'iv-1', incidentId: 'inc-1', runId: 'run-3', sessionId: 's-iv', title: '干预：材料速刷', mode: 'act', state: 'running', paused: true, startedAt: now() } as any);
-      }
-    }
-    await c.wait(2000);
-    emit('intervene/changed' as NotificationMethod, { id: 'iv-1', incidentId: 'inc-1', runId: 'run-3', sessionId: 's-iv', title: '干预：材料速刷', mode: 'act', state: 'resolved', paused: false, startedAt: now() - 90000, endedAt: now(), resolution: 'resolved', summary: '画面停在活动公告弹窗，我点右上角关掉它。' } as any);
-    emit('monitor/incident', { id: 'inc-1', runId: 'run-3', scriptId: 'daily-helper', scriptName: '每日巡检', taskId: 'farm', taskTitle: '材料速刷', kind: 'error', severity: 'error', tag: 'error', detail: '画面停在活动公告弹窗', lines: ['[09:00:21] 出错：画面停在活动公告弹窗'], status: 'resolved', resolution: 'agent 关掉了活动公告弹窗，脚本已继续', createdAt: now() - 60000, updatedAt: now(), screenshot: true, steps: [{ at: now() - 50000, action: 'screenshot', by: 'rule', ok: true, detail: '截图已存' }, { at: now() - 40000, action: 'intervene', by: 'rule', ok: true, detail: '交给 agent 处理' }, { at: now() - 5000, action: 'resolve', by: 'agent', ok: true, detail: '画面停在活动公告弹窗，我点右上角关掉它。' }, { at: now(), action: 'notify', by: 'rule', ok: true, detail: '已推送（飞书）' }] } as any);
-    emit('notify/changed', {});
-    await c.wait(2200);
-  },
-});
-
-/* 4. 游戏信息 — open 星轨行动, add 潮汐边境 */
-SCEN.push({
-  setup: async () => { location.hash = '#/p/games'; await sleep(500); },
-  run: async (c) => {
-    await c.go('#/p/games');
-    await c.wait(800);
-    await c.click('星轨行动');
-    await c.wait(1600);
-    await c.go('#/p/games');
-    await c.wait(700);
-    await c.click('更多游戏');
-    await c.wait(900);
-    await c.click('潮汐边境');
-    await c.wait(500);
-    emit('games/changed', { game: 'tides' });
-    await c.wait(2000);
-  },
-});
-
-/* 5. Agent — /诊断 → tool step → approval → reply → skill offer */
-SCEN.push({
-  setup: async () => { resetWorld(); location.hash = '#/chat'; await sleep(400); },
-  run: async (c) => {
-    await c.go('#/s/s-diag');
-    await c.wait(1200);
-    /* the approval already pending in s-diag: respond it */
-    await c.click('允许本次');
-    await c.wait(3800);
-  },
-});
-
-/* 6. 飞书 — settings page; the parent phone mock drives the beat */
-SCEN.push({
-  setup: async () => { location.hash = '#/settings/feishu'; await sleep(500); },
-  run: async (c) => {
-    await c.go('#/settings/feishu');
-    await c.wait(9000); // parent phone: cards → scroll → report
-  },
-});
-
-let current = -1, total2 = 0;
-function onMsg(e: MessageEvent) {
-  const d = (e.data ?? {}) as any;
-  if (d.src !== 'mga-site') return;
-  if (d.type === 'select') play(d.idx ?? 0, d.seek ?? 0);
-  else if (d.type === 'pause') pausedFlag = true;
-  else if (d.type === 'resume') pausedFlag = false;
-  else if (d.type === 'seek') play(current < 0 ? 0 : current, d.frac ?? 0);
-  else if (d.type === 'feishu-continue') emit('runs/state' as NotificationMethod, { ...world.runs[3], state: 'running' } as any);
-}
-async function play(i: number, f = 0) {
-  current = i; token++; vt = 0; fast = f > 0; seekTo = 0;
-  post('state', { idx: i });
-  const dry = mkCtx(true); vt = 0;
-  try { await SCEN[i].run(dry); } catch { }
-  total = vt; vt = 0; seekTo = f * total;
-  await SCEN[i].setup();
-  const ctx = mkCtx(false);
-  try { await SCEN[i].run(ctx); } catch { return; }
-  fast = false;
-  post('progress', { frac: 1 });
-  post('ended', { idx: i });
+async function play(index: number, fraction = 0) {
+  if (!Number.isInteger(index) || !scenes[index] || !Number.isFinite(fraction)) return;
+  current = index; clock.reset(); const generation = clock.generation;
+  const target = Math.max(0, Math.min(1, fraction)); seeking = target > 0;
+  total = scenes[index].reduce((sum, step) => sum + duration(step), 0);
+  clock.seekTo = target * total;
+  cursor.classList.remove('on'); resetWorld(); post('state'); progress();
+  // Unmount the previous page so React's local state cannot leak into a replay.
+  location.hash = '#/chat';
+  try {
+    await sleep(100); clock.assert(generation);
+    const first = scenes[index][0];
+    if (first.kind === 'go') location.hash = first.hash;
+    for (const step of scenes[index]) await execute(step, generation, clock.time < target * total);
+    await clock.wait(0, generation, progress);
+    clock.assert(generation); seeking = false; progress(); post('ended');
+  } catch (error) {
+    if (generation !== clock.generation) return;
+    seeking = false; console.error('[director]', error); post('error', { message: String(error) });
+  }
 }
 export function startDirector() {
-  addEventListener('message', onMsg);
-  post('ready', {});
-  (window as any).__mgaDemo = { select: (i: number) => play(i), seek: (f: number) => play(current < 0 ? 0 : current, f), pause: () => { pausedFlag = true; }, play: () => { pausedFlag = false; }, state: () => ({ current, vt, total, paused: pausedFlag }) };
+  addEventListener('message', e => {
+    if (e.source !== parent || e.origin !== location.origin || e.data?.src !== 'mga-site') return;
+    const d = e.data;
+    if (d.type === 'select') void play(d.idx, d.seek ?? 0);
+    else if (d.type === 'seek') void play(current < 0 ? 0 : current, d.frac);
+    else if (d.type === 'pause') clock.paused = true;
+    else if (d.type === 'resume') clock.paused = false;
+  });
+  post('ready');
+  (window as any).__mgaDemo = { select: play, seek: (f: number) => play(current < 0 ? 0 : current, f),
+    pause: () => { clock.paused = true; }, play: () => { clock.paused = false; },
+    state: () => ({ current, vt: clock.time, total, paused: clock.paused, seeking }) };
 }

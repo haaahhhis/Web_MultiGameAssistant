@@ -38,9 +38,11 @@
   var tabBtns = [], fills = [];
   var pauseBtn = mk('button', 'scen-pause', '❚❚', tabsEl);
   pauseBtn.setAttribute('aria-label', '暂停演示');
-  var paused = { manual: false, auto: false, ready: false, idx: 0 };
+  var paused = { manual: REDUCED, auto: false, ready: false, idx: 0 };
   function syncPause() {
     var p = paused.manual || paused.auto || document.hidden;
+    pauseBtn.textContent = paused.manual ? '▶' : '❚❚';
+    pauseBtn.setAttribute('aria-label', paused.manual ? '播放演示' : '暂停演示');
     send(p ? 'pause' : 'resume');
   }
   pauseBtn.addEventListener('click', function () {
@@ -66,26 +68,31 @@
   /* bridge */
   function send(type, data) {
     if (!paused.ready || !frame.contentWindow) return;
-    frame.contentWindow.postMessage(Object.assign({ src: 'mga-site', type: type }, data || {}), '*');
+    frame.contentWindow.postMessage(Object.assign({ src: 'mga-site', type: type }, data || {}), location.origin);
   }
   function select(i) {
+    if (!Number.isInteger(i) || !SCEN[i]) return;
     paused.idx = i;
-    tabBtns.forEach(function (b, j) { b.classList.toggle('on', j === i); });
+    tabBtns.forEach(function (b, j) { b.classList.toggle('on', j === i); b.setAttribute('aria-selected', String(j === i)); b.tabIndex = j === i ? 0 : -1; });
     var tl = tabBtns[i].getBoundingClientRect().left - tabsEl.getBoundingClientRect().left + tabsEl.scrollLeft;
     tabsEl.scrollTo({ left: Math.max(0, tl - pauseBtn.offsetWidth - 16), behavior: 'smooth' });
     fills.forEach(function (f) { f.style.transform = 'scaleX(0)'; });
     labelEl.textContent = 'DEMO // ' + SCEN[i].en;
     if (window.MGAFeature) window.MGAFeature.set(i);
     phoneShow(i === 5);
-    send('select', { idx: i, seek: REDUCED ? 1 : 0 });
+    send('select', { idx: i });
   }
   window.addEventListener('message', function (e) {
     var d = e.data;
-    if (!d || d.src !== 'mga-demo') return;
+    if (e.source !== frame.contentWindow || e.origin !== location.origin || !d || d.src !== 'mga-demo') return;
     if (d.type === 'ready') { paused.ready = true; select(paused.idx); syncPause(); }
-    else if (d.type === 'progress' && fills[paused.idx]) fills[paused.idx].style.transform = 'scaleX(' + d.frac + ')';
-    else if (d.type === 'ended' && !REDUCED) select((d.idx + 1) % SCEN.length);
-    else if (d.type === 'state') { paused.idx = d.idx; }
+    else if (d.idx !== paused.idx) return;
+    else if (d.type === 'progress' && Number.isFinite(d.frac)) {
+      fills[paused.idx].style.transform = 'scaleX(' + Math.max(0, Math.min(1, d.frac)) + ')';
+      if (paused.idx === 5) phoneRender(d.elapsed || 0);
+    }
+    else if (d.type === 'ended' && !REDUCED && !paused.manual && !paused.auto && !document.hidden) select((d.idx + 1) % SCEN.length);
+    else if (d.type === 'error') { paused.manual = true; syncPause(); labelEl.textContent = 'DEMO // 演示暂时无法播放，请重新选择场景'; }
   });
 
   /* feishu phone mock — dark, code-drawn from the real recording */
@@ -108,35 +115,30 @@
     '<div class="fs-iconsrow"><svg class="fs-ic2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><circle cx="5.8" cy="6.5" r=".9"/><circle cx="10.2" cy="6.5" r=".9"/><path d="M5.5 10.5a3.5 3.5 0 0 0 5 0"/></svg><svg class="fs-ic2" viewBox="0 0 16 16"><text x="4" y="12" font-size="11">@</text></svg><svg class="fs-ic2" viewBox="0 0 16 16"><rect x="6" y="2" width="4" height="9" rx="2"/><path d="M4 8a4 4 0 0 0 8 0M8 12v3"/></svg><svg class="fs-ic2" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1.5"/><circle cx="5.5" cy="6.5" r="1.2"/><path d="M2 11l4-3 3 2 3-3 2 2"/></svg><svg class="fs-ic2" viewBox="0 0 16 16"><text x="2" y="12" font-size="9" font-family="serif">Aa</text></svg><svg class="fs-ic2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v7M4.5 8h7"/></svg><svg class="fs-ic2 send" viewBox="0 0 16 16"><path d="M2 8l12-5-4 5 4 5z" fill="#1aa6f7"/></svg></div>' +
     '</div>';
 var REPORT_LINES = ['主人，今天的日报来啦喵～', '【明日方舟】打捞方案和恒远津梁都只剩 2 天，10/30 03:59 就结束了，其中恒远津梁活动页那份「点击领取」的奖励还没领，记得去点一下喵～2026「感谢庆典」的前瞻签到和特别招募已经在 10/24 21:30 开始了，这两项可以顺手做起来。', '【明日方舟：终末地】「危机筹备」限时活动 10/29 04:00 开始，「百趣演武」挑战活动 10/29 12:00 开始，这两天留意一下就好喵～', '【鸣潮】踏潮探历・玄方地界 10/29 04:00 就开了，别错过喵～'];
-  var phoneTimers = [];
-  function phoneShow(on) {
-    phoneTimers.forEach(clearTimeout); phoneTimers = [];
-    phone.classList.toggle('on', on);
-    var chat = phone.querySelector('#fsChat');
-    if (!on) return;
-    var cw = clipEl.clientWidth, chh = clipEl.clientHeight;
+  function phoneFit() {
     var narrow = window.matchMedia('(max-width: 768px)').matches;
-    phone.style.transform = (narrow ? 'translate(50%, -50%)' : 'translateY(-50%)') + ' scale(' + Math.min((chh - (narrow ? 12 : 36)) / 792, (cw * (narrow ? 0.9 : 0.44)) / 360) + ')';
-    /* reset to start state: later items hidden, scrolled to the 10/26 card */
-    chat.querySelectorAll('.fx').forEach(function (n) { n.classList.remove('in'); });
-    chat.scrollTop = 0;
-    send('feishu-continue');
-    var steps = [
-      [1400, function () { chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' }); }],
-      [2600, function () { chat.querySelectorAll('.fx').forEach(function (n) { n.classList.add('in'); }); }],
-      [3200, function () {
-        var body = document.getElementById('fsReportBody');
-        REPORT_LINES.forEach(function (t, j) {
-          phoneTimers.push(setTimeout(function () { var p = document.createElement('div'); p.textContent = t; p.className = 'fs-rl in'; body.appendChild(p); chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' }); }, j * 450));
-        });
-      }]
-    ];
-    steps.forEach(function (s) { phoneTimers.push(setTimeout(function () { if (paused.idx === 5) s[1](); }, s[0])); });
+    phone.style.transform = (narrow ? 'translate(50%, -50%)' : 'translateY(-50%)') + ' scale(' + Math.min((clipEl.clientHeight - (narrow ? 12 : 36)) / 792, (clipEl.clientWidth * (narrow ? 0.9 : 0.44)) / 360) + ')';
+  }
+  window.addEventListener('resize', phoneFit);
+  function phoneRender(elapsed) {
+    var chat = phone.querySelector('#fsChat'), body = phone.querySelector('#fsReportBody');
+    var count = Math.max(0, Math.min(REPORT_LINES.length, Math.floor((elapsed - 3200) / 450) + 1));
+    chat.querySelectorAll('.fx').forEach(function (n) { n.classList.toggle('in', elapsed >= 2600); });
+    if (body.childElementCount !== count) {
+      body.replaceChildren();
+      REPORT_LINES.slice(0, count).forEach(function (t) { mk('div', 'fs-rl in', t, body); });
+    }
+    chat.scrollTop = elapsed >= 1400 ? chat.scrollHeight : 0;
+  }
+  function phoneShow(on) {
+    phone.classList.toggle('on', on);
+    if (!on) return;
+    phoneFit(); phoneRender(0);
   }
 
   /* lazy iframe src + offscreen/hidden pause */
   var srcSet = false;
-  function ensureSrc() { if (!srcSet) { srcSet = true; frame.src = 'app-demo/index.html'; } }
+  function ensureSrc() { if (!srcSet) { srcSet = true; frame.src = 'app-demo/index.html' + (new URLSearchParams(location.search).has('validate') ? '?validate=1' : ''); } }
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (en) {
       if (en[0].isIntersecting) ensureSrc();
@@ -147,6 +149,7 @@ var REPORT_LINES = ['主人，今天的日报来啦喵～', '【明日方舟】�
   document.addEventListener('visibilitychange', syncPause);
 
   select(0);
+  syncPause();
 
   window.__mgaDemo = {
     select: select,

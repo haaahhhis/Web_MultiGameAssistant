@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const gate = JSON.parse(fs.readFileSync(path.join(here, 'gate.json'), 'utf8'));
+gate.base = process.env.DEMO_GATE_BASE ?? gate.base;
 const shotsDir = process.argv.includes('--shots') ? process.argv[process.argv.indexOf('--shots') + 1] : null;
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
@@ -17,7 +18,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 const req = createRequire(process.env.PW_REQUIRE ?? path.resolve(here, '..', 'package.json'));
 const { chromium } = req('playwright-core');
 
-const b = await chromium.launch({ channel: 'chrome', headless: true, args: ['--no-proxy-server'] });
+const b = await chromium.launch({ ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: 'chrome' }), headless: true, args: ['--no-proxy-server', '--no-sandbox'] });
 let fails = 0;
 for (const u of gate.urls) {
   const p = await b.newPage({ viewport: { width: 1280, height: 800 } });

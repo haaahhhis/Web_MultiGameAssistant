@@ -1,0 +1,841 @@
+{
+  "fetchedAt": 1793445751265,
+  "games": [
+    {
+      "id": "startrail",
+      "sra": "sr",
+      "name": "崩坏：星穹铁道",
+      "scripts": [
+        "march7th"
+      ],
+      "aliases": [],
+      "timezone": "Asia/Shanghai",
+      "builtin": true,
+      "followed": false,
+      "sources": [
+        {
+          "id": "sra",
+          "name": "SRA 公共 API",
+          "homepage": "https://starrailassistant.top/reference/public-api/",
+          "auto": true
+        }
+      ],
+      "version": {
+        "name": "4.6",
+        "title": "月升之前，与兽共舞",
+        "startsAt": 1790564400000,
+        "endsAt": 1794348000000,
+        "cover": "https://i0.hdslb.com/bfs/new_dyn/31af0eb88c8c6dcfab5b7cbc72d67c781340190821.jpg",
+        "source": "sra",
+        "at": 1793445751265
+      },
+      "art": "https://i0.hdslb.com/bfs/new_dyn/31af0eb88c8c6dcfab5b7cbc72d67c781340190821.jpg",
+      "refreshed": {
+        "at": 1793445751265,
+        "ok": true,
+        "count": 13
+      },
+      "pools": []
+    },
+    {
+      "id": "farecho",
+      "sra": "ak",
+      "name": "明日方舟",
+      "scripts": [
+        "maa"
+      ],
+      "aliases": [],
+      "timezone": "Asia/Shanghai",
+      "builtin": true,
+      "followed": false,
+      "sources": [
+        {
+          "id": "sra",
+          "name": "SRA 公共 API",
+          "homepage": "https://starrailassistant.top/reference/public-api/",
+          "auto": true
+        }
+      ],
+      "version": {
+        "name": "2026-11",
+        "title": "2026感谢庆典",
+        "startsAt": 1793505600000,
+        "endsAt": 1795291199000,
+        "cover": "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG",
+        "source": "sra",
+        "at": 1793445751265
+      },
+      "art": "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG",
+      "refreshed": {
+        "at": 1793445751265,
+        "ok": true,
+        "count": 2
+      },
+      "pools": []
+    },
+    {
+      "id": "frostland",
+      "sra": "end",
+      "name": "明日方舟：终末地",
+      "scripts": [
+        "maaend"
+      ],
+      "aliases": [],
+      "timezone": "Asia/Shanghai",
+      "builtin": true,
+      "followed": false,
+      "sources": [
+        {
+          "id": "sra",
+          "name": "SRA 公共 API",
+          "homepage": "https://starrailassistant.top/reference/public-api/",
+          "auto": true
+        }
+      ],
+      "version": {
+        "name": "1.6",
+        "title": "丹青渡",
+        "startsAt": 1792036800000,
+        "endsAt": 1795644000000,
+        "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+        "source": "sra",
+        "at": 1793445751265
+      },
+      "art": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "refreshed": {
+        "at": 1793445751265,
+        "ok": true,
+        "count": 13
+      },
+      "pools": []
+    },
+    {
+      "id": "sra-ww",
+      "sra": "ww",
+      "name": "鸣潮",
+      "scripts": [],
+      "aliases": [],
+      "timezone": "Asia/Shanghai",
+      "builtin": false,
+      "followed": true,
+      "sources": [
+        {
+          "id": "sra",
+          "name": "SRA 公共 API",
+          "homepage": "https://starrailassistant.top/reference/public-api/",
+          "auto": true
+        }
+      ],
+      "version": {
+        "name": "3.7",
+        "title": "镜锁妄世，心照红尘",
+        "startsAt": 1790737200000,
+        "endsAt": 1794340799000,
+        "cover": "https://i0.hdslb.com/bfs/new_dyn/7ae8269b71e9ad214db2ef026d8075ee1955897084.jpg",
+        "source": "sra",
+        "at": 1793445751265
+      },
+      "art": "https://i0.hdslb.com/bfs/new_dyn/7ae8269b71e9ad214db2ef026d8075ee1955897084.jpg",
+      "refreshed": {
+        "at": 1793445751265,
+        "ok": true,
+        "count": 10
+      },
+      "pools": []
+    }
+  ],
+  "activities": [
+    {
+      "id": "startrail/命运契约•再启",
+      "game": "startrail",
+      "name": "命运契约•再启",
+      "startsAt": 1784865600000,
+      "endsAt": 1794348000000,
+      "cover": "https://resource.starrailassistant.top/QQ20260826-100606.png",
+      "description": "活动期间，登录游戏即可免费领取联动限定5星角色「吉尔伽美什（毁灭•雷）」*1或「Archer（巡猎•量子）」*1及其直升60级的养成材料补给。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/爱，幽灵与机器人",
+      "game": "startrail",
+      "name": "爱，幽灵与机器人",
+      "startsAt": 1790564400000,
+      "endsAt": 1794340799000,
+      "cover": "https://i0.hdslb.com/bfs/new_dyn/788b61b7fe4b0ce5cc9954e174e663d21340190821.jpg",
+      "description": "一条废弃机铠管线经由幽灵斯科特改造，竟变成了可为幽灵赋予肉身的「林登™具身机铠」生产线！可这位老友难得做回善事，居然被横空出世的拉克什米绊住了脚，你决定与伙伴们携手，帮他完成考核，从「绯闻女友」手下顺利脱身！参与可获得开拓穿搭-头饰「孤狼墨镜」等奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/镇伏「贪饕」，汇聚愿力",
+      "game": "startrail",
+      "name": "镇伏「贪饕」，汇聚愿力",
+      "startsAt": 1790564400000,
+      "endsAt": 1794347999000,
+      "cover": "https://i0.hdslb.com/bfs/new_dyn/fddc95a299c0be110bdde53510d3cb751340190821.jpg",
+      "description": "击败被「贪饕」侵蚀的敌人，积攒愿力可解锁「潮玩礼券」*18、星琼*500、纪念奖章！还可在对抗「贪饕」侵蚀时获取增益！",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/星际碰碰好搭档！",
+      "game": "startrail",
+      "name": "星际碰碰好搭档！",
+      "startsAt": 1790564400000,
+      "endsAt": 1794347999000,
+      "description": "幻宠乐园开业之际，公司策划了一场「星际碰碰」活动，快与好友组队，一起完成挑战吧！",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/「星际幻宠」乐园：星际潮玩",
+      "game": "startrail",
+      "name": "「星际幻宠」乐园：星际潮玩",
+      "startsAt": 1790564400000,
+      "endsAt": 1794347999000,
+      "cover": "https://i0.hdslb.com/bfs/new_dyn/57273869e4c3c32cc0c65ee6626f28ba1340190821.png@1052w_!web-dynamic.avif",
+      "description": "本期「星际潮玩」幻宠抽取活动中，可获得的幻宠款类包括：珍藏款猫猫狸、珍藏款奇美拉、经典款猫猫狸、经典款奇美拉。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/「星际幻宠」乐园：游园伴手礼",
+      "game": "startrail",
+      "name": "「星际幻宠」乐园：游园伴手礼",
+      "startsAt": 1790564400000,
+      "endsAt": 1794347999000,
+      "cover": "https://i0.hdslb.com/bfs/new_dyn/57273869e4c3c32cc0c65ee6626f28ba1340190821.png@1052w_!web-dynamic.avif",
+      "description": "活动期间，登录游戏即可领取「潮玩礼券」*6，「潮玩礼券」可用于抽取「星际幻宠」。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/巡星之礼",
+      "game": "startrail",
+      "name": "巡星之礼",
+      "startsAt": 1790564400000,
+      "endsAt": 1794347999000,
+      "description": "活动期间，每日登录游戏即可获得签到奖励。完成7日签到累计可领取星轨专票*10！",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/异相仲裁•落叶归根",
+      "game": "startrail",
+      "name": "异相仲裁•落叶归根",
+      "startsAt": 1790564400000,
+      "endsAt": 1794347999000,
+      "cover": "https://i0.hdslb.com/bfs/new_dyn/0869ac215b041b4bbab8197c9c44cef71340190821.jpg",
+      "description": "高难挑战玩法，可获取孤星明尘、干涉密钥、自塑尘脂及限时头像框奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/混沌回忆•来生泅渡",
+      "game": "startrail",
+      "name": "混沌回忆•来生泅渡",
+      "startsAt": 1790564400000,
+      "endsAt": 1793563199000,
+      "description": "我方编队中第一位角色获得欢愉技【极乐漩涡】，可对敌方全体造成100%的角色属性欢愉伤害。每个轮开始时，使阿哈立即获得1个固定计入20笑点的额外回合，该回合不消耗笑点。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/末日幻影•支配遗忘",
+      "game": "startrail",
+      "name": "末日幻影•支配遗忘",
+      "startsAt": 1791144000000,
+      "endsAt": 1794772799000,
+      "cover": "https://i0.hdslb.com/bfs/article/839c3f2ba8ffc2b63b4cd209f8f989041340190821.jpg",
+      "description": "拥有【坚防守备】的敌方目标被弱点击破时，使我方全体目标解除控制状态、行动提前并使阿哈立即获得一个额外回合（本回合固定计入10笑点）。敌方全体目标受到的终结技伤害提高25%，欢愉伤害提高15%。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/虚构叙事•取象为文",
+      "game": "startrail",
+      "name": "虚构叙事•取象为文",
+      "startsAt": 1792353600000,
+      "endsAt": 1795982399000,
+      "cover": "https://i0.hdslb.com/bfs/new_dyn/13e21e998566cef8e41f4ae287c17fc11340190821.jpg",
+      "description": "我方目标为敌方目标施加负面效果时，使我方额外累积1点「战意值」，该效果每个敌方目标最多触发10次。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/星际和平盛典：一镜到底",
+      "game": "startrail",
+      "name": "星际和平盛典：一镜到底",
+      "startsAt": 1792555200000,
+      "endsAt": 1794340799000,
+      "description": "星际和平娱乐倾力打造的大型影视真人秀《星际和平盛典：一镜到底》正式开机。即刻试镜，秀出你的战斗技巧，下一个动作巨星就是你！",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "startrail/混沌回忆•物竞天择",
+      "game": "startrail",
+      "name": "混沌回忆•物竞天择",
+      "startsAt": 1793563200000,
+      "endsAt": 1797191999000,
+      "description": "我方目标施放终结技时获得5个笑点。每个轮开始时，使阿哈立即获得1个固定计入20笑点的额外回合，该回合不消耗笑点。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "farecho/SideStory「时间啊，向前！」限时活动",
+      "game": "farecho",
+      "name": "SideStory「时间啊，向前！」限时活动",
+      "startsAt": 1793505600000,
+      "endsAt": 1795291199000,
+      "cover": "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG",
+      "description": "2026感谢庆典SideStory，活动关卡分段式开启（11-01 12:00 残照终尽 / 11-08 16:00 长冬初青 / 11-15 16:00 世纪之春），通关主线1-10解锁，可通过活动关卡作战、战时新闻委员会、活动任务及活动商店兑换获取奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "farecho/2026感谢庆典·前瞻签到",
+      "game": "farecho",
+      "name": "2026感谢庆典·前瞻签到",
+      "startsAt": 1792848600000,
+      "endsAt": 1793649599000,
+      "description": "活动期间累计活动签到7日可获得活动奖励名片主题【炽烈】。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「烟火生缘」趣味活动",
+      "game": "frostland",
+      "name": "「烟火生缘」趣味活动",
+      "startsAt": 1792036800000,
+      "endsAt": 1795643999000,
+      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "description": "前往「武陵」地区的「祀的画」区域，经营「缘缘庄客栈」，完成相应的经营任务，提升经营里程，即可领取【嵌晶玉】×1000、【存续的痕迹】等奖励。",
+      "kind": "趣味活动",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「万物有灵」签到活动",
+      "game": "frostland",
+      "name": "「万物有灵」签到活动",
+      "startsAt": 1792036800000,
+      "endsAt": 1793851199000,
+      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "description": "累计签到7日，即可获得【万物有灵寻访凭证】×5等奖励。",
+      "kind": "限时签到",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「墨分诸彩」引入活动",
+      "game": "frostland",
+      "name": "「墨分诸彩」引入活动",
+      "startsAt": 1792036800000,
+      "endsAt": 1793851200000,
+      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "description": "前往「武陵」地区的「祀的画」区域完成指定任务，即可领取【嵌晶玉】×1200、【存续的痕迹】活动奖励。",
+      "kind": "引入活动",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「异想赛季」（战争回响）",
+      "game": "frostland",
+      "name": "「异想赛季」（战争回响）",
+      "startsAt": 1792036800000,
+      "endsAt": 1793851199000,
+      "description": "全新赛季「异想赛季」开放，该赛季分为3个轮换周期，每个轮换周期包含3个关卡。「异想赛季」新增3个关卡，完成所有新增关卡的普通难度即可领取【嵌晶玉】×300等奖励。",
+      "kind": "",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「卡莉的芳菲童话」拍照活动",
+      "game": "frostland",
+      "name": "「卡莉的芳菲童话」拍照活动",
+      "startsAt": 1792641600000,
+      "endsAt": 1793822400000,
+      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "description": "完成拍照任务，即可获得【嵌晶玉】×1500、【头像框·卡莉的芳菲集】、【存续的痕迹】等活动奖励。",
+      "kind": "拍照活动",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「丰碑留名·魇林」限时挑战",
+      "game": "frostland",
+      "name": "「丰碑留名·魇林」限时挑战",
+      "startsAt": 1792641600000,
+      "endsAt": 1793822400000,
+      "description": "「深林呓语」系列开放后，将开启「丰碑留名·魇林」限时活动。活动期间在「影拓丰碑」完成对应挑战，即可领取【嵌晶玉】×1200、【高阶培养自选箱Ⅱ】等活动奖励。",
+      "kind": "挑战活动",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「危机筹备」限时活动",
+      "game": "frostland",
+      "name": "「危机筹备」限时活动",
+      "startsAt": 1793217600000,
+      "endsAt": 1793822400000,
+      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "description": "活动期间，每日完成指定任务即可获得【理智消耗许可】【应急理智加强剂】【武陵精锻助剂】及【冷却脂】活动奖励。",
+      "kind": "限时活动",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「百趣演武」挑战活动",
+      "game": "frostland",
+      "name": "「百趣演武」挑战活动",
+      "startsAt": 1793246400000,
+      "endsAt": 1795032000000,
+      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "description": "活动期间挑战「百趣演武」，获取演武积分，达到演武历程中的全部档位，即可获得【嵌晶玉】×1200、【存续的痕迹】等活动奖励。",
+      "kind": "挑战活动",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「归野」叙事活动",
+      "game": "frostland",
+      "name": "「归野」叙事活动",
+      "startsAt": 1793851200000,
+      "endsAt": 1795643999000,
+      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "description": "完成支线任务「归野」，可获得【嵌晶玉】×600、【初级认知载体】等奖励。",
+      "kind": "叙事活动",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「星河共我」签到活动",
+      "game": "frostland",
+      "name": "「星河共我」签到活动",
+      "startsAt": 1793851200000,
+      "endsAt": 1795643999000,
+      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "description": "累计签到7日，即可获得【星河共我寻访凭证】×5等奖励。",
+      "kind": "限时签到",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「危机合约 浸蓝测试作战」挑战活动",
+      "game": "frostland",
+      "name": "「危机合约 浸蓝测试作战」挑战活动",
+      "startsAt": 1793851200000,
+      "endsAt": 1795643999000,
+      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
+      "description": "活动期间，通过自由选择指标组合完成战斗挑战，达成活动任务目标可获得【头像·白刃的奖章】【头像框·危机响应】及【晶化硬币·浸蓝】奖励。消耗【晶化硬币·浸蓝】可在「机密圣所」中兑换【嵌晶玉】×2000、【贴纸·除危记号】【高阶培养自选箱Ⅱ】等丰富奖励。",
+      "kind": "挑战活动",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「狂热赛季」（战争回响）",
+      "game": "frostland",
+      "name": "「狂热赛季」（战争回响）",
+      "startsAt": 1793851200000,
+      "endsAt": 1795643999000,
+      "description": "全新赛季「狂热赛季」开放，该赛季分为3个轮换周期，每个轮换周期包含3个关卡。「狂热赛季」新增3个关卡，完成所有新增关卡的普通难度即可领取【嵌晶玉】×300等奖励。",
+      "kind": "",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "frostland/「理智补给」限时活动",
+      "game": "frostland",
+      "name": "「理智补给」限时活动",
+      "startsAt": 1795032000000,
+      "endsAt": 1795636800000,
+      "description": "活动期间，每日完成指定任务即可领取理智补给奖励【理智消耗许可】及【应急理智加强剂】。",
+      "kind": "限时活动",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/团团勇者大乱斗",
+      "game": "sra-ww",
+      "name": "团团勇者大乱斗",
+      "startsAt": 1790737200000,
+      "endsAt": 1794369599000,
+      "cover": "https://prod-alicdn-community.kurobbs.com/forum/a0a092469e454228b330bf3a612a996620260929.jpg",
+      "description": "休闲活动。在安可的帮助下，第二索拉搭建了用于团团勇者乱斗的羊咩舞台。在舞台之上，团团勇者们要利用神奇的魔法道具，展开一场激烈的乱斗！",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/梦构匣中",
+      "game": "sra-ww",
+      "name": "梦构匣中",
+      "startsAt": 1790737200000,
+      "endsAt": 1794340799000,
+      "cover": "https://prod-alicdn-community.kurobbs.com/forum/84fbb8196ba44ac5936a2e25d43201ab20260929.jpg",
+      "description": "区域探索活动。梦州的山河林野与亭台楼阁于此交汇，跨越时间相连的梦州人在此栖居生息。此处，便是梦枢天罗。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/朝月赠礼",
+      "game": "sra-ww",
+      "name": "朝月赠礼",
+      "startsAt": 1790737200000,
+      "endsAt": 1794340799000,
+      "cover": "https://prod-alicdn-community.kurobbs.com/forum/a7e8939deddb4fb48dc94e5445587bc120260929.jpg",
+      "description": "七日签到活动。活动开启期间，每日登录游戏，即可前往活动界面领取对应天数的签到奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/凝月辉途",
+      "game": "sra-ww",
+      "name": "凝月辉途",
+      "startsAt": 1790737200000,
+      "endsAt": 1794340799000,
+      "description": "活动期间内，累计获得「月影溯环」可解锁全新奖励：饰品「心-何处梦清辉」、「漂泊者-布是偶」、羁旅印章「布是偶」、头像「推布布」、科考摩托饰品「心团子」、藏品「云山藏景座」等奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/3.7索拉里斯回归邀约",
+      "game": "sra-ww",
+      "name": "3.7索拉里斯回归邀约",
+      "startsAt": 1790737200000,
+      "endsAt": 1794412799000,
+      "cover": "https://prod-alicdn-community.kurobbs.com/forum/e3370c63bd9c423eb62469633a08ec9e20260929.jpg",
+      "description": "漂泊者可通过分享个人专属邀请码，邀约同服务器内的「回归漂泊者」参与回归活动（至多3名），并通过完成游戏内特定行为来获得“心狐灵签”兑换奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/朝月鱼涌",
+      "game": "sra-ww",
+      "name": "朝月鱼涌",
+      "startsAt": 1792029600000,
+      "endsAt": 1793498399000,
+      "cover": "https://prod-alicdn-community.kurobbs.com/forum/dc5d783579a148c985a1b543f9635de220260929.jpg",
+      "description": "活动期间，漂泊者可通过挑战活动关卡、完成活动任务，获取星声、贝币、高级密音筒等游戏内道具奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/无音消除",
+      "game": "sra-ww",
+      "name": "无音消除",
+      "startsAt": 1792634400000,
+      "endsAt": 1794167999000,
+      "cover": "https://prod-alicdn-community.kurobbs.com/forum/5dfc63bb31db4cf7b833c75df7ba936220260929.jpg",
+      "description": "休闲活动。第二索拉最新出品的旗舰项目，快来体验手指点点消除声骸棋子的乐趣吧！",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/凭栏听雨之礼",
+      "game": "sra-ww",
+      "name": "凭栏听雨之礼",
+      "startsAt": 1792634400000,
+      "endsAt": 1794340799000,
+      "cover": "https://prod-alicdn-community.kurobbs.com/forum/e13386b0b33c4a67addb79d0dcdc5a9920260929.jpg",
+      "description": "限时签到活动。每天服务器时间04:00登录游戏即可累计1次登录天数，累计登录天数达到指定要求后，即可领取对应的累计签到奖励（累计登录1天：浮金波纹*5、特级调谐器*100；累计登录3天：浮金波纹*5、结晶溶剂*5）。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/踏潮探历・玄方地界",
+      "game": "sra-ww",
+      "name": "踏潮探历・玄方地界",
+      "startsAt": 1793217600000,
+      "endsAt": 1794340799000,
+      "cover": "https://prod-alicdn-community.kurobbs.com/forum/73f7a0f205444bbc81876adc387f34c320260929.jpg",
+      "description": "限时探索委托活动。活动期间，每天通过完成活动目标，可获得一定数目的【探历札记】。每次消耗一枚【探历札记】，可在活动中随机获赠一份补给奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    },
+    {
+      "id": "sra-ww/声弦涤荡",
+      "game": "sra-ww",
+      "name": "声弦涤荡",
+      "startsAt": 1793736000000,
+      "endsAt": 1794340799000,
+      "cover": "https://i0.hdslb.com/bfs/new_dyn/d28121ede1d524963a69bd0687731d3a1955897084.jpg",
+      "description": "完成「无音清剿」挑战时，可消耗【结晶波片】获取双倍奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793445751265
+      }
+    }
+  ],
+  "images": {
+    "https://i0.hdslb.com/bfs/new_dyn/31af0eb88c8c6dcfab5b7cbc72d67c781340190821.jpg": {
+      "path": "data/demo-images/79f242fdb17c96aae559.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://i0.hdslb.com/bfs/new_dyn/7ae8269b71e9ad214db2ef026d8075ee1955897084.jpg": {
+      "path": "data/demo-images/633764686b25bfea16ac.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://resource.starrailassistant.top/QQ20260826-100606.png": {
+      "path": "data/demo-images/19570a80f551f3873d39.png",
+      "mediaType": "image/png"
+    },
+    "https://i0.hdslb.com/bfs/new_dyn/788b61b7fe4b0ce5cc9954e174e663d21340190821.jpg": {
+      "path": "data/demo-images/76e3ed15531654267fbf.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://i0.hdslb.com/bfs/new_dyn/fddc95a299c0be110bdde53510d3cb751340190821.jpg": {
+      "path": "data/demo-images/20dafd9bd47df2e79490.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://i0.hdslb.com/bfs/new_dyn/57273869e4c3c32cc0c65ee6626f28ba1340190821.png@1052w_!web-dynamic.avif": {
+      "path": "data/demo-images/4e583b372f5a3129be16.avif",
+      "mediaType": "image/avif"
+    },
+    "https://i0.hdslb.com/bfs/new_dyn/0869ac215b041b4bbab8197c9c44cef71340190821.jpg": {
+      "path": "data/demo-images/fb2d5f384373036eaa2c.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://i0.hdslb.com/bfs/article/839c3f2ba8ffc2b63b4cd209f8f989041340190821.jpg": {
+      "path": "data/demo-images/5d1e42740b04d2678942.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://i0.hdslb.com/bfs/new_dyn/13e21e998566cef8e41f4ae287c17fc11340190821.jpg": {
+      "path": "data/demo-images/7320b646ae929ca78e0b.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://prod-alicdn-community.kurobbs.com/forum/a0a092469e454228b330bf3a612a996620260929.jpg": {
+      "path": "data/demo-images/919509909e22d7c5932b.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://prod-alicdn-community.kurobbs.com/forum/84fbb8196ba44ac5936a2e25d43201ab20260929.jpg": {
+      "path": "data/demo-images/931687e8c55da6fde2c2.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://prod-alicdn-community.kurobbs.com/forum/a7e8939deddb4fb48dc94e5445587bc120260929.jpg": {
+      "path": "data/demo-images/b57ced77cd54ad3f0a05.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://prod-alicdn-community.kurobbs.com/forum/e3370c63bd9c423eb62469633a08ec9e20260929.jpg": {
+      "path": "data/demo-images/3ad6f4ba76ba34c50a58.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://prod-alicdn-community.kurobbs.com/forum/dc5d783579a148c985a1b543f9635de220260929.jpg": {
+      "path": "data/demo-images/f0c78b0d883568a2f8b4.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://prod-alicdn-community.kurobbs.com/forum/5dfc63bb31db4cf7b833c75df7ba936220260929.jpg": {
+      "path": "data/demo-images/0c51b60f782d8f77459c.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://prod-alicdn-community.kurobbs.com/forum/e13386b0b33c4a67addb79d0dcdc5a9920260929.jpg": {
+      "path": "data/demo-images/45066cb00f6e7c1bb8ca.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://prod-alicdn-community.kurobbs.com/forum/73f7a0f205444bbc81876adc387f34c320260929.jpg": {
+      "path": "data/demo-images/5e8b29c01e663c21627c.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://i0.hdslb.com/bfs/new_dyn/d28121ede1d524963a69bd0687731d3a1955897084.jpg": {
+      "path": "data/demo-images/7d867786473e348e9b47.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG": {
+      "path": "data/demo-images/45338bc35cb1f077c2ac.jpeg",
+      "mediaType": "image/jpeg"
+    },
+    "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg": {
+      "path": "data/demo-images/bbaac9f48ccd0e6468b7.jpeg",
+      "mediaType": "image/jpeg"
+    }
+  }
+}
