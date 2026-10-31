@@ -12,7 +12,6 @@ const games = [
   { id: 'startrail', sra: 'sr', name: '崩坏：星穹铁道', scripts: ['march7th'] },
   { id: 'farecho', sra: 'ak', name: '明日方舟', scripts: ['maa'] },
   { id: 'frostland', sra: 'end', name: '明日方舟：终末地', scripts: ['maaend'] },
-  { id: 'sra-ww', sra: 'ww', name: '鸣潮', scripts: [] },
 ];
 const at = Date.now();
 const date = value => {
@@ -40,7 +39,7 @@ for (const game of games) {
       description: typeof a.description === 'string' ? a.description.slice(0, 300) : undefined,
       kind: a.kind, todo: [], done: [], site: { source: 'sra', name: 'SRA 公共 API', at },
     }));
-    snapshot.games.push({ ...game, aliases: [], timezone: 'Asia/Shanghai', builtin: game.sra !== 'ww', followed: game.sra === 'ww',
+    snapshot.games.push({ ...game, aliases: [], timezone: 'Asia/Shanghai', builtin: true, followed: false,
       sources: [{ id: 'sra', name: 'SRA 公共 API', homepage: 'https://starrailassistant.top/reference/public-api/', auto: true }],
       version: typeof body.version === 'string' ? { name: body.version, title: body.versionName, ...dates(body), cover: cover(body.cover), source: 'sra', at } : undefined,
       art: cover(body.cover), refreshed: { at, ok: true, count: activities.length },

@@ -1,5 +1,5 @@
 {
-  "fetchedAt": 1793445751265,
+  "fetchedAt": 1793449295919,
   "games": [
     {
       "id": "startrail",
@@ -27,11 +27,11 @@
         "endsAt": 1794348000000,
         "cover": "https://i0.hdslb.com/bfs/new_dyn/31af0eb88c8c6dcfab5b7cbc72d67c781340190821.jpg",
         "source": "sra",
-        "at": 1793445751265
+        "at": 1793449295919
       },
       "art": "https://i0.hdslb.com/bfs/new_dyn/31af0eb88c8c6dcfab5b7cbc72d67c781340190821.jpg",
       "refreshed": {
-        "at": 1793445751265,
+        "at": 1793449295919,
         "ok": true,
         "count": 13
       },
@@ -63,11 +63,11 @@
         "endsAt": 1795291199000,
         "cover": "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG",
         "source": "sra",
-        "at": 1793445751265
+        "at": 1793449295919
       },
       "art": "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG",
       "refreshed": {
-        "at": 1793445751265,
+        "at": 1793449295919,
         "ok": true,
         "count": 2
       },
@@ -99,47 +99,13 @@
         "endsAt": 1795644000000,
         "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
         "source": "sra",
-        "at": 1793445751265
+        "at": 1793449295919
       },
       "art": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
       "refreshed": {
-        "at": 1793445751265,
+        "at": 1793449295919,
         "ok": true,
         "count": 13
-      },
-      "pools": []
-    },
-    {
-      "id": "sra-ww",
-      "sra": "ww",
-      "name": "鸣潮",
-      "scripts": [],
-      "aliases": [],
-      "timezone": "Asia/Shanghai",
-      "builtin": false,
-      "followed": true,
-      "sources": [
-        {
-          "id": "sra",
-          "name": "SRA 公共 API",
-          "homepage": "https://starrailassistant.top/reference/public-api/",
-          "auto": true
-        }
-      ],
-      "version": {
-        "name": "3.7",
-        "title": "镜锁妄世，心照红尘",
-        "startsAt": 1790737200000,
-        "endsAt": 1794340799000,
-        "cover": "https://i0.hdslb.com/bfs/new_dyn/7ae8269b71e9ad214db2ef026d8075ee1955897084.jpg",
-        "source": "sra",
-        "at": 1793445751265
-      },
-      "art": "https://i0.hdslb.com/bfs/new_dyn/7ae8269b71e9ad214db2ef026d8075ee1955897084.jpg",
-      "refreshed": {
-        "at": 1793445751265,
-        "ok": true,
-        "count": 10
       },
       "pools": []
     }
@@ -158,7 +124,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -174,7 +140,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -190,7 +156,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -205,7 +171,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -221,7 +187,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -237,7 +203,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -252,7 +218,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -268,7 +234,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -283,7 +249,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -299,7 +265,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -315,7 +281,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -330,7 +296,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -345,7 +311,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -361,7 +327,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -376,7 +342,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -393,7 +359,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -410,7 +376,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -427,7 +393,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -443,7 +409,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -460,7 +426,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -476,7 +442,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -493,7 +459,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -510,7 +476,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -527,7 +493,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -544,7 +510,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -561,7 +527,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -577,7 +543,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     },
     {
@@ -593,176 +559,13 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/团团勇者大乱斗",
-      "game": "sra-ww",
-      "name": "团团勇者大乱斗",
-      "startsAt": 1790737200000,
-      "endsAt": 1794369599000,
-      "cover": "https://prod-alicdn-community.kurobbs.com/forum/a0a092469e454228b330bf3a612a996620260929.jpg",
-      "description": "休闲活动。在安可的帮助下，第二索拉搭建了用于团团勇者乱斗的羊咩舞台。在舞台之上，团团勇者们要利用神奇的魔法道具，展开一场激烈的乱斗！",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/梦构匣中",
-      "game": "sra-ww",
-      "name": "梦构匣中",
-      "startsAt": 1790737200000,
-      "endsAt": 1794340799000,
-      "cover": "https://prod-alicdn-community.kurobbs.com/forum/84fbb8196ba44ac5936a2e25d43201ab20260929.jpg",
-      "description": "区域探索活动。梦州的山河林野与亭台楼阁于此交汇，跨越时间相连的梦州人在此栖居生息。此处，便是梦枢天罗。",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/朝月赠礼",
-      "game": "sra-ww",
-      "name": "朝月赠礼",
-      "startsAt": 1790737200000,
-      "endsAt": 1794340799000,
-      "cover": "https://prod-alicdn-community.kurobbs.com/forum/a7e8939deddb4fb48dc94e5445587bc120260929.jpg",
-      "description": "七日签到活动。活动开启期间，每日登录游戏，即可前往活动界面领取对应天数的签到奖励。",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/凝月辉途",
-      "game": "sra-ww",
-      "name": "凝月辉途",
-      "startsAt": 1790737200000,
-      "endsAt": 1794340799000,
-      "description": "活动期间内，累计获得「月影溯环」可解锁全新奖励：饰品「心-何处梦清辉」、「漂泊者-布是偶」、羁旅印章「布是偶」、头像「推布布」、科考摩托饰品「心团子」、藏品「云山藏景座」等奖励。",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/3.7索拉里斯回归邀约",
-      "game": "sra-ww",
-      "name": "3.7索拉里斯回归邀约",
-      "startsAt": 1790737200000,
-      "endsAt": 1794412799000,
-      "cover": "https://prod-alicdn-community.kurobbs.com/forum/e3370c63bd9c423eb62469633a08ec9e20260929.jpg",
-      "description": "漂泊者可通过分享个人专属邀请码，邀约同服务器内的「回归漂泊者」参与回归活动（至多3名），并通过完成游戏内特定行为来获得“心狐灵签”兑换奖励。",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/朝月鱼涌",
-      "game": "sra-ww",
-      "name": "朝月鱼涌",
-      "startsAt": 1792029600000,
-      "endsAt": 1793498399000,
-      "cover": "https://prod-alicdn-community.kurobbs.com/forum/dc5d783579a148c985a1b543f9635de220260929.jpg",
-      "description": "活动期间，漂泊者可通过挑战活动关卡、完成活动任务，获取星声、贝币、高级密音筒等游戏内道具奖励。",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/无音消除",
-      "game": "sra-ww",
-      "name": "无音消除",
-      "startsAt": 1792634400000,
-      "endsAt": 1794167999000,
-      "cover": "https://prod-alicdn-community.kurobbs.com/forum/5dfc63bb31db4cf7b833c75df7ba936220260929.jpg",
-      "description": "休闲活动。第二索拉最新出品的旗舰项目，快来体验手指点点消除声骸棋子的乐趣吧！",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/凭栏听雨之礼",
-      "game": "sra-ww",
-      "name": "凭栏听雨之礼",
-      "startsAt": 1792634400000,
-      "endsAt": 1794340799000,
-      "cover": "https://prod-alicdn-community.kurobbs.com/forum/e13386b0b33c4a67addb79d0dcdc5a9920260929.jpg",
-      "description": "限时签到活动。每天服务器时间04:00登录游戏即可累计1次登录天数，累计登录天数达到指定要求后，即可领取对应的累计签到奖励（累计登录1天：浮金波纹*5、特级调谐器*100；累计登录3天：浮金波纹*5、结晶溶剂*5）。",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/踏潮探历・玄方地界",
-      "game": "sra-ww",
-      "name": "踏潮探历・玄方地界",
-      "startsAt": 1793217600000,
-      "endsAt": 1794340799000,
-      "cover": "https://prod-alicdn-community.kurobbs.com/forum/73f7a0f205444bbc81876adc387f34c320260929.jpg",
-      "description": "限时探索委托活动。活动期间，每天通过完成活动目标，可获得一定数目的【探历札记】。每次消耗一枚【探历札记】，可在活动中随机获赠一份补给奖励。",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
-      }
-    },
-    {
-      "id": "sra-ww/声弦涤荡",
-      "game": "sra-ww",
-      "name": "声弦涤荡",
-      "startsAt": 1793736000000,
-      "endsAt": 1794340799000,
-      "cover": "https://i0.hdslb.com/bfs/new_dyn/d28121ede1d524963a69bd0687731d3a1955897084.jpg",
-      "description": "完成「无音清剿」挑战时，可消耗【结晶波片】获取双倍奖励。",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793445751265
+        "at": 1793449295919
       }
     }
   ],
   "images": {
     "https://i0.hdslb.com/bfs/new_dyn/31af0eb88c8c6dcfab5b7cbc72d67c781340190821.jpg": {
       "path": "data/demo-images/79f242fdb17c96aae559.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://i0.hdslb.com/bfs/new_dyn/7ae8269b71e9ad214db2ef026d8075ee1955897084.jpg": {
-      "path": "data/demo-images/633764686b25bfea16ac.jpeg",
       "mediaType": "image/jpeg"
     },
     "https://resource.starrailassistant.top/QQ20260826-100606.png": {
@@ -791,42 +594,6 @@
     },
     "https://i0.hdslb.com/bfs/new_dyn/13e21e998566cef8e41f4ae287c17fc11340190821.jpg": {
       "path": "data/demo-images/7320b646ae929ca78e0b.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://prod-alicdn-community.kurobbs.com/forum/a0a092469e454228b330bf3a612a996620260929.jpg": {
-      "path": "data/demo-images/919509909e22d7c5932b.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://prod-alicdn-community.kurobbs.com/forum/84fbb8196ba44ac5936a2e25d43201ab20260929.jpg": {
-      "path": "data/demo-images/931687e8c55da6fde2c2.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://prod-alicdn-community.kurobbs.com/forum/a7e8939deddb4fb48dc94e5445587bc120260929.jpg": {
-      "path": "data/demo-images/b57ced77cd54ad3f0a05.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://prod-alicdn-community.kurobbs.com/forum/e3370c63bd9c423eb62469633a08ec9e20260929.jpg": {
-      "path": "data/demo-images/3ad6f4ba76ba34c50a58.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://prod-alicdn-community.kurobbs.com/forum/dc5d783579a148c985a1b543f9635de220260929.jpg": {
-      "path": "data/demo-images/f0c78b0d883568a2f8b4.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://prod-alicdn-community.kurobbs.com/forum/5dfc63bb31db4cf7b833c75df7ba936220260929.jpg": {
-      "path": "data/demo-images/0c51b60f782d8f77459c.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://prod-alicdn-community.kurobbs.com/forum/e13386b0b33c4a67addb79d0dcdc5a9920260929.jpg": {
-      "path": "data/demo-images/45066cb00f6e7c1bb8ca.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://prod-alicdn-community.kurobbs.com/forum/73f7a0f205444bbc81876adc387f34c320260929.jpg": {
-      "path": "data/demo-images/5e8b29c01e663c21627c.jpeg",
-      "mediaType": "image/jpeg"
-    },
-    "https://i0.hdslb.com/bfs/new_dyn/d28121ede1d524963a69bd0687731d3a1955897084.jpg": {
-      "path": "data/demo-images/7d867786473e348e9b47.jpeg",
       "mediaType": "image/jpeg"
     },
     "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG": {
