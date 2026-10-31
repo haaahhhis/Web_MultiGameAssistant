@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MultiGameAssistant 多游戏助手 — 让 agent 替你管好各个游戏的日常脚本</title>
+  <meta name="description" content="MultiGameAssistant（多游戏助手）：安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+
+  <!-- ============ LOADER ============ -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <p class="loader-tagline">OVER THE DAILY<span class="loader-slash"> / </span>INTO THE AUTOMATION</p>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar" id="loaderBar"></div>
+      </div>
+      <div class="loader-meta">
+        <span class="loader-status" id="loaderStatus">Updating...</span>
+        <span class="loader-pct" id="loaderPct">0%</span>
+      </div>
+    </div>
+    <div class="loader-wipe" aria-hidden="true"></div>
+  </div>
+
+  <!-- ============ LEFT RAIL (desktop) ============ -->
+  <nav class="rail" aria-label="页面导航">
+    <a class="rail-logo" href="#home" aria-label="MultiGameAssistant 首页">
+      <span class="rail-logo-text">M<br>G<br>A</span>
+    </a>
+    <ul class="rail-list">
+      <li><a class="rail-item is-active" href="#home" data-section="home" aria-label="首页" data-scramble-label="首页">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 10v9h11v-9"/></svg>
+      </a></li>
+      <li><a class="rail-item" href="#features" data-section="features" aria-label="功能介绍" data-scramble-label="功能">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><path d="M13 16.5h7M16.5 13v7"/></svg>
+      </a></li>
+      <li><a class="rail-item" href="#support" data-section="support" aria-label="内置支持" data-scramble-label="支持">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3.5 5 6.5v5c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9v-5l-7-3z"/><path d="M9 11.5l2.2 2.2L15.5 9"/></svg>
+      </a></li>
+      <li><a class="rail-item" href="#releases" data-section="releases" aria-label="版本发布" data-scramble-label="发布">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v10"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>
+      </a></li>
+      <li><a class="rail-item" href="#footer" data-section="footer" aria-label="页脚信息" data-scramble-label="信息">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 10.8v5"/><circle cx="12" cy="7.6" r=".4" fill="currentColor"/></svg>
+      </a></li>
+    </ul>
+    <div class="rail-bottom">
+      <a class="rail-dl" id="railDownload" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" aria-label="下载最新版">
+        <span class="rail-dl-mark" aria-hidden="true"></span>
+        <span class="rail-dl-text">下<br>载</span>
+      </a>
+      <a class="rail-gh" href="https://github.com/haaahhhis/MultiGameAssistant" target="_blank" rel="noopener" aria-label="GitHub 仓库">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5A9.5 9.5 0 0 0 2.5 12c0 4.2 2.7 7.7 6.5 9 .5.1.6-.2.6-.5v-1.7c-2.6.6-3.2-1.2-3.2-1.2-.4-1.1-1-1.4-1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.1-.2-4.3-1-4.3-4.6 0-1 .4-1.9 1-2.5-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.6 1a9 9 0 0 1 4.7 0c1.8-1.3 2.6-1 2.6-1 .5 1.3.2 2.3.1 2.6.6.6 1 1.5 1 2.5 0 3.6-2.2 4.4-4.3 4.6.3.3.6.9.6 1.8V20c0 .3.2.6.7.5a9.5 9.5 0 0 0 6.5-9A9.5 9.5 0 0 0 12 2.5z"/></svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ============ TOP BAR (mobile) ============ -->
+  <header class="topbar">
+    <a class="topbar-logo" href="#home" aria-label="MultiGameAssistant 首页">
+      <span class="topbar-logo-box" aria-hidden="true">MGA</span>
+      <span class="topbar-logo-name">多游戏助手</span>
+    </a>
+    <button class="topbar-burger" id="burger" aria-label="打开菜单" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-grid" aria-hidden="true"></div>
+    <ul class="mobile-menu-list">
+      <li><a href="#home"><span class="mm-idx">01</span><span class="mm-zh">首页</span><span class="mm-en">HOME</span></a></li>
+      <li><a href="#features"><span class="mm-idx">02</span><span class="mm-zh">功能介绍</span><span class="mm-en">FEATURES</span></a></li>
+      <li><a href="#support"><span class="mm-idx">03</span><span class="mm-zh">内置支持</span><span class="mm-en">SUPPORT</span></a></li>
+      <li><a href="#releases"><span class="mm-idx">04</span><span class="mm-zh">版本发布</span><span class="mm-en">RELEASES</span></a></li>
+      <li><a href="#footer"><span class="mm-idx">05</span><span class="mm-zh">页脚信息</span><span class="mm-en">INFO</span></a></li>
+    </ul>
+    <div class="mobile-menu-foot">
+      <a class="btn btn-accent" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" id="mobileMenuDownload">下载最新版</a>
+      <a class="btn btn-ghost" href="https://github.com/haaahhhis/MultiGameAssistant" target="_blank" rel="noopener">GitHub 仓库</a>
+    </div>
+  </div>
+
+  <main class="main" id="main">
+
+    <!-- ============ 01 HERO ============ -->
+    <section class="hero section" id="home" aria-label="首页">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <div class="bg-hatch hero-hatch" aria-hidden="true"></div>
+      <svg class="contour hero-contour" viewBox="0 0 400 400" aria-hidden="true">
+        <g fill="none" stroke="#191919" stroke-width="1">
+          <path class="contour-line" d="M200,60 C260,55 320,90 335,150 C350,215 330,290 270,325 C215,358 140,355 95,305 C50,258 45,185 80,130 C112,80 145,64 200,60 Z"/>
+          <path class="contour-line" d="M200,85 C250,80 300,110 312,160 C325,215 305,275 255,305 C208,333 145,330 108,288 C70,247 68,185 98,138 C125,95 152,89 200,85 Z"/>
+          <path class="contour-line" d="M200,110 C242,106 282,132 292,172 C303,220 285,268 243,292 C204,314 152,310 121,275 C90,240 88,190 113,150 C136,114 160,113 200,110 Z"/>
+          <path class="contour-line" d="M200,133 C234,130 266,152 274,186 C283,226 267,262 232,281 C200,298 158,294 133,265 C108,237 107,196 128,163 C147,135 168,135 200,133 Z"/>
+          <path class="contour-line" d="M200,155 C226,153 252,171 258,199 C265,231 251,259 223,273 C197,286 164,281 145,258 C125,235 126,202 142,176 C158,154 174,157 200,155 Z"/>
+          <path class="contour-line" d="M200,176 C220,174 240,189 244,211 C249,237 238,258 216,268 C196,278 171,273 157,255 C142,236 144,210 157,190 C169,174 182,178 200,176 Z"/>
+          <path class="contour-line" d="M200,195 C214,194 229,205 232,222 C236,241 227,256 210,263 C195,270 177,266 167,252 C156,237 158,218 168,203 C178,192 187,196 200,195 Z"/>
+          <path class="contour-line" d="M200,212 C210,211 220,219 222,231 C225,245 218,255 206,260 C195,265 183,261 176,251 C169,240 170,227 178,217 C185,210 191,213 200,212 Z"/>
+          <path class="contour-line" d="M200,227 C206,226 213,231 214,239 C216,248 211,255 204,258 C197,261 189,258 185,251 C181,244 182,235 187,229 C192,225 195,228 200,227 Z"/>
+          <path class="contour-line" d="M200,239 C204,239 208,242 209,246 C210,251 207,255 203,257 C199,258 195,256 193,252 C191,248 192,243 195,241 C197,239 198,240 200,239 Z"/>
+        </g>
+      </svg>
+      <div class="dotpatch hero-dots" aria-hidden="true"></div>
+      <div class="crosshair hero-cross-1" aria-hidden="true"></div>
+      <div class="crosshair hero-cross-2" aria-hidden="true"></div>
+      <div class="hero-annotations" aria-hidden="true">
+        <span class="anno" style="top:12%;left:4%">INFO.//MULTIGAMEASSISTANT</span>
+        <span class="anno" style="top:8%;right:6%">SYS-01 <i class="tag-blue"></i></span>
+        <span class="anno" style="bottom:18%;left:8%">[REC] // 0x2F</span>
+        <span class="anno" style="top:44%;right:38%">DESKTOP.AGENT / DAILY.PIPELINE</span>
+      </div>
+
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-eyebrow reveal-line"><span class="tag-blue" aria-hidden="true"></span>INFO.//DESKTOP AGENT — v1 SERIES</p>
+          <h1 class="hero-title">
+            <span class="hero-title-en" id="heroTitleEn" aria-hidden="true">MULTIGAMEASSISTANT</span>
+            <span class="hero-title-zh">
+              <span class="glyph">多</span><span class="glyph">游</span><span class="glyph">戏</span><span class="glyph">助</span><span class="glyph">手</span>
+            </span>
+          </h1>
+          <p class="hero-tagline reveal-line">「让 agent 替你管好各个游戏的日常脚本」</p>
+          <p class="hero-desc reveal-line">安装脚本、读懂脚本怎么用、把几个游戏的日常排成每天定时自动跑的流水线、盯着运行出的问题并动手处理、查各游戏的活动和你的进度，再通过飞书告诉你结果。</p>
+          <ul class="hero-chips" aria-label="运行环境">
+            <li class="chip">Windows 10 / 11</li>
+            <li class="chip">x64 / ARM64</li>
+            <li class="chip">DeepSeek Harness</li>
+          </ul>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" id="heroDownload" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" data-scramble-label="下载最新版"><span class="btn-label">下载最新版</span></a>
+            <a class="btn btn-outline" href="https://github.com/haaahhhis/MultiGameAssistant" target="_blank" rel="noopener" data-scramble-label="GitHub 仓库"><span class="btn-label">GitHub 仓库</span></a>
+          </div>
+        </div>
+
+        <div class="hero-deco" aria-hidden="true">
+          <div class="pipeline-stack" id="pipelineStack">
+            <div class="pl-card" data-depth="0.02">
+              <div class="pl-card-head"><span class="pl-dot is-running"></span><span class="pl-name">MAA</span><span class="pl-tag">明日方舟</span></div>
+              <div class="pl-card-body"><span class="pl-line"></span><span class="pl-line short"></span></div>
+            </div>
+            <div class="pl-conn"><i></i><span class="pl-conn-label">NEXT →</span></div>
+            <div class="pl-card" data-depth="0.035">
+              <div class="pl-card-head"><span class="pl-dot is-running"></span><span class="pl-name">MaaEnd</span><span class="pl-tag">终末地</span></div>
+              <div class="pl-card-body"><span class="pl-line"></span><span class="pl-line short"></span></div>
+            </div>
+            <div class="pl-conn"><i></i><span class="pl-conn-label">NEXT →</span></div>
+            <div class="pl-card" data-depth="0.05">
+              <div class="pl-card-head"><span class="pl-dot is-wait"></span><span class="pl-name">三月七小助手</span><span class="pl-tag">星穹铁道</span></div>
+              <div class="pl-card-body"><span class="pl-line"></span><span class="pl-line short"></span></div>
+            </div>
+            <div class="pl-conn"><i></i><span class="pl-conn-label">NOTIFY →</span></div>
+            <div class="pl-card pl-card-accent" data-depth="0.065">
+              <div class="pl-card-head"><span class="pl-dot is-done"></span><span class="pl-name">飞书通知</span><span class="pl-tag dark">PUSH</span></div>
+              <div class="pl-card-body"><span class="pl-line light"></span></div>
+            </div>
+          </div>
+          <div class="hero-deco-corner" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <a class="hero-scroll" href="#features" aria-label="向下滚动到功能介绍">
+        <span class="hero-scroll-text">SCROLL</span>
+        <span class="hero-scroll-bar" aria-hidden="true"></span>
+      </a>
+    </section>
+
+    <!-- ============ 02 FEATURES ============ -->
+    <section class="features section" id="features" aria-label="功能介绍">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <header class="sec-head reveal-block">
+        <span class="sec-head-en" aria-hidden="true">FEATURES</span>
+        <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>features // module.list</p>
+        <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 功能介绍</span></span></h2>
+        <p class="sec-head-counter" id="featureCounter">01 / 06</p>
+      </header>
+
+      <div class="feat-switcher" id="featSwitcher">
+        <div class="feat-tabs" role="tablist" aria-label="功能模块">
+          <button class="feat-tab is-active" role="tab" aria-selected="true" aria-controls="featPanel" id="featTab0" data-idx="0">
+            <span class="feat-tab-idx">01</span>
+            <span class="feat-tab-body"><span class="feat-tab-zh">脚本</span><span class="feat-tab-en">SCRIPTS</span></span>
+          </button>
+          <button class="feat-tab" role="tab" aria-selected="false" aria-controls="featPanel" id="featTab1" data-idx="1">
+            <span class="feat-tab-idx">02</span>
+            <span class="feat-tab-body"><span class="feat-tab-zh">编排与定时</span><span class="feat-tab-en">PIPELINE</span></span>
+          </button>
+          <button class="feat-tab" role="tab" aria-selected="false" aria-controls="featPanel" id="featTab2" data-idx="2">
+            <span class="feat-tab-idx">03</span>
+            <span class="feat-tab-body"><span class="feat-tab-zh">监控与干预</span><span class="feat-tab-en">MONITOR</span></span>
+          </button>
+          <button class="feat-tab" role="tab" aria-selected="false" aria-controls="featPanel" id="featTab3" data-idx="3">
+            <span class="feat-tab-idx">04</span>
+            <span class="feat-tab-body"><span class="feat-tab-zh">游戏信息</span><span class="feat-tab-en">INTEL</span></span>
+          </button>
+          <button class="feat-tab" role="tab" aria-selected="false" aria-controls="featPanel" id="featTab4" data-idx="4">
+            <span class="feat-tab-idx">05</span>
+            <span class="feat-tab-body"><span class="feat-tab-zh">Agent</span><span class="feat-tab-en">AGENT</span></span>
+          </button>
+          <button class="feat-tab" role="tab" aria-selected="false" aria-controls="featPanel" id="featTab5" data-idx="5">
+            <span class="feat-tab-idx">06</span>
+            <span class="feat-tab-body"><span class="feat-tab-zh">飞书</span><span class="feat-tab-en">FEISHU</span></span>
+          </button>
+        </div>
+
+        <div class="feat-panel-wrap corner-frame">
+          <div class="feat-panel" id="featPanel" role="tabpanel" aria-live="polite">
+            <div class="feat-panel-head">
+              <span class="feat-panel-idx" id="featPanelIdx">01</span>
+              <div class="feat-panel-titles">
+                <h3 class="feat-panel-zh" id="featPanelZh">脚本</h3>
+                <p class="feat-panel-en" id="featPanelEn">SCRIPTS // MODULE-01</p>
+              </div>
+            </div>
+            <div class="feat-panel-body" id="featPanelBody"><!-- filled by JS from FEATURE_DATA --></div>
+          </div>
+          <div class="feat-panel-wipe" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <p class="feat-note reveal-block">脚本本身（MAA、MaaEnd、三月七小助手等）来自各自项目，本软件负责安装、配置、调度和看护，不修改脚本的代码。</p>
+    </section>
+
+    <!-- ============ 03 SUPPORT ============ -->
+    <section class="support section" id="support" aria-label="内置支持">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <div class="bg-hatch support-hatch" aria-hidden="true"></div>
+      <div class="dotpatch support-dots" aria-hidden="true"></div>
+      <header class="sec-head reveal-block">
+        <span class="sec-head-en" aria-hidden="true">SUPPORT</span>
+        <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>support // built-in.scripts</p>
+        <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 内置支持</span></span></h2>
+        <p class="sec-head-counter">03 / 05</p>
+      </header>
+
+      <div class="support-cards">
+        <a class="support-card corner-frame reveal-block" href="https://github.com/MaaAssistantArknights/MaaAssistantArknights" target="_blank" rel="noopener">
+          <p class="support-card-idx">SCRIPT.01</p>
+          <h3 class="support-card-name">MAA</h3>
+          <p class="support-card-sub">明日方舟小助手</p>
+          <p class="support-card-game"><span class="tag-blue" aria-hidden="true"></span>明日方舟</p>
+          <span class="support-card-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="support-card corner-frame reveal-block" href="https://github.com/MaaEnd/MaaEnd" target="_blank" rel="noopener">
+          <p class="support-card-idx">SCRIPT.02</p>
+          <h3 class="support-card-name">MaaEnd</h3>
+          <p class="support-card-sub">Arknights: Endfield</p>
+          <p class="support-card-game"><span class="tag-blue" aria-hidden="true"></span>明日方舟：终末地</p>
+          <span class="support-card-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="support-card corner-frame reveal-block" href="https://github.com/moesnow/March7thAssistant" target="_blank" rel="noopener">
+          <p class="support-card-idx">SCRIPT.03</p>
+          <h3 class="support-card-name">三月七小助手</h3>
+          <p class="support-card-sub">March7thAssistant</p>
+          <p class="support-card-game"><span class="tag-blue" aria-hidden="true"></span>崩坏：星穹铁道</p>
+          <span class="support-card-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <p class="support-note reveal-block">内置游戏包：明日方舟（PRTS）、明日方舟：终末地（SRA 公共 API）、崩坏：星穹铁道（SRA 公共 API 和 B 站游戏 WIKI）；其他脚本可导入后让 agent 分析，其他游戏可在「更多游戏」里关注。</p>
+    </section>
+
+    <!-- ============ 04 RELEASES ============ -->
+    <section class="releases section" id="releases" aria-label="版本发布">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <div class="releases-layout">
+        <div class="releases-banner" aria-hidden="true">
+          <span class="releases-banner-zh">最新</span>
+          <span class="releases-banner-en">RELEASES</span>
+          <span class="releases-banner-mark"></span>
+        </div>
+        <div class="releases-main">
+          <header class="sec-head sec-head-inline reveal-block">
+            <span class="sec-head-en" aria-hidden="true">RELEASES</span>
+            <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>releases // github.api</p>
+            <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 版本发布</span></span></h2>
+            <p class="sec-head-counter">04 / 05</p>
+          </header>
+
+          <div class="releases-stats" id="releasesStats" aria-live="polite"></div>
+          <div class="releases-featured" id="releasesFeatured" aria-live="polite">
+            <div class="rel-skel" aria-hidden="true">
+              <div class="rel-skel-line w60"></div>
+              <div class="rel-skel-line w30"></div>
+              <div class="rel-skel-block"></div>
+              <div class="rel-skel-line w45"></div>
+            </div>
+          </div>
+          <div class="releases-list" id="releasesList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 FOOTER ============ -->
+    <footer class="footer section" id="footer" aria-label="页脚信息">
+      <span class="footer-word" aria-hidden="true">MULTIGAMEASSISTANT</span>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="footer-logo" aria-hidden="true">MGA</span>
+          <p class="footer-brand-zh">多游戏助手</p>
+          <p class="footer-brand-en">MULTIGAMEASSISTANT // DESKTOP.AGENT</p>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">项目地址</h3>
+          <ul class="footer-links">
+            <li><a href="https://github.com/haaahhhis/MultiGameAssistant" target="_blank" rel="noopener">源码仓库</a></li>
+            <li><a href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener">版本发布</a></li>
+            <li><a href="https://github.com/haaahhhis/MultiGameAssistant/issues" target="_blank" rel="noopener">问题反馈</a></li>
+            <li><a href="https://github.com/haaahhhis/Web_MultiGameAssistant-" target="_blank" rel="noopener">官网仓库</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">友情链接</h3>
+          <ul class="footer-links footer-links-empty">
+            <!-- 添加友情链接：把下面的占位 <li> 换成
+                 <li><a href="https://example.com" target="_blank" rel="noopener">名称</a></li> -->
+            <li><span class="footer-placeholder">— 待添加 —</span></li>
+            <li><span class="footer-placeholder">— 待添加 —</span></li>
+            <li><span class="footer-placeholder">— 待添加 —</span></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">联系 / 社区</h3>
+          <ul class="footer-links footer-links-empty">
+            <!-- 添加联系方式：同上，把占位 <li> 换成链接 <li><a ...>名称</a></li> -->
+            <li><span class="footer-placeholder">— 待添加 —</span></li>
+            <li><span class="footer-placeholder">— 待添加 —</span></li>
+            <li><span class="footer-placeholder">— 待添加 —</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 MultiGameAssistant · 基于 AGPL-3.0 开源</p>
+        <p class="footer-disclaimer">本网站为 MultiGameAssistant 项目介绍页，与 Hypergryph / 鹰角网络无关，所涉游戏名称与商标归各自权利人所有。</p>
+        <button class="footer-top" id="backToTop" aria-label="回到顶部"><span aria-hidden="true">↑</span> TOP</button>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

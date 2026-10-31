@@ -1,0 +1,25 @@
+[
+  {
+    "tag_name": "v1.0.0",
+    "name": "MultiGameAssistant 1.0.0",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-10-26T15:18:55Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v1.0.0",
+    "body": "MultiGameAssistant（多游戏助手）的第一个正式版：让 agent 替你管好各个游戏的日常脚本。支持 Windows 10 / 11（x64 和 ARM64）。\n\n## 支持的功能\n\n- **脚本安装与更新**：一键安装 MAA、MaaEnd、三月七小助手等脚本，可以更新、回滚、删除；支持 Mirror酱 CDK 增量更新，也能导入本地已有的脚本。\n- **任意脚本**：没见过的脚本，agent 会读懂它怎么启动、有哪些任务，整理成可以直接使用的脚本包。\n- **多份配置**：一个脚本可以存几份配置（大号、小号或不同任务组合），运行时选用。\n- **编排与定时**：在画布上把多个脚本排成流水线，每天定时自动运行；支持开机自启、定时唤醒电脑，跑完自动关游戏、睡眠或关机。\n- **监控与干预**：脚本出错、卡住时先自动处理；处理不了交给 agent 看画面、动手排除，再让脚本继续。\n- **游戏信息**：活动日历、剩余天数和你的进度，支持 SRA 公共 API 的 18 个游戏，每天发送日报。\n- **agent 对话与技能**：可以自选模型（DeepSeek、Claude、ChatGPT、Gemini、Ollama 等），做成的事可以存成技能；可以按范围设置权限。\n- **飞书**：接收通知、日报和确认卡片，也能在飞书里直接和 agent 对话。\n- **检查更新**：有新版本时在程序里提示，一键下载并安装。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-1.0.0.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-1.0.0-arm64.exe`\n",
+    "assets": [
+      {
+        "name": "MultiGameAssistant-Setup-1.0.0-arm64.exe",
+        "size": 233733508,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v1.0.0/MultiGameAssistant-Setup-1.0.0-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-1.0.0.exe",
+        "size": 250355035,
+        "download_count": 9,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v1.0.0/MultiGameAssistant-Setup-1.0.0.exe"
+      }
+    ]
+  }
+]
