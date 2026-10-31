@@ -870,24 +870,30 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 .flow-stage { width: 100%; overflow: hidden; }
 .flow-stage-inner { position: relative; width: 560px; height: 400px; transform-origin: top left; background-image: radial-gradient(#bbb .6px, transparent .8px); background-size: 16px 16px; }
 .flow-edges-svg { position: absolute; inset: 0; pointer-events: none; }
-.flow-edges-svg .flow-edge { fill: none; stroke: #8b8b8b; stroke-width: 1.5; }
-.flow-edges-svg .flow-pulse { fill: none; stroke: var(--ink); stroke-width: 3; stroke-dasharray: 8 14; opacity: 0; }
+.flow-edges-svg .flow-edge { fill: none; stroke: #b1b1b7; stroke-width: 1; }
+.flow-edges-svg .flow-edge-label { font: 10px var(--font-zh); fill: #66666e; paint-order: stroke; stroke: #fafafa; stroke-width: 4px; }
+.flow-edges-svg .flow-pulse { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 8 14; opacity: 0; }
 .flow-edges-svg .flow-pulse.active { opacity: 1; }
 .flow-board.is-running .flow-edges-svg .flow-pulse.active { animation: edgeFlow 1.2s linear infinite; }
-.fl-node { position: absolute; width: 148px; padding: 9px 11px 10px; border: 1px solid #999; border-radius: 8px; background: #fafafa; box-shadow: 0 2px 6px rgba(25,25,25,.07); cursor: grab; user-select: none; touch-action: none; transition: background .3s, border-color .3s, box-shadow .3s; }
-.fl-node.dragging { cursor: grabbing; box-shadow: 0 6px 18px rgba(25,25,25,.18); z-index: 3; }
-.fl-node.selected { border-color: var(--ink); box-shadow: 0 0 0 2px rgba(25,25,25,.12), 0 2px 6px rgba(25,25,25,.07); }
-.fl-node.active { background: #fffd9c; border-color: var(--ink); }
-.fl-node.done { border-color: #8aa86a; background: #f3f8ec; }
-.fl-node .fl-kind { display: flex; align-items: center; gap: 6px; font: 9px var(--font-mono); letter-spacing: .07em; color: #666; }
-.fl-node .fl-state { margin-left: auto; font-weight: 700; color: var(--ink); }
-.fl-node.done .fl-state { color: #4d7c22; }
-.fl-node .fl-title { margin-top: 3px; font: 600 15px var(--font-zh); color: var(--ink); }
-.fl-node .fl-sub { font: 10px var(--font-zh); color: #777; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.fl-port { position: absolute; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: #fafafa; border: 1.5px solid var(--ink); pointer-events: none; transition: background .3s; }
-.fl-port.fl-in { left: -4px; }
-.fl-port.fl-out { right: -4px; }
-.fl-node.active .fl-port { background: var(--accent); }
+/* mirrors the app's step-node / marker / handle / edge visuals 1:1 */
+.fl-node { position: absolute; width: 168px; padding: 8px 10px; border: 1px solid rgba(16,16,20,.14); border-radius: 10px; background: #fff; box-shadow: 0 1px 2px rgba(16,16,20,.04); font-size: 12.5px; cursor: grab; user-select: none; touch-action: none; transition: background .3s, border-color .3s, box-shadow .3s; }
+.fl-node.dragging { cursor: grabbing; box-shadow: 0 8px 20px rgba(16,16,20,.16); z-index: 3; }
+.fl-node.selected { border-color: rgba(10,120,150,.38); box-shadow: 0 0 0 3px rgba(10,140,170,.12); }
+.fl-node.active { border-color: rgba(10,120,150,.38); }
+.fl-node.done { border-color: rgba(19,134,92,.6); background: rgba(19,134,92,.06); }
+.fl-node.fl-marker { display: flex; align-items: center; width: auto; min-width: 0; padding: 8px 18px; border-radius: 999px; font-weight: 600; }
+.fl-node.fl-marker.start { background: rgba(19,134,92,.1); }
+.fl-node.fl-marker.end { background: #f6f6f4; }
+.fl-node .fl-kind { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #66666e; }
+.fl-node .fl-badge { padding: 1px 6px; border: 1px solid rgba(16,16,20,.14); border-radius: 999px; font-size: 10px; }
+.fl-node .fl-state { margin-left: auto; font-weight: 600; color: #0a6a83; }
+.fl-node.done .fl-state { color: #13865c; }
+.fl-node .fl-title { margin-top: 3px; font-weight: 600; overflow-wrap: anywhere; }
+.fl-node .fl-sub { color: #66666e; font-family: var(--font-mono); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fl-port { position: absolute; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 100%; background: #1a192b; border: 1px solid #fff; pointer-events: none; }
+.fl-port.fl-in { left: -3.5px; }
+.fl-port.fl-out { right: -3.5px; }
+.fl-node.fl-marker .fl-port { top: 50%; }
 .flow-log { max-width: 560px; margin: 22px auto 0; font: 10px/1.9 var(--font-mono); color: #767676; min-height: 58px; }
 .flow-log > span { letter-spacing: .12em; font-size: 9px; color: #999; }
 @keyframes edgeFlow { to { stroke-dashoffset: -44; } }

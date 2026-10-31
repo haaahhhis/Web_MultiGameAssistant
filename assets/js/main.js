@@ -661,18 +661,22 @@
   var logEl = document.getElementById('flowLog');
   var runBtn = document.getElementById('flowRun');
   var SVG_NS = 'http://www.w3.org/2000/svg';
-  var STAGE_W = 560, STAGE_H = 400, NODE_W = 148;
+  var STAGE_W = 560, STAGE_H = 400;
 
+  /* same node kinds and wiring as the app's pipeline canvas */
   var nodes = [
-    { id: 't1', kind: 'TRIGGER', title: '每日 06:30', sub: '定时启动', x: 14, y: 164, noIn: true },
-    { id: 'n1', kind: 'SCRIPT / 01', title: 'MAA', sub: '明日方舟', x: 226, y: 24 },
-    { id: 'n2', kind: 'SCRIPT / 02', title: '三月七小助手', sub: '崩坏：星穹铁道', x: 226, y: 164 },
-    { id: 'n3', kind: 'SCRIPT / 03', title: 'MaaEnd', sub: '明日方舟：终末地', x: 226, y: 304 },
-    { id: 'n4', kind: 'NOTIFY', title: '飞书日报', sub: '完成后汇报', x: 404, y: 164, noOut: true }
+    { id: 't1', kind: '开始', marker: 'start', x: 18, y: 186, noIn: true },
+    { id: 'n1', kind: '脚本任务', title: 'MAA · 日常任务', sub: '明日方舟', input: '鼠标键盘', x: 122, y: 40 },
+    { id: 'n2', kind: '脚本任务', title: '三月七小助手 · 材料速刷', sub: '崩坏：星穹铁道', input: '鼠标键盘', x: 122, y: 168 },
+    { id: 'n3', kind: '脚本任务', title: 'MaaEnd · 清体力', sub: '明日方舟：终末地', input: '鼠标键盘', x: 122, y: 296 },
+    { id: 'n5', kind: '发消息', title: '飞书日报', sub: '日常都跑完了', x: 336, y: 168 },
+    { id: 'n4', kind: '结束', marker: 'end', x: 512, y: 186, noOut: true }
   ];
   var edges = [
-    { id: 'e1', from: 't1', to: 'n1' }, { id: 'e2', from: 't1', to: 'n2' }, { id: 'e3', from: 't1', to: 'n3' },
-    { id: 'e4', from: 'n1', to: 'n4' }, { id: 'e5', from: 'n2', to: 'n4' }, { id: 'e6', from: 'n3', to: 'n4' }
+    { id: 'e1', from: 't1', to: 'n1', when: '成功后' }, { id: 'e2', from: 't1', to: 'n2', when: '成功后' },
+    { id: 'e3', from: 't1', to: 'n3', when: '成功后' }, { id: 'e4', from: 'n1', to: 'n5', when: '结束后' },
+    { id: 'e5', from: 'n2', to: 'n5', when: '结束后' }, { id: 'e6', from: 'n3', to: 'n5', when: '结束后' },
+    { id: 'e7', from: 'n5', to: 'n4', when: '结束后' }
   ];
   var nodeEls = {}, edgeEls = {}, addSeq = 0, running = false;
 
@@ -695,19 +699,28 @@
   }
 
   function portPos(n, out) {
-    var h = nodeEls[n.id].offsetHeight;
-    return { x: n.x + (out ? NODE_W : 0), y: n.y + h / 2 };
+    var elNode = nodeEls[n.id];
+    return { x: n.x + (out ? elNode.offsetWidth : 0), y: n.y + elNode.offsetHeight / 2 };
   }
+  /* React Flow default edge: horizontal bezier between the two handles */
   function edgeD(e) {
     var a = portPos(nodeOf(e.from), true), b = portPos(nodeOf(e.to), false);
-    var mx = a.x + Math.max(30, (b.x - a.x) / 2);
-    return 'M' + a.x + ' ' + a.y + ' H' + (mx - 8) + ' V' + (b.y + 8) + ' Q' + (mx - 8) + ' ' + b.y + ' ' + mx + ' ' + b.y + ' H' + b.x;
+    var mx = (a.x + b.x) / 2;
+    return 'M' + a.x + ' ' + a.y + ' C' + mx + ' ' + a.y + ', ' + mx + ' ' + b.y + ', ' + b.x + ' ' + b.y;
+  }
+  function edgeMid(e) {
+    var a = portPos(nodeOf(e.from), true), b = portPos(nodeOf(e.to), false);
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
   }
   function paintEdges() {
     edges.forEach(function (e) {
-      var d = edgeD(e);
+      var d = edgeD(e), mid = edgeMid(e);
       edgeEls[e.id].base.setAttribute('d', d);
       edgeEls[e.id].pulse.setAttribute('d', d);
+      if (edgeEls[e.id].label) {
+        edgeEls[e.id].label.setAttribute('x', mid.x);
+        edgeEls[e.id].label.setAttribute('y', mid.y - 4);
+      }
     });
   }
   function buildEdge(e) {
@@ -716,21 +729,38 @@
     var pulse = document.createElementNS(SVG_NS, 'path');
     pulse.setAttribute('class', 'flow-pulse');
     edgesSvg.appendChild(base); edgesSvg.appendChild(pulse);
-    edgeEls[e.id] = { base: base, pulse: pulse };
+    var label = null;
+    if (e.when) {
+      label = document.createElementNS(SVG_NS, 'text');
+      label.setAttribute('class', 'flow-edge-label');
+      label.setAttribute('text-anchor', 'middle');
+      label.textContent = e.when;
+      edgesSvg.appendChild(label);
+    }
+    edgeEls[e.id] = { base: base, pulse: pulse, label: label };
   }
 
   function buildNode(n) {
-    var d = el('div', 'fl-node', null, inner);
+    var d = el('div', n.marker ? 'fl-node fl-marker ' + n.marker : 'fl-node', null, inner);
     d.dataset.id = n.id;
     d.style.left = n.x + 'px';
     d.style.top = n.y + 'px';
-    if (!n.noIn) el('i', 'fl-port fl-in', null, d);
-    var k = el('div', 'fl-kind', null, d);
-    el('span', null, n.kind, k);
-    var st = el('span', 'fl-state', '', k);
-    el('div', 'fl-title', n.title, d);
-    el('div', 'fl-sub', n.sub, d);
-    if (!n.noOut) el('i', 'fl-port fl-out', null, d);
+    var st;
+    if (n.marker) {
+      if (!n.noIn) el('i', 'fl-port fl-in', null, d);
+      el('span', null, n.kind, d);
+      st = el('span', 'fl-state', '', d);
+      if (!n.noOut) el('i', 'fl-port fl-out', null, d);
+    } else {
+      if (!n.noIn) el('i', 'fl-port fl-in', null, d);
+      var k = el('div', 'fl-kind', null, d);
+      el('span', null, n.kind, k);
+      if (n.input) el('span', 'fl-badge', n.input, k);
+      st = el('span', 'fl-state', '', k);
+      el('div', 'fl-title', n.title, d);
+      if (n.sub) el('div', 'fl-sub', n.sub, d);
+      if (!n.noOut) el('i', 'fl-port fl-out', null, d);
+    }
     d._stateEl = st;
     nodeEls[n.id] = d;
 
@@ -742,7 +772,7 @@
       d.classList.add('dragging');
       var sx = ev.clientX, sy = ev.clientY, ox = n.x, oy = n.y;
       function mv(e2) {
-        n.x = Math.max(0, Math.min(STAGE_W - NODE_W, ox + (e2.clientX - sx) / zoom));
+        n.x = Math.max(0, Math.min(STAGE_W - d.offsetWidth, ox + (e2.clientX - sx) / zoom));
         n.y = Math.max(0, Math.min(STAGE_H - d.offsetHeight, oy + (e2.clientY - sy) / zoom));
         d.style.left = n.x + 'px';
         d.style.top = n.y + 'px';
@@ -764,13 +794,13 @@
     if (running) return;
     addSeq++;
     var n = {
-      id: 'u' + addSeq, kind: 'SCRIPT / ' + String(3 + addSeq).padStart(2, '0'),
-      title: '新任务 ' + addSeq, sub: '拖拽调整位置',
-      x: 226, y: 40 + (addSeq * 46) % 300
+      id: 'u' + addSeq, kind: '脚本任务',
+      title: '新任务 ' + addSeq, sub: '拖拽调整位置', input: '鼠标键盘',
+      x: 122, y: 60 + (addSeq * 72) % 280
     };
     nodes.push(n);
-    var eIn = { id: 'eu' + addSeq + 'a', from: 't1', to: n.id };
-    var eOut = { id: 'eu' + addSeq + 'b', from: n.id, to: 'n4' };
+    var eIn = { id: 'eu' + addSeq + 'a', from: 't1', to: n.id, when: '成功后' };
+    var eOut = { id: 'eu' + addSeq + 'b', from: n.id, to: 'n5', when: '结束后' };
     edges.push(eIn); edges.push(eOut);
     buildNode(n); buildEdge(eIn); buildEdge(eOut);
     paintEdges();
@@ -818,7 +848,7 @@
         nodeEls[n.id].classList.add('done');
         nodeEls[n.id]._stateEl.textContent = '成功';
       });
-      logEl.textContent = d === 0 ? '[06:30:02] MAA → 三月七小助手 → MaaEnd'
+      logEl.textContent = d === 0 ? '[06:30:02] MAA · 日常任务 → 三月七小助手 · 材料速刷 → MaaEnd · 清体力'
         : d === maxD ? '[06:35:01] event / 799 · 日报已生成' : '[06:30:0' + (d + 2) + '] 节点完成 · 继续';
     }
     edges.forEach(function (e) { edgeEls[e.id].pulse.classList.remove('active'); });
