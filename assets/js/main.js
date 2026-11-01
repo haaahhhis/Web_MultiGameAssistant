@@ -249,7 +249,9 @@
       if (window.__mgaDemo) window.__mgaDemo.select(Number(stops[pick].dataset.scene));
     };
     window.MGAFeature = {
-      scrollDriven: true,
+      /* scenes replay while the page scroll drives them; in fullscreen there is
+         no scrolling, so they advance on their own */
+      get scrollDriven() { return !dayStage || document.fullscreenElement !== dayStage; },
       /* called by demo.js whenever a scene is selected */
       set: function (scene) { var i = stopFor(scene); if (i >= 0) markStop(i); },
       /* called when a scenario tab is clicked: bring its stop into view */
@@ -316,6 +318,69 @@
       } else selectText(target);
     });
   });
+
+  /* ============================================================
+     Demo fullscreen — the stage (demo + scenario tabs) fills the screen
+     so the real UI shows near its actual size
+     ============================================================ */
+  var demoExpand = document.getElementById('demoExpand');
+  if (demoExpand && dayStage && document.fullscreenEnabled && dayStage.requestFullscreen) {
+    demoExpand.hidden = false;
+    demoExpand.addEventListener('click', function () {
+      if (document.fullscreenElement === dayStage) document.exitFullscreen();
+      else dayStage.requestFullscreen().catch(function () { /* denied: stay inline */ });
+    });
+    document.addEventListener('fullscreenchange', function () {
+      var on = document.fullscreenElement === dayStage;
+      demoExpand.textContent = on ? '退出全屏 ✕' : '全屏查看 ⤢';
+      /* demo.js refits the frame on resize */
+      window.dispatchEvent(new Event('resize'));
+    });
+  }
+
+  /* ============================================================
+     Lightbox — screenshots open at full size over the page;
+     without JS the link simply opens the image
+     ============================================================ */
+  var lightboxLinks = document.querySelectorAll('a[data-lightbox]');
+  if (lightboxLinks.length) {
+    var box = document.createElement('div');
+    box.className = 'lightbox';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-label', '截图大图');
+    box.hidden = true;
+    var boxImg = document.createElement('img');
+    var boxClose = document.createElement('button');
+    boxClose.type = 'button';
+    boxClose.className = 'lightbox-close';
+    boxClose.textContent = '关闭 ✕';
+    box.appendChild(boxClose);
+    box.appendChild(boxImg);
+    document.body.appendChild(box);
+    var opener = null;
+    var closeBox = function () {
+      box.hidden = true;
+      boxImg.removeAttribute('src');
+      document.body.style.overflow = '';
+      if (opener) opener.focus();
+    };
+    lightboxLinks.forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+        e.preventDefault();
+        opener = a;
+        var img = a.querySelector('img');
+        boxImg.src = a.getAttribute('href');
+        boxImg.alt = img ? img.alt : '';
+        box.hidden = false;
+        document.body.style.overflow = 'hidden';
+        boxClose.focus();
+      });
+    });
+    box.addEventListener('click', function (e) { if (e.target !== boxImg) closeBox(); });
+    window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden) closeBox(); });
+  }
 
   /* ============================================================
      Homepage downloads + latest version strip
