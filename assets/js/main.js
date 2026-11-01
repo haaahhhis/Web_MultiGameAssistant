@@ -138,11 +138,9 @@
      Scroll reveals + rail active state
      ============================================================ */
   var revealEls = document.querySelectorAll('.reveal-block');
-  var wipeEls = document.querySelectorAll('.wipe-title');
 
   if (REDUCED || !('IntersectionObserver' in window)) {
     revealEls.forEach(function (el) { el.classList.add('in'); });
-    wipeEls.forEach(function (el) { el.classList.add('wiped'); });
   } else {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -153,16 +151,6 @@
       });
     }, { threshold: 0.12 });
     revealEls.forEach(function (el) { io.observe(el); });
-
-    var wio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.classList.add('wiped');
-          wio.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.6 });
-    wipeEls.forEach(function (el) { wio.observe(el); });
   }
 
   var bridge = document.querySelector('.section-bridge');
@@ -196,7 +184,16 @@
     var current = sections[0];
     sections.forEach(function (s) { if (s.offsetTop <= y) current = s; });
     railItems.forEach(function (a) {
-      a.classList.toggle('is-active', current && a.dataset.section === current.id);
+      var active = current && a.dataset.section === current.id;
+      a.classList.toggle('is-active', active);
+      if (active) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+    document.querySelectorAll('.mobile-menu-list a').forEach(function (a) {
+      var active = current && a.getAttribute('href') === '#' + current.id;
+      a.classList.toggle('is-active', active);
+      if (active) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
     });
   }
   var railTick = false;
@@ -224,7 +221,7 @@
       ]
     },
     {
-      zh: '编排与定时', en: 'PIPELINE // MODULE-02',
+      zh: '编排与定时', en: 'SCHEDULE // MODULE-02',
       items: [
         ['流水线画布', '脚本任务、agent 步骤、等待、发消息、人工确认连成图；不冲突的并行执行，抢同一模拟器 / 屏幕的自动排队；失败可重试、跳过或停下。'],
         ['运行前检查', '成环、找不到的脚本或任务、参数不对，跑之前先查出来。'],
@@ -499,8 +496,8 @@
     statsEl.appendChild(s3);
   }
 
-  function renderState(title, msg, withBtn) {
-    var box = el('div', 'rel-state');
+  function renderState(title, msg, withBtn, isError) {
+    var box = el('div', 'rel-state' + (isError ? ' is-error' : ''));
     box.appendChild(el('strong', null, title));
     box.appendChild(el('p', null, msg));
     if (withBtn) {
@@ -538,6 +535,7 @@
     var asset = MGADownloads.chooseAsset(latest, arch);
     var href = asset ? asset.browser_download_url : RELEASES_PAGE;
     var actual = asset && MGADownloads.assetArchitecture(asset.name);
+    var armFallback = !!asset && arch === 'arm64' && actual !== 'arm64';
     var label = asset ? '下载 ' + latest.tag_name + ' · Windows ' + (actual === 'arm64' ? 'ARM64' : 'x64') : '查看 ' + latest.tag_name + ' 下载';
     var hero = document.getElementById('heroDownload');
     hero.href = href;
@@ -546,8 +544,9 @@
     mm.href = href;
     mm.textContent = label;
     var hint = document.getElementById('downloadHint');
+    hint.classList.toggle('is-warn', armFallback);
     if (!asset) hint.textContent = '该版本没有可匹配的 Windows 安装包，请在发布页选择；不会链接到旧版本。';
-    else if (actual !== arch) hint.textContent = '该版本未提供 ARM64 包，已回退到 Windows x64；也可在下方版本发布区查看全部文件。';
+    else if (armFallback) hint.textContent = '该版本未提供 ARM64 包，已回退到 Windows x64；也可在下方版本发布区查看全部文件。';
     else hint.textContent = (downloadMode !== 'auto' ? '已手动选择' : detectedArchitecture.detected ? '检测到' : '无法识别或非 Windows 设备，默认') + ' Windows ' + (actual === 'arm64' ? 'ARM64' : 'x64') + ' · 支持 Windows 10 / 11';
   }
 
@@ -627,6 +626,7 @@
             renderState(
               '暂时无法获取版本信息',
               'GitHub API 与本站快照均无法访问（API 未登录每小时限 60 次）。可直接前往发布页下载。',
+              true,
               true
             );
           });
@@ -644,299 +644,64 @@
 
 
 /* ============================================================
-   PIPELINE CANVAS — interactive demo graph, mirrors the app's
-   pipeline editor: DOM node cards (draggable, selectable), bezier
-   edges recomputed on drag, add-node and run buttons. "Run" only
-   plays the flow animation — nothing real executes.
+   TITLE SPINE — vertical connector through the four chapter bars.
    ============================================================ */
 (function () {
   'use strict';
-  var board = document.getElementById('flowBoard');
-  if (!board) return;
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var stageEl = document.getElementById('flowStage');
-  var inner = document.getElementById('flowStageInner');
-  var edgesSvg = document.getElementById('flowEdges');
-  var statusEl = document.getElementById('flowStatus');
-  var logEl = document.getElementById('flowLog');
-  var runBtn = document.getElementById('flowRun');
-  var SVG_NS = 'http://www.w3.org/2000/svg';
-  var STAGE_W = 560, STAGE_H = 400;
-
-  /* same node kinds and wiring as the app's pipeline canvas */
-  var nodes = [
-    { id: 't1', kind: '开始', marker: 'start', x: 18, y: 186, noIn: true },
-    { id: 'n1', kind: '脚本任务', title: 'MAA · 日常任务', sub: '明日方舟', input: '鼠标键盘', x: 122, y: 40 },
-    { id: 'n2', kind: '脚本任务', title: '三月七小助手 · 材料速刷', sub: '崩坏：星穹铁道', input: '鼠标键盘', x: 122, y: 168 },
-    { id: 'n3', kind: '脚本任务', title: 'MaaEnd · 清体力', sub: '明日方舟：终末地', input: '鼠标键盘', x: 122, y: 296 },
-    { id: 'n5', kind: '发消息', title: '飞书日报', sub: '日常都跑完了', x: 336, y: 168 },
-    { id: 'n4', kind: '结束', marker: 'end', x: 512, y: 186, noOut: true }
-  ];
-  var edges = [
-    { id: 'e1', from: 't1', to: 'n1', when: '成功后' }, { id: 'e2', from: 't1', to: 'n2', when: '成功后' },
-    { id: 'e3', from: 't1', to: 'n3', when: '成功后' }, { id: 'e4', from: 'n1', to: 'n5', when: '结束后' },
-    { id: 'e5', from: 'n2', to: 'n5', when: '结束后' }, { id: 'e6', from: 'n3', to: 'n5', when: '结束后' },
-    { id: 'e7', from: 'n5', to: 'n4', when: '结束后' }
-  ];
-  var nodeEls = {}, edgeEls = {}, addSeq = 0, running = false;
-
-  /* inner stage stays 560 logical px wide and is zoomed to the real
-     width — layout zoom, not raster scale, so cards stay sharp */
-  var zoom = 1;
-  function stageZoom() { zoom = stageEl.clientWidth / STAGE_W; inner.style.zoom = String(zoom); }
-  window.addEventListener('resize', stageZoom);
-
-  function el(tag, cls, txt, parent) {
-    var d = document.createElement(tag);
-    if (cls) d.className = cls;
-    if (txt != null) d.textContent = txt;
-    if (parent) parent.appendChild(d);
-    return d;
+  var spine = document.getElementById('titleSpine');
+  if (!spine) return;
+  var bars = Array.prototype.slice.call(document.querySelectorAll('.chapter-bar'));
+  if (bars.length !== 4) return;
+  var line = document.createElement('i');
+  line.className = 'spine-line';
+  var fill = document.createElement('i');
+  fill.className = 'spine-fill';
+  spine.appendChild(line); spine.appendChild(fill);
+  var dots = [];
+  function layout() {
+    spine.innerHTML = ''; spine.appendChild(line); spine.appendChild(fill); dots = [];
+    var main = document.getElementById('main');
+    var mainRect = main.getBoundingClientRect();
+    var mainTop = mainRect.top + window.scrollY, mainLeft = mainRect.left;
+    var pts = bars.map(function (bar) {
+      var r = bar.getBoundingClientRect();
+      return { x: r.left - mainLeft, y: r.top + window.scrollY - mainTop + r.height / 2 };
+    });
+    var x = Math.min.apply(null, pts.map(function (p) { return p.x; })) - 26;
+    var top = pts[0].y, bottom = pts[pts.length - 1].y;
+    spine.style.left = x + 'px';
+    spine.style.top = top + 'px';
+    spine.style.height = (bottom - top) + 'px';
+    pts.forEach(function (p) {
+      var d = document.createElement('i');
+      d.className = 'spine-dot';
+      d.style.top = (p.y - top) + 'px';
+      spine.appendChild(d);
+      dots.push({ dot: d, frac: (p.y - top) / (bottom - top) });
+    });
+    spine.dataset.ready = '1';
+    spine.dataset.stops = pts.length;
+    paint();
   }
-  function nodeOf(id) { for (var i = 0; i < nodes.length; i++) if (nodes[i].id === id) return nodes[i]; }
-  function select(id) {
-    nodes.forEach(function (n) { nodeEls[n.id].classList.toggle('selected', n.id === id); });
-  }
-
-  function portPos(n, out) {
-    var elNode = nodeEls[n.id];
-    return { x: n.x + (out ? elNode.offsetWidth : 0), y: n.y + elNode.offsetHeight / 2 };
-  }
-  /* React Flow default edge: horizontal bezier between the two handles */
-  function edgeD(e) {
-    var a = portPos(nodeOf(e.from), true), b = portPos(nodeOf(e.to), false);
-    var mx = (a.x + b.x) / 2;
-    return 'M' + a.x + ' ' + a.y + ' C' + mx + ' ' + a.y + ', ' + mx + ' ' + b.y + ', ' + b.x + ' ' + b.y;
-  }
-  function edgeMid(e) {
-    var a = portPos(nodeOf(e.from), true), b = portPos(nodeOf(e.to), false);
-    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
-  }
-  function paintEdges() {
-    edges.forEach(function (e) {
-      var d = edgeD(e), mid = edgeMid(e);
-      edgeEls[e.id].base.setAttribute('d', d);
-      edgeEls[e.id].pulse.setAttribute('d', d);
-      if (edgeEls[e.id].label) {
-        edgeEls[e.id].label.setAttribute('x', mid.x);
-        edgeEls[e.id].label.setAttribute('y', mid.y - 4);
-      }
+  function paint() {
+    var top = spine.getBoundingClientRect().top + window.scrollY;
+    var h = spine.offsetHeight || 1;
+    var progress = Math.max(0, Math.min(1, (window.scrollY + window.innerHeight * .5 - top) / h));
+    fill.style.transform = 'scaleY(' + progress + ')';
+    dots.forEach(function (n) {
+      var lit = progress >= n.frac - 0.001;
+      n.dot.classList.toggle('lit', lit);
     });
   }
-  function buildEdge(e) {
-    var base = document.createElementNS(SVG_NS, 'path');
-    base.setAttribute('class', 'flow-edge');
-    var pulse = document.createElementNS(SVG_NS, 'path');
-    pulse.setAttribute('class', 'flow-pulse');
-    edgesSvg.appendChild(base); edgesSvg.appendChild(pulse);
-    var label = null;
-    if (e.when) {
-      label = document.createElementNS(SVG_NS, 'text');
-      label.setAttribute('class', 'flow-edge-label');
-      label.setAttribute('text-anchor', 'middle');
-      label.textContent = e.when;
-      edgesSvg.appendChild(label);
-    }
-    edgeEls[e.id] = { base: base, pulse: pulse, label: label };
-  }
-
-  function buildNode(n) {
-    var d = el('div', n.marker ? 'fl-node fl-marker ' + n.marker : 'fl-node', null, inner);
-    d.dataset.id = n.id;
-    d.style.left = n.x + 'px';
-    d.style.top = n.y + 'px';
-    var st;
-    if (n.marker) {
-      if (!n.noIn) el('i', 'fl-port fl-in', null, d);
-      el('span', null, n.kind, d);
-      st = el('span', 'fl-state', '', d);
-      if (!n.noOut) el('i', 'fl-port fl-out', null, d);
-    } else {
-      if (!n.noIn) el('i', 'fl-port fl-in', null, d);
-      var k = el('div', 'fl-kind', null, d);
-      el('span', null, n.kind, k);
-      if (n.input) el('span', 'fl-badge', n.input, k);
-      st = el('span', 'fl-state', '', k);
-      el('div', 'fl-title', n.title, d);
-      if (n.sub) el('div', 'fl-sub', n.sub, d);
-      if (!n.noOut) el('i', 'fl-port fl-out', null, d);
-    }
-    d._stateEl = st;
-    nodeEls[n.id] = d;
-
-    d.addEventListener('pointerdown', function (ev) {
-      if (ev.button !== 0 || running) return;
-      ev.preventDefault();
-      select(n.id);
-      d.setPointerCapture(ev.pointerId);
-      d.classList.add('dragging');
-      var sx = ev.clientX, sy = ev.clientY, ox = n.x, oy = n.y;
-      function mv(e2) {
-        n.x = Math.max(0, Math.min(STAGE_W - d.offsetWidth, ox + (e2.clientX - sx) / zoom));
-        n.y = Math.max(0, Math.min(STAGE_H - d.offsetHeight, oy + (e2.clientY - sy) / zoom));
-        d.style.left = n.x + 'px';
-        d.style.top = n.y + 'px';
-        paintEdges();
-      }
-      function up() {
-        d.classList.remove('dragging');
-        d.removeEventListener('pointermove', mv);
-        d.removeEventListener('pointerup', up);
-        d.removeEventListener('pointercancel', up);
-      }
-      d.addEventListener('pointermove', mv);
-      d.addEventListener('pointerup', up);
-      d.addEventListener('pointercancel', up);
-    });
-  }
-
-  var addBtn = document.getElementById('flowAdd');
-  addBtn.addEventListener('click', function () {
-    if (running) return;
-    addSeq++;
-    var n = {
-      id: 'u' + addSeq, kind: '脚本任务',
-      title: '新任务 ' + addSeq, sub: '拖拽调整位置', input: '鼠标键盘',
-      x: 122, y: 60 + (addSeq * 72) % 280
-    };
-    nodes.push(n);
-    var srcId = nodeOf('t1') ? 't1' : (nodes[0] && nodes[0].id);
-    var dstId = nodeOf('n5') ? 'n5' : (nodeOf('n4') ? 'n4' : null);
-    var eIn = srcId && srcId !== n.id ? { id: 'eu' + addSeq + 'a', from: srcId, to: n.id, when: '成功后' } : null;
-    var eOut = dstId && dstId !== n.id ? { id: 'eu' + addSeq + 'b', from: n.id, to: dstId, when: '结束后' } : null;
-    buildNode(n);
-    if (eIn) { edges.push(eIn); buildEdge(eIn); }
-    if (eOut) { edges.push(eOut); buildEdge(eOut); }
-    paintEdges();
-    select(n.id);
-    statusEl.textContent = '已添加节点 / 拖拽调整位置';
-  });
-
-  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
-  function depthOf(id, seen) {
-    if (seen.indexOf(id) >= 0) return 0;
-    var ups = edges.filter(function (e) { return e.to === id; });
-    var d = 0;
-    ups.forEach(function (e) { if (seen.indexOf(e.from) < 0) d = Math.max(d, depthOf(e.from, seen.concat(id)) + 1); });
-    return d;
-  }
-
-  runBtn.addEventListener('click', async function () {
-    if (running) return;
-    running = true;
-    runBtn.disabled = true;
-    board.classList.add('is-running');
-    nodes.forEach(function (n) {
-      nodeEls[n.id].classList.remove('active', 'done');
-      nodeEls[n.id]._stateEl.textContent = '';
-    });
-    edges.forEach(function (e) { edgeEls[e.id].pulse.classList.remove('active'); });
-    logEl.textContent = '[06:30:00] pipeline / 325 · start';
-    var step = reduced ? 80 : 760;
-    var maxD = 0;
-    nodes.forEach(function (n) { maxD = Math.max(maxD, depthOf(n.id, [])); });
-    for (var d = 0; d <= maxD; d++) {
-      var layer = nodes.filter(function (n) { return depthOf(n.id, []) === d; });
-      layer.forEach(function (n) {
-        edges.filter(function (e) { return e.to === n.id; }).forEach(function (e) {
-          edgeEls[e.id].pulse.classList.add('active');
-        });
-        nodeEls[n.id].classList.add('active');
-        nodeEls[n.id]._stateEl.textContent = '运行中';
-      });
-      statusEl.textContent = d === 0 ? '01 / 等待定时触发'
-        : d === maxD ? '03 / 汇总结果 → 飞书' : '02 / 节点执行 · 资源冲突时排队';
-      await sleep(step);
-      layer.forEach(function (n) {
-        nodeEls[n.id].classList.remove('active');
-        nodeEls[n.id].classList.add('done');
-        nodeEls[n.id]._stateEl.textContent = '成功';
-      });
-      logEl.textContent = d === 0 ? '[06:30:02] MAA · 日常任务 → 三月七小助手 · 材料速刷 → MaaEnd · 清体力'
-        : d === maxD ? '[06:35:01] event / 799 · 日报已生成' : '[06:30:0' + (d + 2) + '] 节点完成 · 继续';
-    }
-    edges.forEach(function (e) { edgeEls[e.id].pulse.classList.remove('active'); });
-    statusEl.textContent = '完成 / 演示动画结束';
-    board.classList.remove('is-running');
-    runBtn.disabled = false;
-    running = false;
-  });
-
-  nodes.forEach(buildNode);
-  edges.forEach(buildEdge);
-  stageZoom();
-  paintEdges();
-
-  /* ============ TITLE SPINE — vertical connector through section
-     titles; scroll fills the line and lights each reached title. */
-  (function () {
-    var spine = document.getElementById('titleSpine');
-    if (!spine) return;
-    var titles = Array.prototype.slice.call(document.querySelectorAll('.hero-title-zh, .sec-head-title'));
-    if (titles.length < 2) return;
-    var line = document.createElement('i');
-    line.className = 'spine-line';
-    var fill = document.createElement('i');
-    fill.className = 'spine-fill';
-    spine.appendChild(line); spine.appendChild(fill);
-    var dots = [];
-    function layout() {
-      spine.innerHTML = ''; spine.appendChild(line); spine.appendChild(fill); dots = [];
-      var main = document.getElementById('main');
-      var mainRect = main.getBoundingClientRect();
-      var mainTop = mainRect.top + window.scrollY, mainLeft = mainRect.left;
-      var pts = titles.map(function (t) {
-        var r = t.getBoundingClientRect();
-        return { el: t, x: r.left - mainLeft, y: r.top + window.scrollY - mainTop + r.height / 2 };
-      });
-      var vbar = document.querySelector('.hero-vbar');
-      var minX = Math.min.apply(null, pts.map(function (p) { return p.x; }));
-      var x = vbar ? vbar.getBoundingClientRect().left - mainLeft - 26 : minX - 30;
-      if (x < 20) x = minX - 30;
-      var top = pts[0].y, bottom = pts[pts.length - 1].y;
-      spine.style.left = x + 'px';
-      spine.style.top = top + 'px';
-      spine.style.height = (bottom - top) + 'px';
-      pts.forEach(function (p) {
-        var d = document.createElement('i');
-        d.className = 'spine-dot';
-        d.style.top = (p.y - top) + 'px';
-        spine.appendChild(d);
-        dots.push({ dot: d, title: p.el, frac: (p.y - top) / (bottom - top) });
-      });
-      spine.dataset.ready = '1';
-      paint();
-    }
-    function paint() {
-      var main = document.getElementById('main');
-      var top = spine.getBoundingClientRect().top + window.scrollY;
-      var h = spine.offsetHeight || 1;
-      var progress = Math.max(0, Math.min(1, (window.scrollY + window.innerHeight * .5 - top) / h));
-      fill.style.transform = 'scaleY(' + progress + ')';
-      dots.forEach(function (n) {
-        var lit = progress >= n.frac - 0.001;
-        n.dot.classList.toggle('lit', lit);
-        n.title.classList.toggle('spine-lit', lit);
-      });
-    }
-    var tick = false;
-    window.addEventListener('scroll', function () {
-      if (tick) return; tick = true;
-      requestAnimationFrame(function () { paint(); tick = false; });
-    }, { passive: true });
-    var rt = false;
-    window.addEventListener('resize', function () {
-      if (rt) return; rt = true;
-      requestAnimationFrame(function () { layout(); rt = false; });
-    }, { passive: true });
-    layout();
-  })();
-
-  window.__mgaFlow = {
-    nodeCount: function () { return nodes.length; },
-    edgeCount: function () { return edges.length; },
-    running: function () { return running; },
-    state: function (id) { return nodeEls[id] ? nodeEls[id].className : ''; },
-    pos: function (id) { var n = nodeOf(id); return n ? { x: n.x, y: n.y } : null; }
-  };
+  var tick = false;
+  window.addEventListener('scroll', function () {
+    if (tick) return; tick = true;
+    requestAnimationFrame(function () { paint(); tick = false; });
+  }, { passive: true });
+  var rt = false;
+  window.addEventListener('resize', function () {
+    if (rt) return; rt = true;
+    requestAnimationFrame(function () { layout(); rt = false; });
+  }, { passive: true });
+  layout();
 })();

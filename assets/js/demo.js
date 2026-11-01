@@ -15,7 +15,7 @@
 
   var SCEN = [
     { zh: '脚本', en: 'SCRIPTS' },
-    { zh: '编排与定时', en: 'PIPELINE' },
+    { zh: '编排与定时', en: 'SCHEDULE' },
     { zh: '监控与干预', en: 'MONITOR' },
     { zh: '游戏信息', en: 'INTEL' },
     { zh: 'Agent', en: 'AGENT' },
