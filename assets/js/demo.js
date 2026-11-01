@@ -13,14 +13,15 @@
   var outer = document.getElementById('demoOuter');
   if (!clipEl || !frame || !tabsEl) return;
 
+  /* feature: index into MGAFeature.data shown next to each demo scene */
   var SCEN = [
-    { zh: '脚本', en: 'SCRIPTS' },
-    { zh: '编排与定时', en: 'SCHEDULE' },
-    { zh: '监控与干预', en: 'MONITOR' },
-    { zh: '游戏信息', en: 'INTEL' },
-    { zh: 'Agent', en: 'AGENT' },
-    { zh: '飞书', en: 'FEISHU' }
+    { zh: '脚本', en: 'SCRIPTS', feature: 0 },
+    { zh: '监控与干预', en: 'MONITOR', feature: 2 },
+    { zh: '游戏信息', en: 'INTEL', feature: 3 },
+    { zh: 'Agent', en: 'AGENT', feature: 4 },
+    { zh: '飞书', en: 'FEISHU', feature: 5 }
   ];
+  var FEISHU = SCEN.length - 1;
 
   /* logical size + crisp layout zoom
      — transform: scale() rasterizes the frame (blurry text); setting zoom
@@ -101,8 +102,8 @@
     fills.forEach(function (f) { f.style.transform = 'scaleX(0)'; });
     labelEl.textContent = 'DEMO // ' + SCEN[i].en;
     camera = { x: .5, y: .5, zoom: 1 }; paintCamera();
-    if (window.MGAFeature) window.MGAFeature.set(i);
-    phoneShow(i === 5);
+    if (window.MGAFeature) window.MGAFeature.set(SCEN[i].feature);
+    phoneShow(i === FEISHU);
     send('select', { idx: i });
   }
   window.addEventListener('message', function (e) {
@@ -115,7 +116,7 @@
     }
     else if (d.type === 'progress' && Number.isFinite(d.frac)) {
       fills[paused.idx].style.transform = 'scaleX(' + Math.max(0, Math.min(1, d.frac)) + ')';
-      if (paused.idx === 5) phoneRender(d.elapsed || 0);
+      if (paused.idx === FEISHU) phoneRender(d.elapsed || 0);
     }
     else if (d.type === 'ended' && !REDUCED && !paused.manual && !paused.auto && !document.hidden) select((d.idx + 1) % SCEN.length);
     else if (d.type === 'error') { paused.manual = true; syncPause(); labelEl.textContent = 'DEMO // 演示暂时无法播放，请重新选择场景'; }

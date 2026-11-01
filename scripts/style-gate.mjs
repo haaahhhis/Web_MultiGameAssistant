@@ -40,6 +40,8 @@ async function assertStyles(page) {
       githubRail: document.querySelectorAll('.rail-gh').length,
       featureGrid: getComputedStyle(document.querySelector('.feat-panel-wrap'), '::before').backgroundImage,
       demoControls: css('.demo-top-controls').display,
+      scenTabs: Array.from(document.querySelectorAll('#scenTabs .scen-tab'), el => el.textContent.trim()),
+      staticFeature: Array.from(document.querySelectorAll('#featStatic .feat-panel-zh, #featStatic .feat-item'), el => el.textContent.trim()),
       overflow: document.documentElement.scrollWidth > innerWidth
     };
   });
@@ -60,6 +62,9 @@ async function assertStyles(page) {
   assert.equal(styles.githubRail, 0);
   assert.notEqual(styles.featureGrid, 'none');
   assert.equal(styles.demoControls, 'flex');
+  assert.deepEqual(styles.scenTabs, ['脚本', '监控与干预', '游戏信息', 'Agent', '飞书'], 'orchestration demo tab must be removed');
+  assert.equal(styles.staticFeature[0], '编排与定时', 'orchestration capability card must stay');
+  assert.equal(styles.staticFeature.length, 6);
   assert.equal(styles.overflow, false);
 }
 
@@ -147,8 +152,8 @@ try {
         await page.evaluate(() => window.scrollBy(0, -180));
         await page.waitForFunction(previous => Math.abs(new DOMMatrixReadOnly(getComputedStyle(document.querySelector('.bridge-wordmark')).transform).m41 - previous) < 2, before);
       }
-      await page.locator('.feat-panel-wrap').scrollIntoViewIfNeeded();
-      await page.waitForFunction(() => document.querySelector('.feat-panel-wrap').classList.contains('is-visible'), null, { polling: 100 });
+      await page.locator('.feat-panel-wrap:not(.feat-panel-static)').scrollIntoViewIfNeeded();
+      await page.waitForFunction(() => document.querySelector('.feat-panel-wrap:not(.feat-panel-static)').classList.contains('is-visible'), null, { polling: 100 });
       await page.waitForFunction(() => window.__mgaDemo && window.__mgaDemo.state().ready, null, { polling: 100 });
       await page.evaluate(() => { window.__mgaDemo.pause(); window.MGAFeature.set(5); });
       await page.waitForFunction(() => document.querySelector('#featPanelZh').textContent === '飞书', null, { polling: 100 });
@@ -157,7 +162,7 @@ try {
       const heading = await page.locator('#featPanelZh').evaluate(el => getComputedStyle(el).animationName);
       assert.equal(heading, reducedMotion === 'reduce' ? 'none' : 'featureHeading');
       if (shots) {
-        await page.locator('.feat-panel-wrap').evaluate(el => window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top - 90));
+        await page.locator('.feat-panel-wrap:not(.feat-panel-static)').evaluate(el => window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top - 90));
         await page.screenshot({ path: path.join(shots, `${name}-feishu.png`), animations: 'disabled' });
       }
       console.log('PASS computed styles:', name);

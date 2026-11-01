@@ -420,6 +420,7 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
   width: 210px; height: 210px; pointer-events: none;
   background: repeating-radial-gradient(circle, transparent 0 27px, rgba(25,25,25,.07) 28px 29px, transparent 30px 38px);
 }
+.feat-panel-static { min-height: 0; }
 .feat-panel { position: relative; z-index: 1; padding: 30px 34px 36px; }
 .feat-panel-head {
   display: flex; align-items: baseline; gap: 20px;

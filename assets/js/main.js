@@ -276,17 +276,18 @@
   var featCounter = document.getElementById('featureCounter');
   var featIdx = -1;
 
-  var featPanelWrap = document.querySelector('.feat-panel-wrap');
+  var featPanelWraps = Array.prototype.slice.call(document.querySelectorAll('.feat-panel-wrap'));
   if (REDUCED || !('IntersectionObserver' in window)) {
-    featPanelWrap.classList.add('is-visible');
+    featPanelWraps.forEach(function (wrap) { wrap.classList.add('is-visible'); });
   } else {
     var featureObserver = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) {
-        featPanelWrap.classList.add('is-visible');
-        featureObserver.disconnect();
-      }
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        featureObserver.unobserve(entry.target);
+      });
     }, { threshold: .15 });
-    featureObserver.observe(featPanelWrap);
+    featPanelWraps.forEach(function (wrap) { featureObserver.observe(wrap); });
   }
 
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
@@ -302,8 +303,12 @@
       featPanelZh.classList.add('scene-enter');
     }
     featPanelEn.textContent = /MODULE-\d+/.test(d.en) ? d.en : d.en + ' // MODULE-' + pad(i + 1);
+    featPanelBody.replaceChildren(featureList(d.items));
+  }
+
+  function featureList(items) {
     var ul = document.createElement('ul');
-    d.items.forEach(function (item, index) {
+    items.forEach(function (item, index) {
       var li = document.createElement('li');
       li.className = 'feat-item';
       li.style.setProperty('--item-index', index);
@@ -323,8 +328,13 @@
       li.appendChild(txt);
       ul.appendChild(li);
     });
-    featPanelBody.replaceChildren(ul);
+    return ul;
   }
+
+  document.querySelectorAll('.feat-panel-static [data-feature]').forEach(function (body) {
+    var d = FEATURE_DATA[Number(body.dataset.feature)];
+    if (d) body.replaceChildren(featureList(d.items));
+  });
 
   window.MGAFeature = {
     data: FEATURE_DATA,

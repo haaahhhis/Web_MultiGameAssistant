@@ -1,4 +1,4 @@
-import { emit, world, resetWorld, lastRun } from '../gateway/fake.ts';
+import { emit, world, resetWorld } from '../gateway/fake.ts';
 import { clock } from './clock.ts';
 
 type Step = { kind: 'wait'; ms: number } | { kind: 'go'; hash: string } | { kind: 'click'; target: string } | { kind: 'type'; target: string; text: string } | { kind: 'focus'; target: string; zoom: number } | { kind: 'effect'; run: () => void };
@@ -12,13 +12,6 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 let current = -1, total = 0, seeking = false;
 const post = (type: string, payload: object = {}) => parent.postMessage({ src: 'mga-demo', type, idx: current, ...payload }, location.origin);
 const progress = () => post('progress', { frac: total ? Math.min(1, clock.time / total) : 0, elapsed: clock.time });
-const nodeRun = (state: string, detail?: string) => ({ state, runIds: [], attempts: state === 'pending' ? 0 : 1, ...(detail ? { detail } : {}) });
-function runPhase(nodes: Record<string, ReturnType<typeof nodeRun>>, state = 'running') {
-  const run = lastRun.current;
-  if (!run) throw new Error('流水线尚未启动');
-  Object.assign(run, { nodes: { ...run.nodes, ...nodes }, state, ...(state === 'running' ? {} : { endedAt: Date.now() }) });
-  emit('pipelines/run', run);
-}
 function incident(resolved: boolean) {
   const item = world.incidents[0];
   Object.assign(item, { status: resolved ? 'resolved' : 'open', updatedAt: Date.now(), detail: '画面停在活动公告弹窗',
@@ -35,10 +28,6 @@ function incident(resolved: boolean) {
 const scenes: Step[][] = [
   [go('#/p/scripts'), wait(700), click('导入本地项目'), focus('#import-path'), type('#import-path', 'D:\\Scripts\\March7thAssistant'),
     type('#import-name', '三月七小助手'), click('导入'), wait(900), click('让 AI 总结'), wait(3200)],
-  [go('#/p/pipelines/morning-daily'), wait(1100), focus('.pipeline-editor'), click('定时与失败'), wait(2200), click('检查'), wait(1600), click('运行'), wait(700),
-    effect(() => runPhase({ emu: nodeRun('running'), clear: nodeRun('running'), farm: nodeRun('waiting', '等待桌面资源') })), wait(2200),
-    effect(() => runPhase({ emu: nodeRun('succeeded'), clear: nodeRun('succeeded'), farm: nodeRun('running') })), wait(2200),
-    effect(() => runPhase({ farm: nodeRun('succeeded'), done: nodeRun('succeeded') }, 'succeeded')), click('运行记录'), wait(2400)],
   [go('#/p/runs'), wait(1000), effect(() => incident(false)), focus('.incident-title'), wait(2400), click('.incident-title'), wait(2400),
     effect(() => incident(true)), wait(3000)],
   [go('#/p/games/farecho'), click('刷新全部'), wait(900), focus('.version-card'), wait(3400),

@@ -39,13 +39,13 @@ async function check(name, run) {
     await page.close();
   }
 }
-const ends = ['三月七小助手是崩坏：星穹铁道的日常助手', '成功', '已关闭公告弹窗', '崩坏：星穹铁道', '已重启并重跑成功', 'MGA 助手'];
+const ends = ['三月七小助手是崩坏：星穹铁道的日常助手', '已关闭公告弹窗', '崩坏：星穹铁道', '已重启并重跑成功', 'MGA 助手'];
 try {
-  for (let index = 0; index < 6; index++) await check('scene-' + index, async page => {
+  for (let index = 0; index < ends.length; index++) await check('scene-' + index, async page => {
     await page.goto(base + 'app-demo/index.html?validate=1');
     await page.waitForFunction(() => window.__mgaDemo);
     await page.evaluate(index => { void window.__mgaDemo.select(index); }, index);
-    if (index === 3) {
+    if (index === 2) {
       for (const game of ['明日方舟', '明日方舟：终末地', '崩坏：星穹铁道']) {
         await page.waitForFunction(name => document.querySelector('.games-page .breadcrumb h1')?.textContent === name, game);
         await page.waitForFunction(() => { const image = document.querySelector('.version-art'); return image?.complete && image.naturalWidth > 0; });
@@ -55,7 +55,7 @@ try {
     await page.waitForFunction(() => { const s = window.__mgaDemo.state(); return s.total > 0 && Math.abs(s.vt - s.total) < 1; }, null, { timeout: 30000 });
     const state = await page.evaluate(() => window.__mgaDemo.state());
     assert.ok(Math.abs(state.vt - state.total) < 1, JSON.stringify(state));
-    if (index === 3) {
+    if (index === 2) {
       await page.waitForFunction(() => [...document.images].some(i => i.src.startsWith('data:image/') && i.complete && i.naturalWidth > 0));
       assert.ok(await page.locator('.game-tab[aria-selected="true"]').innerText().then(t => t.includes('崩坏：星穹铁道')));
       assert.ok(!(await page.locator('.games-page').innerText()).includes('鸣潮'));
@@ -71,7 +71,7 @@ try {
     const before = await page.evaluate(() => ({ time: window.__mgaDemo.state().vt, value: document.querySelector('#import-path')?.value }));
     await page.waitForTimeout(400);
     assert.deepEqual(await page.evaluate(() => ({ time: window.__mgaDemo.state().vt, value: document.querySelector('#import-path')?.value })), before);
-    await page.evaluate(() => { void window.__mgaDemo.select(5); void window.__mgaDemo.select(1); void window.__mgaDemo.select(3); window.__mgaDemo.play(); });
+    await page.evaluate(() => { void window.__mgaDemo.select(4); void window.__mgaDemo.select(1); void window.__mgaDemo.select(2); window.__mgaDemo.play(); });
     await page.waitForFunction(() => document.querySelector('.games-page'));
     await page.evaluate(() => { window.__mgaDemo.pause(); void window.__mgaDemo.seek(0.5); });
     await page.waitForFunction(() => { const s = window.__mgaDemo.state(); return s.vt > 0 && Math.abs(s.vt - s.total * 0.5) < 1; });

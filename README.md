@@ -41,7 +41,7 @@ python -m http.server 8080
 
 - `index.html` — 单页：首页 / 特色 / 功能介绍 / 版本发布 / 页脚
 - `assets/css/style.css` — 站点样式
-- `assets/css/demo.css` / `assets/js/demo.js` — 功能介绍里用代码绘制的软件界面与 6 个场景的动画演示
+- `assets/css/demo.css` / `assets/js/demo.js` — 功能介绍里用代码绘制的软件界面与 5 个场景的动画演示
 - `assets/js/main.js` — 加载动画、滚动动效、功能详情、GitHub Releases API 渲染
 - `favicon.svg` — 站点图标
 
@@ -98,4 +98,4 @@ PW_REQUIRE="$HOME/.cache/mga-demo-tools/package.json" node demo-build/playback-g
 
 - `demo-build/entry.ts`：安装 FakeGatewaySocket → 注入演示 token → 导入真实 `main.tsx`
 - `demo-build/gateway/fake.ts`：假 gateway；`?validate=1` 打开校验日志；未知方法会 warn
-- `demo-build/scenarios/director.ts`：六个场景的导演（路由切换、真实 DOM 交互、gateway 通知），父页面用 postMessage 控制
+- `demo-build/scenarios/director.ts`：五个场景的导演（路由切换、真实 DOM 交互、gateway 通知），父页面用 postMessage 控制

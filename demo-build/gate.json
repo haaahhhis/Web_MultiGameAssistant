@@ -5,8 +5,6 @@
   "urls": [
     { "name": "scripts", "hash": "#/p/scripts", "must": ["脚本", "MAA", "MaaEnd", "三月七小助手"] },
     { "name": "scripts-detail", "hash": "#/p/scripts/daily-helper", "must": ["三月七小助手", "每日任务", "材料速刷"] },
-    { "name": "pipelines", "hash": "#/p/pipelines", "must": ["每天早上的日常"] },
-    { "name": "pipeline-canvas", "hash": "#/p/pipelines/morning-daily", "must": ["每天早上的日常", "MAA", "MaaEnd"] },
     { "name": "runs", "hash": "#/p/runs", "must": ["出错", "三月七小助手"] },
     { "name": "games", "hash": "#/p/games", "must": ["崩坏：星穹铁道", "明日方舟"] },
     { "name": "game-detail", "hash": "#/p/games/startrail", "must": ["崩坏：星穹铁道", "活动"] },
