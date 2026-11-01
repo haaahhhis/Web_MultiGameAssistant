@@ -51,8 +51,8 @@
   }
   function fit() {
     var w = clipEl.clientWidth;
-    /* below 1100px the app is laid out at 1024 wide, so its text stays readable */
-    lw = w < 1100 ? LW_M : LW; lh = w < 1100 ? LH_M : LH;
+    /* below 1280px the app is laid out at 1024 wide, so its text stays at or near real size */
+    lw = w < 1280 ? LW_M : LW; lh = w < 1280 ? LH_M : LH;
     k = w / lw;
     clipEl.style.height = (lh * k) + 'px';
     paintCamera();

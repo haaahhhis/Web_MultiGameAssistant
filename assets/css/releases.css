@@ -8,7 +8,7 @@
 .rel-crumb {
   position: relative; z-index: 1;
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 30px;
-  max-width: 1360px; margin: 0 auto; padding: 0 7vw 36px;
+  max-width: var(--wrap); margin: 0 auto; padding: 0 7vw 36px;
   font-size: 13px;
 }
 .rel-crumb a { border-bottom: 1px solid var(--ink); }
@@ -19,7 +19,7 @@
 }
 .releases-stats b { color: var(--ink); font-size: 15px; margin-right: 6px; }
 
-.rel-block { position: relative; max-width: 1360px; margin: 0 auto; padding: 0 7vw 64px; }
+.rel-block { position: relative; max-width: var(--wrap); margin: 0 auto; padding: 0 7vw 64px; }
 .rel-block-last { padding-bottom: 90px; }
 .rel-block-title {
   display: flex; align-items: baseline; gap: 14px;
@@ -177,4 +177,41 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .rel-skel-line::after, .rel-skel-block::after { animation: none; }
+}
+
+/* 1k / 2k screens: same --k scale as style.css */
+@media (min-width: 1680px) {
+  .rel-page-head .chapter-head { padding-top: calc(80px * var(--k)); padding-bottom: calc(24px * var(--k)); }
+  .rel-page-head .chapter-title { font-size: calc(72px * var(--k)); }
+  .rel-crumb { font-size: calc(13px * var(--k)); padding-bottom: calc(36px * var(--k)); }
+  .releases-stats { font-size: calc(11px * var(--k)); }
+  .releases-stats b { font-size: calc(15px * var(--k)); }
+  .rel-block { padding-bottom: calc(64px * var(--k)); }
+  .rel-block-title { font-size: calc(22px * var(--k)); margin-bottom: calc(20px * var(--k)); }
+  .rel-block-title span { font-size: calc(13px * var(--k)); }
+  .rel-k { font-size: calc(11px * var(--k)); }
+  .rel-latest { padding: calc(30px * var(--k)) calc(32px * var(--k)) calc(34px * var(--k)); }
+  .rel-tag { font-size: calc(60px * var(--k)); }
+  .rel-badge { font-size: calc(11px * var(--k)); }
+  .rel-date { font-size: calc(12px * var(--k)); }
+  .rel-name { font-size: calc(15px * var(--k)); }
+  .rel-latest-grid { grid-template-columns: minmax(0, calc(360px * var(--k))) minmax(0, 1fr); gap: calc(40px * var(--k)); }
+  .rel-asset { font-size: calc(13px * var(--k)); padding: calc(10px * var(--k)) calc(14px * var(--k)); }
+  .rel-asset-text small, .rel-gh { font-size: calc(11px * var(--k)); }
+  .rel-asset-meta, .rel-permalink { font-size: calc(10.5px * var(--k)); }
+  .rel-notes { font-size: calc(14px * var(--k)); max-width: calc(820px * var(--k)); }
+  .rel-notes h2 { font-size: calc(17px * var(--k)); }
+  .rel-notes h3, .rel-notes h4 { font-size: calc(15px * var(--k)); }
+  .rel-notes code, .rel-how-card > p code, .rel-how .code-block code { font-size: calc(12px * var(--k)); }
+  .rel-how { gap: calc(18px * var(--k)); }
+  .rel-how-card { padding: calc(22px * var(--k)); }
+  .rel-how-card h3 { font-size: calc(18px * var(--k)); }
+  .rel-how-card > p { font-size: calc(13.5px * var(--k)); }
+  .rel-item summary { padding: calc(15px * var(--k)) calc(20px * var(--k)); }
+  .rel-item-tag { font-size: calc(16px * var(--k)); }
+  .rel-item-name { font-size: calc(13px * var(--k)); }
+  .rel-item-date { font-size: calc(11px * var(--k)); }
+  .rel-item-body { padding: calc(18px * var(--k)) calc(20px * var(--k)) calc(22px * var(--k)); }
+  .rel-req { max-width: calc(860px * var(--k)); }
+  .rel-req > div { grid-template-columns: calc(120px * var(--k)) minmax(0, 1fr); }
 }
