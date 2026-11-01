@@ -13,14 +13,18 @@
   var outer = document.getElementById('demoOuter');
   if (!clipEl || !frame || !tabsEl) return;
 
+  /* scene indexes are fixed by the demo director; ORDER is the order of the
+     homepage timeline (08:30 脚本 → 09:00 编排 → 10:20 干预 → 10:50 飞书 → 10:58 Agent → 12:30 游戏) */
   var SCEN = [
-    { zh: '脚本', en: 'SCRIPTS' },
-    { zh: '编排与定时', en: 'SCHEDULE' },
-    { zh: '监控与干预', en: 'MONITOR' },
-    { zh: '游戏信息', en: 'INTEL' },
-    { zh: 'Agent', en: 'AGENT' },
-    { zh: '飞书', en: 'FEISHU' }
+    { zh: '脚本', en: 'SCRIPTS', t: '08:30' },
+    { zh: '编排与定时', en: 'SCHEDULE', t: '09:00' },
+    { zh: '监控与干预', en: 'MONITOR', t: '10:20' },
+    { zh: '游戏信息', en: 'INTEL', t: '12:30' },
+    { zh: 'Agent', en: 'AGENT', t: '10:58' },
+    { zh: '飞书', en: 'FEISHU', t: '10:50' }
   ];
+  var ORDER = [0, 1, 2, 5, 4, 3];
+  function nextScene(i, step) { return ORDER[(ORDER.indexOf(i) + step + ORDER.length) % ORDER.length]; }
 
   /* logical size + crisp layout zoom
      — transform: scale() rasterizes the frame (blurry text); setting zoom
@@ -73,19 +77,28 @@
     pauseBtn.setAttribute('aria-label', paused.manual ? '播放演示' : '暂停演示');
     syncPause();
   });
-  SCEN.forEach(function (s, i) {
+  ORDER.forEach(function (i) {
+    var s = SCEN[i];
     var b = mk('button', 'scen-tab', null, tabsEl);
     b.setAttribute('role', 'tab');
-    mk('span', null, s.zh, b);
+    var name = mk('span', 'scen-name', null, b);
+    mk('em', 'scen-time', s.t, name);
+    name.appendChild(document.createTextNode(s.zh));
     var tr = mk('span', 'scen-track', null, b);
     fills[i] = mk('i', 'scen-fill', null, tr);
-    b.addEventListener('click', function () { select(i); });
+    b.addEventListener('click', function () { choose(i); });
     b.addEventListener('keydown', function (e) {
-      var n = e.key === 'ArrowRight' ? (i + 1) % SCEN.length : e.key === 'ArrowLeft' ? (i - 1 + SCEN.length) % SCEN.length : -1;
-      if (n >= 0) { e.preventDefault(); tabBtns[n].focus(); select(n); }
+      var n = e.key === 'ArrowRight' ? nextScene(i, 1) : e.key === 'ArrowLeft' ? nextScene(i, -1) : -1;
+      if (n >= 0) { e.preventDefault(); tabBtns[n].focus(); choose(n); }
     });
     tabBtns[i] = b;
   });
+
+  /* a tab click also brings the matching timeline stop into view */
+  function choose(i) {
+    select(i);
+    if (window.MGAFeature && window.MGAFeature.reveal) window.MGAFeature.reveal(i);
+  }
 
   /* bridge */
   function send(type, data) {
@@ -117,7 +130,8 @@
       fills[paused.idx].style.transform = 'scaleX(' + Math.max(0, Math.min(1, d.frac)) + ')';
       if (paused.idx === 5) phoneRender(d.elapsed || 0);
     }
-    else if (d.type === 'ended' && !REDUCED && !paused.manual && !paused.auto && !document.hidden) select((d.idx + 1) % SCEN.length);
+    /* on the scroll-driven timeline a scene replays until the reader moves on */
+    else if (d.type === 'ended' && !REDUCED && !paused.manual && !paused.auto && !document.hidden) select(window.MGAFeature && window.MGAFeature.scrollDriven ? d.idx : nextScene(d.idx, 1));
     else if (d.type === 'error') { paused.manual = true; syncPause(); labelEl.textContent = 'DEMO // 演示暂时无法播放，请重新选择场景'; }
   });
 

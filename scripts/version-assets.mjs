@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,11 +11,14 @@ export function versionAssets(html, readAsset) {
 }
 
 export function syncAssets(root = fileURLToPath(new URL('../', import.meta.url)), check = false) {
-  const file = path.join(root, 'index.html');
-  const html = readFileSync(file, 'utf8');
-  const versioned = versionAssets(html, asset => readFileSync(path.join(root, asset)));
-  if (check && html !== versioned) throw new Error('Static asset versions are stale. Run: node scripts/version-assets.mjs');
-  if (!check && html !== versioned) writeFileSync(file, versioned);
+  const pages = readdirSync(root).filter(name => name.endsWith('.html'));
+  for (const page of pages) {
+    const file = path.join(root, page);
+    const html = readFileSync(file, 'utf8');
+    const versioned = versionAssets(html, asset => readFileSync(path.join(root, asset)));
+    if (check && html !== versioned) throw new Error(`Static asset versions are stale in ${page}. Run: node scripts/version-assets.mjs`);
+    if (!check && html !== versioned) writeFileSync(file, versioned);
+  }
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

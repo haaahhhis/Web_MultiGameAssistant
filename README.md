@@ -16,7 +16,7 @@ python -m http.server 8080
 ## 启用 GitHub Pages
 
 仓库 Settings → Pages → Source 选择 **Deploy from a branch**，Branch 选 `main` / `/ (root)`，保存后站点会发布在
-`https://haaahhhis.github.io/Web_MultiGameAssistant-/`。
+`https://haaahhhis.github.io/Web_MultiGameAssistant/`。
 
 > 所有资源路径均为相对路径，可在子路径下正常工作。`.nojekyll` 已包含，用于跳过 Jekyll 处理。
 
@@ -24,7 +24,7 @@ python -m http.server 8080
 
 首页 CSS / JS 地址带文件内容的 SHA-256 前 12 位作为 `?v=`，避免新版 HTML 与浏览器缓存的旧样式混用。资源仍是普通静态文件，不需要服务器逻辑，也不改变现有视觉样式。
 
-修改 `assets/` 下的 CSS / JS 后运行 `node scripts/version-assets.mjs`，并一同提交更新后的 `index.html`。`node demo-build/build.mjs` 也会自动刷新这些版本。PR 和 main 的静态检查会运行 `node scripts/version-assets.mjs --check`，阻止漏更新版本号。
+修改 `assets/` 下的 CSS / JS 后运行 `node scripts/version-assets.mjs`，并一同提交更新后的根目录 HTML（`index.html`、`releases.html`）。`node demo-build/build.mjs` 也会自动刷新这些版本。PR 和 main 的静态检查会运行 `node scripts/version-assets.mjs --check`，阻止漏更新版本号。
 
 `PW_REQUIRE="$HOME/.cache/mga-demo-tools/package.json" node scripts/style-gate.mjs` 检查桌面 / 移动端 / 减少动态效果的实际计算样式，并用真实 HTTP 缓存复现旧版升级。可用 `DEMO_SITE_BASE` 指定静态子路径、`DEMO_SHOTS` 保存截图。
 
@@ -35,17 +35,20 @@ python -m http.server 8080
 - 游戏 API 只在**开发机重新构建时**刷新；将更新后的 `app-demo/` 与 `data/` 一起提交发布即可。访客打开页面或点演示中的「刷新全部」只读取演示快照，不会实时访问 SRA API。
 - 不用把 `demo-build/`、`scripts/` 或主项目依赖部署到服务器；GitHub Pages 只托管已经生成的文件。
 
-可用 `DEMO_SITE_BASE="https://haaahhhis.github.io/Web_MultiGameAssistant-/"` 运行下文的播放 gate，检查实际发布站点。尚未合并的修改不会出现在该线上地址。
+可用 `DEMO_SITE_BASE="https://haaahhhis.github.io/Web_MultiGameAssistant/"` 运行下文的播放 gate，检查实际发布站点。尚未合并的修改不会出现在该线上地址。
 
 ## 结构
 
-- `index.html` — 单页：首页 / 特色 / 功能介绍 / 版本发布 / 页脚
-- `assets/css/style.css` — 站点样式
-- `assets/css/demo.css` / `assets/js/demo.js` — 功能介绍里用代码绘制的软件界面与 6 个场景的动画演示
-- `assets/js/main.js` — 加载动画、滚动动效、功能详情、GitHub Releases API 渲染
+- `index.html` — 宣传主页，六个章节：首页 / 你的一天（时间线 + 演示）/ 九大亮点 / 开始使用 / 支持清单 / 安全与问答，结尾下载区和页脚
+- `releases.html` — 版本发布页：最新版本下载、安装与更新方式、全部版本（`releases.html#v1.1.0` 可直接定位并展开）、系统要求
+- `assets/css/style.css` — 两个页面共用的样式；`assets/css/releases.css` — 版本发布页样式
+- `assets/css/demo.css` / `assets/js/demo.js` — 「你的一天」里的真实界面演示；滚动到某个时间点时切换到对应场景，场景播完原地重放
+- `assets/js/main.js` — 加载动画（每个会话只播一次）、滚动动效、时间线联动、安装方式切换、复制按钮、首页下载按钮与最新版本条
+- `assets/js/release-data.js` — 两个页面共用的版本数据读取与下载选择；`assets/js/releases.js` — 版本发布页渲染
+- `assets/img/` — 软件真实截图（webp）与分享卡片图 `og-cover.jpg`
 - `favicon.svg` — 站点图标
 
-版本发布区块在客户端请求 GitHub Releases API（6 秒超时、10 分钟 sessionStorage 缓存），无需后端。
+版本数据在客户端请求 GitHub Releases API（6 秒超时、10 分钟 sessionStorage 缓存，两个页面共用），无需后端。
 
 ## Releases 快照
 
