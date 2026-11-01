@@ -12,11 +12,11 @@
   <meta property="og:image" content="https://haaahhhis.github.io/Web_MultiGameAssistant/assets/img/og-cover.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=c910c23a86ac">
+  <link rel="stylesheet" href="assets/css/style.css?v=f706eb0be74e">
   <link rel="stylesheet" href="assets/css/demo.css?v=1d6f0afedaeb">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
   <script src="assets/js/release-data.js?v=5c3d6dae6fb3" defer></script>
-  <script src="assets/js/main.js?v=66775fcf02a3" defer></script>
+  <script src="assets/js/main.js?v=fb32d644a89f" defer></script>
   <script src="assets/js/demo.js?v=c162a4b3c453" defer></script>
 </head>
 <body>
@@ -164,17 +164,29 @@
             </a>
           </div>
 
-          <figure class="hero-visual reveal-block">
-            <div class="shot-frame">
-              <div class="shot-bar" aria-hidden="true"><span>SCREEN // PIPELINE CANVAS</span><span>点击看完整界面 ⤢</span></div>
-              <a class="shot-zoom" href="assets/img/pipeline-canvas.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/hero-pipeline.webp" width="1290" height="620" alt="流水线画布局部：MAA 和三月七小助手两条分支同时运行，结束后由 agent 查活动进度，再发飞书"></a>
+          <div class="hero-side">
+            <figure class="hero-visual reveal-block">
+              <div class="shot-frame">
+                <div class="shot-bar" aria-hidden="true"><span>SCREEN // PIPELINE CANVAS</span><span>点击看完整界面 ⤢</span></div>
+                <a class="shot-zoom" href="assets/img/pipeline-canvas.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/hero-pipeline.webp" width="1290" height="620" alt="流水线画布局部：MAA 和三月七小助手两条分支同时运行，结束后由 agent 查活动进度，再发飞书"></a>
+              </div>
+              <figcaption>实际界面：两条分支并行，跑完由 agent 查活动进度，再发飞书。</figcaption>
+            </figure>
+
+            <div class="hero-log reveal-block">
+              <div class="hero-log-head"><span>RUN LOG // 早间日常</span><span>示例</span></div>
+              <ol class="hero-log-list">
+                <li style="--i:0"><time>09:00</time><i class="is-run" aria-hidden="true">▶</i><span>按时开工，MAA 和三月七小助手两条分支并行</span></li>
+                <li style="--i:1"><time>09:21</time><i class="is-ok" aria-hidden="true">✓</i><span>三月七 · 日常</span><em>21 分钟</em></li>
+                <li style="--i:2"><time>09:24</time><i class="is-warn" aria-hidden="true">!</i><span>三月七 · 清体力被更新公告挡住，agent 截图处理后继续</span></li>
+                <li style="--i:3"><time>09:31</time><i class="is-ok" aria-hidden="true">✓</i><span>三月七 · 清体力</span><em>重试 1 次</em></li>
+                <li style="--i:4"><time>09:38</time><i class="is-ok" aria-hidden="true">✓</i><span>MAA · 日常</span><em>38 分钟</em></li>
+                <li style="--i:5"><time>09:47</time><i class="is-ok" aria-hidden="true">✓</i><span>agent 查活动进度：2 个活动快结束还没做</span></li>
+                <li style="--i:6" class="is-done"><time>09:49</time><i class="is-run" aria-hidden="true">→</i><span>飞书：早间日常已完成 · 3 个成功 · 用时 49 分钟</span></li>
+              </ol>
+              <a class="hero-log-more" href="#day">看看这一天是怎么过的 ↓</a>
             </div>
-            <div class="hero-toast" aria-hidden="true">
-              <span class="hero-toast-head">早间日常 · 已完成</span>
-              <span class="hero-toast-body">3 个成功 · 用时 49 分钟<br>结果已发送到飞书</span>
-            </div>
-            <figcaption>实际界面：两条分支并行，跑完由 agent 查活动进度，再发飞书。</figcaption>
-          </figure>
+          </div>
         </div>
       </div>
 

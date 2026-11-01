@@ -180,11 +180,21 @@ try {
       // a scenario tab brings its stop into view
       await page.locator('.scen-tab', { hasText: '飞书' }).click();
       await page.waitForFunction(() => document.querySelector('.day-stop.is-current').dataset.scene === '4' && document.getElementById('demoLabel').textContent === 'DEMO // FEISHU', null, { polling: 100 });
-      // the current stop is marked in ink once its .3s color transition settles
+      // the current stop gets a yellow marker and an ink time once its .3s transition settles
       await page.waitForFunction(() => {
         const el = document.querySelector('.day-stop.is-current');
-        return getComputedStyle(el).borderLeftColor === 'rgb(25, 25, 25)' && getComputedStyle(el.querySelector('.day-time span')).color === 'rgb(25, 25, 25)';
+        return getComputedStyle(el, '::before').backgroundColor === 'rgb(255, 250, 0)' && getComputedStyle(el.querySelector('.day-time span')).color === 'rgb(25, 25, 25)';
       }, null, { polling: 100, timeout: 3000 });
+      // where the title spine shows, the stop markers sit on it
+      if (width > 768) {
+        const offset = await page.evaluate(() => {
+          const spine = document.getElementById('titleSpine').getBoundingClientRect();
+          const stop = document.querySelector('.day-stop.is-current');
+          const marker = getComputedStyle(stop, '::before');
+          return Math.abs(stop.getBoundingClientRect().left + parseFloat(marker.left) + parseFloat(marker.width) / 2 - (spine.left + 1));
+        });
+        assert.ok(offset < 1.5, `timeline markers must sit on the title spine (off by ${offset}px)`);
+      }
       if (shots) await page.screenshot({ path: path.join(shots, `${name}-feishu.png`), animations: 'disabled' });
       console.log('PASS computed styles:', name);
       passed++;
