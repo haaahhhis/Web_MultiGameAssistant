@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>版本发布 — MultiGameAssistant</title>
+  <meta name="description" content="MultiGameAssistant（多游戏助手）的版本发布与更新日志：下载 Windows x64 / ARM64 安装包或 dsh 插件包，查看每个版本的新功能与修复。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="版本发布 — MultiGameAssistant">
+  <meta property="og:description" content="下载最新版，查看每个版本的新功能与修复。">
+  <meta property="og:url" content="https://haaahhhis.github.io/Web_MultiGameAssistant/releases.html">
+  <meta property="og:image" content="https://haaahhhis.github.io/Web_MultiGameAssistant/assets/img/og-cover.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css?v=c42f2be4d7ab">
+  <link rel="stylesheet" href="assets/css/releases.css?v=f66a3a0e03b0">
+  <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
+  <script src="assets/js/release-data.js?v=5c3d6dae6fb3" defer></script>
+  <script src="assets/js/main.js?v=2df878f5a752" defer></script>
+  <script src="assets/js/releases.js?v=d6a7161d6a11" defer></script>
+</head>
+<body class="page-releases">
+
+  <!-- ============ LEFT RAIL (desktop) ============ -->
+  <nav class="rail" aria-label="页面导航">
+    <ul class="rail-list">
+      <li><a class="rail-item" href="index.html#home" aria-label="首页">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 10v9h11v-9"/></svg>
+      </a></li>
+      <li><a class="rail-item" href="index.html#day" aria-label="你的一天">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+      </a></li>
+      <li><a class="rail-item" href="index.html#highlights" aria-label="九大亮点">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="4" height="4"/><rect x="10" y="4" width="4" height="4"/><rect x="16" y="4" width="4" height="4"/><rect x="4" y="10" width="4" height="4"/><rect x="10" y="10" width="4" height="4"/><rect x="16" y="10" width="4" height="4"/><rect x="4" y="16" width="4" height="4"/><rect x="10" y="16" width="4" height="4"/><rect x="16" y="16" width="4" height="4"/></svg>
+      </a></li>
+      <li><a class="rail-item" href="index.html#start" aria-label="开始使用">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14"/><path d="m7.5 10 2.5 2-2.5 2M12.5 15h4"/></svg>
+      </a></li>
+      <li><a class="rail-item" href="index.html#support" aria-label="支持清单">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4 20 8l-8 4-8-4z"/><path d="m4 12 8 4 8-4"/><path d="m4 16 8 4 8-4"/></svg>
+      </a></li>
+      <li><a class="rail-item" href="index.html#faq" aria-label="安全与常见问题">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3.5 19 6v5.5c0 4.2-3 7.4-7 9-4-1.6-7-4.8-7-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
+      </a></li>
+      <li class="rail-sep" aria-hidden="true"></li>
+      <li><a class="rail-item is-active" href="releases.html" aria-label="版本发布" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v10"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>
+      </a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ TOP BAR (mobile) ============ -->
+  <header class="topbar">
+    <a class="topbar-logo" href="index.html" aria-label="MultiGameAssistant 首页">
+      <span class="topbar-logo-box" aria-hidden="true">MGA</span>
+      <span class="topbar-logo-name">MultiGameAssistant<small>多游戏助手</small></span>
+    </a>
+    <button class="topbar-burger" id="burger" aria-label="打开菜单" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-grid" aria-hidden="true"></div>
+    <span class="menu-wordmark" aria-hidden="true">// MGA</span>
+    <ul class="mobile-menu-list">
+      <li><a href="index.html#home"><span class="mm-idx">01</span><span class="mm-zh">首页</span><span class="mm-en">HOME</span></a></li>
+      <li><a href="index.html#day"><span class="mm-idx">02</span><span class="mm-zh">你的一天</span><span class="mm-en">A DAY</span></a></li>
+      <li><a href="index.html#highlights"><span class="mm-idx">03</span><span class="mm-zh">九大亮点</span><span class="mm-en">HIGHLIGHTS</span></a></li>
+      <li><a href="index.html#start"><span class="mm-idx">04</span><span class="mm-zh">开始使用</span><span class="mm-en">GET STARTED</span></a></li>
+      <li><a href="index.html#support"><span class="mm-idx">05</span><span class="mm-zh">支持清单</span><span class="mm-en">SUPPORT</span></a></li>
+      <li><a href="index.html#faq"><span class="mm-idx">06</span><span class="mm-zh">安全与问答</span><span class="mm-en">FAQ</span></a></li>
+      <li><a class="is-active" href="releases.html" aria-current="page"><span class="mm-idx">↗</span><span class="mm-zh">版本发布</span><span class="mm-en">RELEASES</span></a></li>
+    </ul>
+    <div class="mobile-menu-foot">
+      <a class="btn btn-accent" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" id="mobileMenuDownload">下载最新版</a>
+      <a class="btn btn-ghost btn-github" href="https://github.com/haaahhhis/MultiGameAssistant" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5A9.5 9.5 0 0 0 2.5 12c0 4.2 2.7 7.7 6.5 9 .5.1.6-.2.6-.5v-1.7c-2.6.6-3.2-1.2-3.2-1.2-.4-1.1-1-1.4-1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.1-.2-4.3-1-4.3-4.6 0-1 .4-1.9 1-2.5-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.6 1a9 9 0 0 1 4.7 0c1.8-1.3 2.6-1 2.6-1 .5 1.3.2 2.3.1 2.6.6.6 1 1.5 1 2.5 0 3.6-2.2 4.4-4.3 4.6.3.3.6.9.6 1.8V20c0 .3.2.6.7.5a9.5 9.5 0 0 0 6.5-9A9.5 9.5 0 0 0 12 2.5z"/></svg><span class="btn-label">GitHub 仓库</span></a>
+    </div>
+  </div>
+
+  <main class="main" id="main">
+    <!-- ============ HEAD ============ -->
+    <section class="rel-page-head" aria-label="版本发布">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <header class="chapter-head">
+        <span class="chapter-bar" aria-hidden="true"></span>
+        <p class="chapter-idx">RELEASES</p>
+        <h1 class="chapter-title">版本发布</h1>
+        <p class="chapter-sub">BUILD ARCHIVE · DOWNLOADS / CHANGELOG</p>
+      </header>
+      <p class="rel-crumb"><a href="index.html">← 返回首页</a><span class="releases-stats" id="relStats" aria-live="polite"></span></p>
+    </section>
+
+    <!-- ============ LATEST ============ -->
+    <section class="rel-block" aria-labelledby="relLatestTitle">
+      <h2 class="rel-block-title" id="relLatestTitle"><span>01</span>最新版本</h2>
+      <article class="rel-latest is-loading" id="relLatest" aria-live="polite">
+        <div class="rel-latest-head">
+          <span class="rel-tag" id="relLatestTag">v—</span>
+          <span class="rel-badge" id="relLatestBadge">读取中</span>
+          <span class="rel-date" id="relLatestDate"></span>
+        </div>
+        <p class="rel-name" id="relLatestName">正在读取版本信息…</p>
+
+        <div class="rel-latest-grid">
+          <div class="rel-latest-dl">
+            <p class="rel-k">RECOMMENDED // 推荐下载</p>
+            <a class="btn btn-primary rel-download" id="relDownload" href="https://github.com/haaahhhis/MultiGameAssistant/releases" rel="noopener"><span class="btn-label">下载最新版</span></a>
+            <div class="download-options" role="group" aria-label="Windows 安装包架构">
+              <span>安装包</span>
+              <button type="button" data-download-arch="auto" aria-pressed="true">自动</button>
+              <button type="button" data-download-arch="x64" aria-pressed="false">Windows x64</button>
+              <button type="button" data-download-arch="arm64" aria-pressed="false">Windows ARM64</button>
+            </div>
+            <p class="download-hint" id="downloadHint" aria-live="polite">无法识别时默认 Windows x64；可手动切换架构。</p>
+            <p class="rel-k">ALL FILES // 全部文件</p>
+            <div id="relLatestAssets"></div>
+            <a class="rel-gh" id="relLatestGithub" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener">在 GitHub 上查看 ↗</a>
+          </div>
+          <div class="rel-latest-notes">
+            <p class="rel-k">CHANGELOG // 更新内容</p>
+            <div class="rel-notes" id="relLatestNotes">
+              <div class="rel-skel" aria-hidden="true">
+                <div class="rel-skel-line w60"></div>
+                <div class="rel-skel-line w30"></div>
+                <div class="rel-skel-block"></div>
+                <div class="rel-skel-line w45"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ INSTALL & UPDATE ============ -->
+    <section class="rel-block" aria-labelledby="relHowTitle">
+      <h2 class="rel-block-title" id="relHowTitle"><span>02</span>安装与更新</h2>
+      <div class="rel-how">
+        <div class="rel-how-card">
+          <p class="rel-k">SETUP // 安装包</p>
+          <h3>双击安装</h3>
+          <p>x64 选 <code>MultiGameAssistant-Setup-&lt;版本&gt;.exe</code>，ARM64 选 <code>…-arm64.exe</code>。装在当前用户下，不需要管理员；支持 <code>/S</code> 静默安装。</p>
+          <p class="rel-how-update"><b>更新</b>软件内会提示新版本，一键下载并安装；也可以在这里下载新安装包覆盖安装。</p>
+        </div>
+        <div class="rel-how-card">
+          <p class="rel-k">POWERSHELL // 一行命令</p>
+          <h3>自动选包、校验、静默安装</h3>
+          <div class="code-block"><code id="relCmdInstall">irm https://raw.githubusercontent.com/haaahhhis/MultiGameAssistant/main/scripts/install.ps1 | iex</code><button type="button" class="code-copy" data-copy="relCmdInstall">复制</button></div>
+          <p class="rel-how-update"><b>更新</b>再运行一次同一条命令，设置和数据都保留。GitHub 下载慢时先设置 <code>$env:MGA_MIRROR='https://ghproxy.net/'</code>。</p>
+        </div>
+        <div class="rel-how-card">
+          <p class="rel-k">DSH PLUGIN // 插件包</p>
+          <h3>已经装了 dsh</h3>
+          <div class="code-block"><code id="relCmdDsh" data-version-fill>dsh --profile mga --from-default-profile web --help
+dsh plugin --profile mga add https://github.com/haaahhhis/MultiGameAssistant/releases/download/v&lt;版本&gt;/dsh-multigameassistant-&lt;版本&gt;.tgz
+dsh mga --no-open</code><button type="button" class="code-copy" data-copy="relCmdDsh">复制</button></div>
+          <p class="rel-how-update"><b>更新</b>用新版本的链接再 <code>add</code> 一次。第一行只在第一次运行；插件版没有托盘、开机自启和定时唤醒。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HISTORY ============ -->
+    <section class="rel-block" aria-labelledby="relHistoryTitle">
+      <h2 class="rel-block-title" id="relHistoryTitle"><span>03</span>全部版本</h2>
+      <div class="rel-history" id="relHistory"></div>
+    </section>
+
+    <!-- ============ REQUIREMENTS ============ -->
+    <section class="rel-block rel-block-last" aria-labelledby="relReqTitle">
+      <h2 class="rel-block-title" id="relReqTitle"><span>04</span>系统要求</h2>
+      <dl class="spec-table rel-req">
+        <div><dt>SYSTEM</dt><dd>Windows 10 / 11</dd></div>
+        <div><dt>ARCH</dt><dd>x64（大多数电脑）· ARM64（骁龙等 ARM 处理器）</dd></div>
+        <div><dt>INSTALL</dt><dd>装在当前用户下，不需要管理员权限</dd></div>
+        <div><dt>MODEL</dt><dd>需要一个模型 API key（DeepSeek、Claude、ChatGPT、Gemini、国内各家），或本机的 Ollama</dd></div>
+        <div><dt>SOURCE</dt><dd>版本信息读取自 GitHub Releases；无法访问时使用本站快照</dd></div>
+      </dl>
+    </section>
+
+    <footer class="footer" aria-label="页脚">
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 MultiGameAssistant · 基于 AGPL-3.0 开源</p>
+        <p class="footer-disclaimer">使用自动化程序可能违反相关游戏的用户协议，账号有被警告、限制或封禁的风险，请酌情使用。所涉游戏名称与商标归各自权利人所有。</p>
+        <button class="footer-top" id="backToTop" aria-label="回到顶部"><span aria-hidden="true">↑</span> TOP</button>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

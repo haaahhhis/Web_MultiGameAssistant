@@ -15,9 +15,15 @@
   var loaderPct = document.getElementById('loaderPct');
   var loaderStatus = document.getElementById('loaderStatus');
 
+  /* the loader plays once per session; later visits (or the releases page,
+     which has no loader) start with the content */
+  var seenLoader = false;
+  try { seenLoader = sessionStorage.getItem('mga_loader_seen') === '1'; sessionStorage.setItem('mga_loader_seen', '1'); } catch (e) { /* ignore */ }
+
   function finishLoad() {
     document.body.classList.add('anim-ready');
-    if (REDUCED) {
+    if (!loader) return;
+    if (REDUCED || seenLoader) {
       loader.remove();
       return;
     }
@@ -25,7 +31,7 @@
     setTimeout(function () { loader.remove(); }, 700);
   }
 
-  if (REDUCED) {
+  if (REDUCED || seenLoader || !loader) {
     finishLoad();
   } else {
     var start = performance.now();
@@ -170,6 +176,8 @@
     }
     window.addEventListener('scroll', scheduleBridge, { passive: true });
     window.addEventListener('resize', scheduleBridge);
+    /* the reveal slides the bridge up; measure again once it has settled */
+    bridge.addEventListener('transitionend', function (e) { if (e.target === bridge) scheduleBridge(); });
     updateBridge();
   }
 
@@ -180,16 +188,19 @@
     .filter(Boolean);
 
   function updateRail() {
+    if (!sections.length) return;
     var y = window.scrollY + window.innerHeight * 0.4;
     var current = sections[0];
     sections.forEach(function (s) { if (s.offsetTop <= y) current = s; });
     railItems.forEach(function (a) {
+      if (!a.dataset.section) return;
       var active = current && a.dataset.section === current.id;
       a.classList.toggle('is-active', active);
       if (active) a.setAttribute('aria-current', 'true');
       else a.removeAttribute('aria-current');
     });
     document.querySelectorAll('.mobile-menu-list a').forEach(function (a) {
+      if (a.getAttribute('href').charAt(0) !== '#') return;
       var active = current && a.getAttribute('href') === '#' + current.id;
       a.classList.toggle('is-active', active);
       if (active) a.setAttribute('aria-current', 'true');
@@ -205,463 +216,157 @@
   updateRail();
 
   /* ============================================================
-     Feature switcher
+     A day with MGA — timeline stops drive the sticky demo
      ============================================================ */
-  var FEATURE_DATA = [
-    {
-      zh: '脚本', en: 'SCRIPTS // MODULE-01',
-      items: [
-        ['任意脚本', 'agent 读说明和代码，写成「脚本包」草稿。'],
-        ['本地导入的脚本也能更新', '识别版本、按更新渠道在原目录更新；替换文件先备份、配置不动、可一键撤销。'],
-        ['从 Mirror酱 直接安装', '按游戏名或工具名搜索安装。'],
-        ['一键安装', '从 GitHub 安装内置脚本，可更新、回滚、删除；续传、校验、安全解压；自动补运行环境；可换下载镜像。'],
-        ['本地配置副本 & 多份配置', '大号、小号或不同任务组合互不影响。'],
-        ['模拟器', '自动检测 MuMu 及多开实例，其他模拟器可填 ADB 地址。'],
-        ['Mirror酱', '填 CDK 后增量更新，国内下载快；CDK 不可用时自动改回 GitHub。']
-      ]
-    },
-    {
-      zh: '编排与定时', en: 'SCHEDULE // MODULE-02',
-      items: [
-        ['流水线画布', '脚本任务、agent 步骤、等待、发消息、人工确认连成图；不冲突的并行执行，抢同一模拟器 / 屏幕的自动排队；失败可重试、跳过或停下。'],
-        ['运行前检查', '成环、找不到的脚本或任务、参数不对，跑之前先查出来。'],
-        ['定时', '每天定点运行；错过的时间在宽限内补跑；同天成功不重复；夏令时不出错。'],
-        ['无人值守', '开机自启进托盘、运行期间不睡眠、定时唤醒、跑完关游戏 / 模拟器 / 睡眠 / 关机。'],
-        ['用说的也行', '也可以直接对 agent 说「帮我把这几个脚本排成每天早上跑的流程」。']
-      ]
-    },
-    {
-      zh: '监控与干预', en: 'MONITOR // MODULE-03',
-      items: [
-        ['自动处理', '出错、失败、卡住、超时，先按脚本包写好的办法自动处理：重跑、等待、重启模拟器。'],
-        ['agent 接管', '处理不了时脚本暂停交给 agent：截图看画面、点击输入排除问题后让脚本继续；也可以只诊断不动手。'],
-        ['全程留痕', '每一步都有记录并推送飞书，卡片按钮可停止、继续或回答 agent。']
-      ]
-    },
-    {
-      zh: '游戏信息', en: 'INTEL // MODULE-04',
-      items: [
-        ['活动日历', '还剩几天、商店换完没、快结束没做的，一眼看到。'],
-        ['三种数据来源', '数据站（SRA 公共 API、PRTS、B 站游戏 WIKI，每天自动读，不花模型调用）；网页（agent 读官网公告或任意网址）；游戏画面（agent 进游戏看实际进度）。'],
-        ['游戏页', '版本大图、我的状态、活动卡片倒计时、全部活动时间轴。'],
-        ['更多游戏', 'SRA 公共 API 支持的 18 个游戏，其他输入名字 agent 自动建游戏包。'],
-        ['每日日报', '当天做了什么、游戏进度如何，汇总后发飞书。']
-      ]
-    },
-    {
-      zh: 'Agent', en: 'AGENT // MODULE-05',
-      items: [
-        ['模型自选', 'DeepSeek、Claude、ChatGPT、Gemini、国内各家、本机 Ollama；核心是 DeepSeek Harness。'],
-        ['斜杠命令', '/技能、/资讯、/编排、/诊断、/<技能名>。'],
-        ['技能库', '做成的事存成技能；技能库按需下载，可看差异合并。'],
-        ['对话细节', '回复风格可调、对话压缩、时间感知。'],
-        ['权限', '「每次确认」沙箱 /「完全访问」，按范围逐项允许、先问我、不允许。']
-      ]
-    },
-    {
-      zh: '飞书', en: 'FEISHU // MODULE-06',
-      items: [
-        ['长连接机器人', '飞书机器人走长连接，不需要公网地址；接收通知、日报和确认卡片。'],
-        ['飞书里直接对话', '「现在什么状态」「把日常跑一下」——和软件里是同一个 agent。'],
-        ['接入步骤', '见软件内「设置 → 飞书 → 第一次使用」。']
-      ]
-    }
-  ];
+  var stops = Array.prototype.slice.call(document.querySelectorAll('.day-stop[data-scene]'));
+  var dayStage = document.getElementById('dayStage');
+  if (stops.length) {
+    var currentStop = -1, lockUntil = 0;
+    var stopFor = function (scene) {
+      for (var i = 0; i < stops.length; i++) if (Number(stops[i].dataset.scene) === scene) return i;
+      return -1;
+    };
+    var markStop = function (i) {
+      if (i === currentStop || !stops[i]) return;
+      currentStop = i;
+      stops.forEach(function (s, j) { s.classList.toggle('is-current', j === i); });
+      var clock = document.getElementById('dayClock');
+      if (clock) scramble(clock, stops[i].dataset.time, 320);
+    };
+    /* the stop whose top passed the probe line is current; on narrow screens the
+       probe sits below the sticky demo so the stop being read is the one shown */
+    var probe = function () {
+      var stageBottom = dayStage ? dayStage.getBoundingClientRect().bottom : 0;
+      var stacked = window.matchMedia('(max-width: 1099px)').matches;
+      return stacked ? stageBottom + (window.innerHeight - stageBottom) * .35 : window.innerHeight * .45;
+    };
+    var pickStop = function () {
+      if (Date.now() < lockUntil) return;
+      var line = probe(), pick = 0;
+      stops.forEach(function (s, i) { if (s.getBoundingClientRect().top <= line) pick = i; });
+      if (pick === currentStop) return;
+      markStop(pick);
+      if (window.__mgaDemo) window.__mgaDemo.select(Number(stops[pick].dataset.scene));
+    };
+    window.MGAFeature = {
+      scrollDriven: true,
+      /* called by demo.js whenever a scene is selected */
+      set: function (scene) { var i = stopFor(scene); if (i >= 0) markStop(i); },
+      /* called when a scenario tab is clicked: bring its stop into view */
+      reveal: function (scene) {
+        var i = stopFor(scene);
+        if (i < 0) return;
+        lockUntil = Date.now() + 1000;
+        var top = stops[i].getBoundingClientRect().top + window.scrollY - probe() + 8;
+        window.scrollTo({ top: top, behavior: REDUCED ? 'auto' : 'smooth' });
+      }
+    };
+    var stopTick = false;
+    window.addEventListener('scroll', function () {
+      if (stopTick) return;
+      stopTick = true;
+      requestAnimationFrame(function () { pickStop(); stopTick = false; });
+    }, { passive: true });
+    markStop(0);
+  }
 
-  var featPanelZh = document.getElementById('featPanelZh');
-  var featPanelEn = document.getElementById('featPanelEn');
-  var featPanelIdx = document.getElementById('featPanelIdx');
-  var featPanelBody = document.getElementById('featPanelBody');
-  var featWipe = document.querySelector('.feat-panel-wipe');
-  var featCounter = document.getElementById('featureCounter');
-  var featIdx = -1;
-
-  var featPanelWraps = Array.prototype.slice.call(document.querySelectorAll('.feat-panel-wrap'));
-  if (REDUCED || !('IntersectionObserver' in window)) {
-    featPanelWraps.forEach(function (wrap) { wrap.classList.add('is-visible'); });
-  } else {
-    var featureObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        featureObserver.unobserve(entry.target);
+  /* ============================================================
+     Tabs (install methods)
+     ============================================================ */
+  document.querySelectorAll('[data-tabs]').forEach(function (group) {
+    var tabs = Array.prototype.slice.call(group.querySelectorAll('[role=tab]'));
+    function show(i, focus) {
+      tabs.forEach(function (t, j) {
+        var on = i === j;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
       });
-    }, { threshold: .15 });
-    featPanelWraps.forEach(function (wrap) { featureObserver.observe(wrap); });
-  }
-
-  function pad(n) { return n < 10 ? '0' + n : '' + n; }
-
-  function renderFeature(i) {
-    var d = FEATURE_DATA[i];
-    featPanelIdx.textContent = pad(i + 1);
-    featCounter.textContent = pad(i + 1) + ' / ' + pad(FEATURE_DATA.length);
-    scramble(featPanelZh, d.zh, 400);
-    if (!REDUCED) {
-      featPanelZh.classList.remove('scene-enter');
-      void featPanelZh.offsetWidth;
-      featPanelZh.classList.add('scene-enter');
+      if (focus) tabs[i].focus();
     }
-    featPanelEn.textContent = /MODULE-\d+/.test(d.en) ? d.en : d.en + ' // MODULE-' + pad(i + 1);
-    featPanelBody.replaceChildren(featureList(d.items));
-  }
-
-  function featureList(items) {
-    var ul = document.createElement('ul');
-    items.forEach(function (item, index) {
-      var li = document.createElement('li');
-      li.className = 'feat-item';
-      li.style.setProperty('--item-index', index);
-      var mark = document.createElement('span');
-      mark.className = 'feat-item-mark';
-      mark.setAttribute('aria-hidden', 'true');
-      var txt = document.createElement('div');
-      var t = document.createElement('span');
-      t.className = 'feat-item-title';
-      t.textContent = item[0];
-      var s = document.createElement('span');
-      s.className = 'feat-item-text';
-      s.textContent = '：' + item[1];
-      txt.appendChild(t);
-      txt.appendChild(s);
-      li.appendChild(mark);
-      li.appendChild(txt);
-      ul.appendChild(li);
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { show(i); });
+      t.addEventListener('keydown', function (e) {
+        var n = e.key === 'ArrowRight' ? (i + 1) % tabs.length : e.key === 'ArrowLeft' ? (i - 1 + tabs.length) % tabs.length : -1;
+        if (n >= 0) { e.preventDefault(); show(n, true); }
+      });
     });
-    return ul;
-  }
-
-  document.querySelectorAll('.feat-panel-static [data-feature]').forEach(function (body) {
-    var d = FEATURE_DATA[Number(body.dataset.feature)];
-    if (d) body.replaceChildren(featureList(d.items));
   });
 
-  window.MGAFeature = {
-    data: FEATURE_DATA,
-    set: function (i) {
-      if (i === featIdx) return;
-      featIdx = i;
-      if (REDUCED) { renderFeature(i); }
-      else {
-        featWipe.classList.remove('go');
-        void featWipe.offsetWidth;
-        featWipe.classList.add('go');
-        setTimeout(function () { renderFeature(i); }, 240);
-      }
-    }
-  };
-  window.MGAFeature.set(0);
-
   /* ============================================================
-     Safe mini markdown renderer
+     Copy buttons
      ============================================================ */
-  function escHtml(s) {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  function selectText(node) {
+    var range = document.createRange();
+    range.selectNodeContents(node);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
   }
-  function mdInline(s) {
-    return escHtml(s)
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-  }
-  function renderMarkdown(md) {
-    if (!md) return '<p>（无更新说明）</p>';
-    var lines = md.replace(/\r\n?/g, '\n').split('\n');
-    var html = '', inList = false, para = [];
-    function flushPara() {
-      if (para.length) { html += '<p>' + para.map(mdInline).join('<br>') + '</p>'; para = []; }
-    }
-    function closeList() {
-      if (inList) { html += '</ul>'; inList = false; }
-    }
-    lines.forEach(function (line) {
-      var t = line.trim();
-      var h = t.match(/^(#{1,6})\s+(.*)$/);
-      var li = t.match(/^[-*]\s+(.*)$/);
-      if (h) {
-        flushPara(); closeList();
-        var lv = Math.min(h[1].length, 3);
-        html += '<h' + lv + '>' + mdInline(h[2]) + '</h' + lv + '>';
-      } else if (li) {
-        flushPara();
-        if (!inList) { html += '<ul>'; inList = true; }
-        html += '<li>' + mdInline(li[1]) + '</li>';
-      } else if (t === '') {
-        flushPara(); closeList();
-      } else {
-        closeList();
-        para.push(t);
-      }
-    });
-    flushPara(); closeList();
-    return html || '<p>（无更新说明）</p>';
-  }
-
-  /* ============================================================
-     Releases (GitHub API)
-     ============================================================ */
-  var API_URL = 'https://api.github.com/repos/haaahhhis/MultiGameAssistant/releases?per_page=20';
-  var SNAPSHOT_URL = 'data/releases.json';
-  var RELEASES_PAGE = 'https://github.com/haaahhhis/MultiGameAssistant/releases';
-  var CACHE_KEY = 'mga_releases_v1';
-  var CACHE_TTL = 10 * 60 * 1000;
-
-  var featuredEl = document.getElementById('releasesFeatured');
-  var listEl = document.getElementById('releasesList');
-  var statsEl = document.getElementById('releasesStats');
-
-  function fmtDate(iso) {
-    var d = new Date(iso);
-    if (isNaN(d)) return '';
-    return d.getFullYear() + '.' + pad(d.getMonth() + 1) + '.' + pad(d.getDate());
-  }
-  function fmtSize(bytes) {
-    if (!bytes && bytes !== 0) return '';
-    var mb = bytes / 1048576;
-    return mb >= 100 ? Math.round(mb) + ' MB' : mb.toFixed(1) + ' MB';
-  }
-  function assetLabel(name) {
-    var arch = MGADownloads.assetArchitecture(name);
-    if (arch === 'arm64') return 'Windows ARM64';
-    if (arch === 'x64') return 'Windows x64（大多数电脑）';
-    return name;
-  }
-
-  function el(tag, cls, text) {
-    var e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text !== undefined) e.textContent = text;
-    return e;
-  }
-
-  function buildAssets(assets) {
-    var wrap = el('div', 'rel-assets');
-    (assets || []).forEach(function (a) {
-      var link = el('a', 'rel-asset');
-      link.href = a.browser_download_url;
-      link.target = '_blank';
-      link.rel = 'noopener';
-      var name = el('span', null, assetLabel(a.name));
-      var meta = el('span', 'rel-asset-meta', fmtSize(a.size));
-      link.appendChild(name);
-      link.appendChild(meta);
-      wrap.appendChild(link);
-    });
-    if (!wrap.children.length) {
-      var none = el('a', 'rel-asset');
-      none.href = RELEASES_PAGE;
-      none.target = '_blank';
-      none.rel = 'noopener';
-      none.appendChild(el('span', null, '前往发布页下载'));
-      wrap.appendChild(none);
-    }
-    return wrap;
-  }
-
-  function renderFeatured(rel) {
-    var card = el('article', 'rel-card');
-    var head = el('div', 'rel-card-head');
-    head.appendChild(el('span', 'rel-tag', rel.tag_name));
-    head.appendChild(el('span', rel.prerelease ? 'rel-badge pre' : 'rel-badge', rel.prerelease ? '预发布' : '最新'));
-    head.appendChild(el('span', 'rel-date', fmtDate(rel.published_at)));
-    card.appendChild(head);
-    if (rel.name && rel.name !== rel.tag_name) {
-      card.appendChild(el('p', 'rel-name', rel.name));
-    }
-    var notes = el('div', 'rel-notes');
-    notes.innerHTML = renderMarkdown(rel.body); /* renderMarkdown 内部先转义，仅接受 http/https 链接 */
-    card.appendChild(notes);
-    card.appendChild(buildAssets(rel.assets));
-    featuredEl.replaceChildren(card);
-  }
-
-  function renderList(releases) {
-    listEl.replaceChildren();
-    releases.forEach(function (rel) {
-      var det = el('details', 'rel-item');
-      var sum = document.createElement('summary');
-      sum.appendChild(el('span', 'rel-item-tag', rel.tag_name));
-      sum.appendChild(el('span', 'rel-item-name', rel.name || rel.tag_name));
-      if (rel.prerelease) sum.appendChild(el('span', 'rel-badge pre', '预发布'));
-      sum.appendChild(el('span', 'rel-item-date', fmtDate(rel.published_at)));
-      sum.appendChild(el('span', 'rel-item-plus', '+'));
-      det.appendChild(sum);
-      var body = el('div', 'rel-item-body');
-      var notes = el('div', 'rel-notes');
-      notes.innerHTML = renderMarkdown(rel.body);
-      body.appendChild(notes);
-      body.appendChild(buildAssets(rel.assets));
-      det.appendChild(body);
-      listEl.appendChild(det);
-    });
-  }
-
-  function renderStats(releases, sourceLabel) {
-    statsEl.replaceChildren();
-    var s1 = el('span', null);
-    s1.appendChild(el('b', null, String(releases.length)));
-    s1.appendChild(document.createTextNode('个已发布版本'));
-    var s3 = el('span', null, 'SOURCE // ' + sourceLabel);
-    statsEl.appendChild(s1);
-    statsEl.appendChild(s3);
-  }
-
-  function renderState(title, msg, withBtn, isError) {
-    var box = el('div', 'rel-state' + (isError ? ' is-error' : ''));
-    box.appendChild(el('strong', null, title));
-    box.appendChild(el('p', null, msg));
-    if (withBtn) {
-      var a = el('a', 'btn btn-outline');
-      a.href = RELEASES_PAGE;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      a.appendChild(el('span', 'btn-label', '前往 GitHub 发布页'));
-      box.appendChild(a);
-    }
-    featuredEl.replaceChildren(box);
-    listEl.replaceChildren();
-    statsEl.replaceChildren();
-  }
-
-  function pickLatest(releases) {
-    return MGADownloads.latest(releases);
-  }
-
-  var downloadMode = 'auto', detectedArchitecture = { arch: 'x64', detected: false }, downloadReleases = [];
-  document.querySelectorAll('[data-download-arch]').forEach(function (button) {
+  document.querySelectorAll('[data-copy]').forEach(function (button) {
     button.addEventListener('click', function () {
-      downloadMode = button.dataset.downloadArch;
-      document.querySelectorAll('[data-download-arch]').forEach(function (b) { b.setAttribute('aria-pressed', String(b === button)); });
-      updateDownloadLinks(downloadReleases);
+      var target = document.getElementById(button.dataset.copy);
+      if (!target) return;
+      var done = function () {
+        button.textContent = '已复制';
+        setTimeout(function () { button.textContent = '复制'; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(target.textContent.trim()).then(done, function () { selectText(target); });
+      } else selectText(target);
     });
   });
-  MGADownloads.detect(navigator).then(function (result) { detectedArchitecture = result; updateDownloadLinks(downloadReleases); });
 
-  function updateDownloadLinks(releases) {
-    downloadReleases = releases;
-    var latest = pickLatest(releases);
-    if (!latest) return;
-    var arch = downloadMode === 'auto' ? detectedArchitecture.arch : downloadMode;
-    var asset = MGADownloads.chooseAsset(latest, arch);
-    var href = asset ? asset.browser_download_url : RELEASES_PAGE;
-    var actual = asset && MGADownloads.assetArchitecture(asset.name);
-    var armFallback = !!asset && arch === 'arm64' && actual !== 'arm64';
-    var label = asset ? '下载 ' + latest.tag_name + ' · Windows ' + (actual === 'arm64' ? 'ARM64' : 'x64') : '查看 ' + latest.tag_name + ' 下载';
-    var hero = document.getElementById('heroDownload');
-    hero.href = href;
-    hero.querySelector('.btn-label').textContent = label;
-    var mm = document.getElementById('mobileMenuDownload');
-    mm.href = href;
-    mm.textContent = label;
-    var hint = document.getElementById('downloadHint');
-    hint.classList.toggle('is-warn', armFallback);
-    if (!asset) hint.textContent = '该版本没有可匹配的 Windows 安装包，请在发布页选择；不会链接到旧版本。';
-    else if (armFallback) hint.textContent = '该版本未提供 ARM64 包，已回退到 Windows x64；也可在下方版本发布区查看全部文件。';
-    else hint.textContent = (downloadMode !== 'auto' ? '已手动选择' : detectedArchitecture.detected ? '检测到' : '无法识别或非 Windows 设备，默认') + ' Windows ' + (actual === 'arm64' ? 'ARM64' : 'x64') + ' · 支持 Windows 10 / 11';
-  }
-
-  function handleReleases(releases, sourceLabel) {
-    var visible = (releases || []).filter(function (r) { return r && !r.draft && typeof r.tag_name === 'string'; }).sort(function (a, b) { return (Date.parse(b.published_at) || 0) - (Date.parse(a.published_at) || 0); });
-    if (!visible.length) {
-      renderState('暂无发布版本', '仓库还没有公开发布的版本，可以去 GitHub 查看进展。', true);
-      return;
-    }
-    renderStats(visible, sourceLabel);
-    var latest = pickLatest(visible);
-    renderFeatured(latest);
-    renderList(visible.filter(function (r) { return r !== latest; }));
-    updateDownloadLinks(visible);
-  }
-
-  function trimReleases(list) {
-    return (list || []).map(function (r) {
-      return {
-        tag_name: r.tag_name,
-        name: r.name,
-        draft: r.draft,
-        prerelease: r.prerelease,
-        published_at: r.published_at,
-        html_url: r.html_url,
-        body: r.body,
-        assets: (r.assets || []).map(function (a) {
-          return {
-            name: a.name,
-            size: a.size,
-            download_count: a.download_count,
-            browser_download_url: a.browser_download_url
-          };
-        })
-      };
+  /* ============================================================
+     Homepage downloads + latest version strip
+     (the full archive lives on releases.html)
+     ============================================================ */
+  var heroDownload = document.getElementById('heroDownload');
+  if (heroDownload && window.MGAReleases) {
+    var setReleases = MGAReleases.bindDownloads(function (choice) {
+      heroDownload.href = choice.href;
+      heroDownload.querySelector('.btn-label').textContent = choice.label;
+      document.querySelectorAll('[data-latest-download]').forEach(function (a) {
+        a.href = choice.href;
+        a.querySelector('.btn-label').textContent = choice.label;
+      });
+      var hint = document.getElementById('downloadHint');
+      hint.textContent = choice.hint;
+      hint.classList.toggle('is-warn', choice.warn);
+    });
+    MGAReleases.load(function (releases) {
+      var latest = MGADownloads.latest(releases);
+      if (!latest) return;
+      MGAReleases.fillVersion(latest);
+      var strip = document.getElementById('heroRelease');
+      if (strip) {
+        strip.href = 'releases.html#' + encodeURIComponent(latest.tag_name);
+        document.getElementById('heroReleaseTag').textContent = latest.tag_name;
+        document.getElementById('heroReleaseDate').textContent = MGAReleases.fmtDate(latest.published_at);
+      }
+      setReleases(releases);
     });
   }
-
-  function fetchJson(url, timeoutMs, headers) {
-    var ctrl = new AbortController();
-    var timer = setTimeout(function () { ctrl.abort(); }, timeoutMs);
-    return fetch(url, { signal: ctrl.signal, headers: headers || {} })
-      .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
-      .finally(function () { clearTimeout(timer); });
-  }
-
-  function fetchReleases() {
-    try {
-      var raw = sessionStorage.getItem(CACHE_KEY);
-      if (raw) {
-        var cached = JSON.parse(raw);
-        if (cached && Date.now() - cached.t < CACHE_TTL && Array.isArray(cached.data)) {
-          handleReleases(cached.data, 'GITHUB API');
-          return;
-        }
-      }
-    } catch (e) { /* ignore cache errors */ }
-
-    fetchJson(API_URL, 6000, { 'Accept': 'application/vnd.github+json' })
-      .then(function (data) {
-        var trimmed = trimReleases(data);
-        try {
-          sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data: trimmed }));
-        } catch (e) { /* ignore */ }
-        handleReleases(trimmed, 'GITHUB API');
-      })
-      .catch(function () {
-        /* api.github.com 不可达（如大陆网络 / 超时 / 限流）→ 回退到仓库内快照 */
-        fetchJson(SNAPSHOT_URL, 8000)
-          .then(function (data) {
-            handleReleases(trimReleases(data), '本站快照');
-          })
-          .catch(function () {
-            renderState(
-              '暂时无法获取版本信息',
-              'GitHub API 与本站快照均无法访问（API 未登录每小时限 60 次）。可直接前往发布页下载。',
-              true,
-              true
-            );
-          });
-      });
-  }
-  fetchReleases();
 
   /* ============================================================
      Back to top
      ============================================================ */
-  document.getElementById('backToTop').addEventListener('click', function () {
+  var backToTop = document.getElementById('backToTop');
+  if (backToTop) backToTop.addEventListener('click', function () {
     window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
   });
 })();
 
 
 /* ============================================================
-   TITLE SPINE — vertical connector through the four chapter bars.
+   TITLE SPINE — vertical connector through the chapter bars.
    ============================================================ */
 (function () {
   'use strict';
   var spine = document.getElementById('titleSpine');
   if (!spine) return;
   var bars = Array.prototype.slice.call(document.querySelectorAll('.chapter-bar'));
-  if (bars.length !== 4) return;
+  if (bars.length < 2) return;
   var line = document.createElement('i');
   line.className = 'spine-line';
   var fill = document.createElement('i');
