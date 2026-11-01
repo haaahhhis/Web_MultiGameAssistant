@@ -38,19 +38,23 @@ async function assertStyles(page) {
       architectureBorder: css('.download-options button').borderTopWidth,
       githubIconSize: css('.hero-ctas .btn-github svg').width,
       githubRail: document.querySelectorAll('.rail-gh').length,
-      featureGrid: getComputedStyle(document.querySelector('.feat-panel-wrap'), '::before').backgroundImage,
+      releasesLink: document.querySelector('.rail-item[href="releases.html"]') !== null,
+      heroShot: (() => { const img = document.querySelector('.hero-visual img'); return img.complete && img.naturalWidth > 0; })(),
+      dayStops: Array.from(document.querySelectorAll('.day-stop'), el => el.dataset.scene).join(','),
+      stagePosition: css('.day-stage').position,
       demoControls: css('.demo-top-controls').display,
       overflow: document.documentElement.scrollWidth > innerWidth
     };
   });
-  assert.equal(styles.spine, 4, 'title spine must connect the four chapter titles');
-  assert.equal(styles.chapterCount, 4);
-  assert.deepEqual(styles.chapterIndexes, ['01 / 04', '02 / 04', '03 / 04', '04 / 04']);
+  assert.equal(styles.spine, 6, 'title spine must connect the six chapter titles');
+  assert.equal(styles.chapterCount, 6);
+  assert.deepEqual(styles.chapterIndexes, ['01 / 06', '02 / 06', '03 / 06', '04 / 06', '05 / 06', '06 / 06']);
   assert.equal(styles.chapterBarBackground, 'rgb(255, 250, 0)');
   assert.ok(styles.chapterBarWidth >= 10);
   assert.equal(styles.bodyBackground, 'rgb(242, 242, 242)');
   assert.equal(styles.legacyPipeline, 0);
-  assert.equal(styles.railCount, 4);
+  assert.equal(styles.railCount, 7, 'six sections plus the releases page');
+  assert.ok(styles.releasesLink, 'rail must link to the releases page');
   assert.ok(styles.wordmarkSize >= 27, 'transition must display the complete wordmark');
   assert.equal(styles.wordmark, '// MultiGameAssistant');
   assert.ok(styles.wordmarkFits, 'complete name must fit in the bridge at this viewport');
@@ -58,7 +62,9 @@ async function assertStyles(page) {
   assert.equal(styles.architectureBorder, '1px');
   assert.equal(styles.githubIconSize, '18px');
   assert.equal(styles.githubRail, 0);
-  assert.notEqual(styles.featureGrid, 'none');
+  assert.ok(styles.heroShot, 'hero screenshot must load');
+  assert.equal(styles.dayStops, '0,1,2,5,4,3', 'timeline stops follow the day, mapped to demo scenes');
+  assert.equal(styles.stagePosition, 'sticky');
   assert.equal(styles.demoControls, 'flex');
   assert.equal(styles.overflow, false);
 }
@@ -147,19 +153,28 @@ try {
         await page.evaluate(() => window.scrollBy(0, -180));
         await page.waitForFunction(previous => Math.abs(new DOMMatrixReadOnly(getComputedStyle(document.querySelector('.bridge-wordmark')).transform).m41 - previous) < 2, before);
       }
-      await page.locator('.feat-panel-wrap').scrollIntoViewIfNeeded();
-      await page.waitForFunction(() => document.querySelector('.feat-panel-wrap').classList.contains('is-visible'), null, { polling: 100 });
+      await page.locator('#dayStage').scrollIntoViewIfNeeded();
       await page.waitForFunction(() => window.__mgaDemo && window.__mgaDemo.state().ready, null, { polling: 100 });
-      await page.evaluate(() => { window.__mgaDemo.pause(); window.MGAFeature.set(5); });
-      await page.waitForFunction(() => document.querySelector('#featPanelZh').textContent === '飞书', null, { polling: 100 });
-      const motion = await page.locator('.feat-item').first().evaluate(el => getComputedStyle(el).animationName);
-      assert.equal(motion, reducedMotion === 'reduce' ? 'none' : 'featureArrive');
-      const heading = await page.locator('#featPanelZh').evaluate(el => getComputedStyle(el).animationName);
-      assert.equal(heading, reducedMotion === 'reduce' ? 'none' : 'featureHeading');
-      if (shots) {
-        await page.locator('.feat-panel-wrap').evaluate(el => window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top - 90));
-        await page.screenshot({ path: path.join(shots, `${name}-feishu.png`), animations: 'disabled' });
+      // scrolling a timeline stop up to the reading line selects its scene in the sticky demo
+      for (let pass = 0; pass < 2; pass++) {
+        await page.evaluate(() => {
+          const stop = document.querySelector('.day-stop[data-scene="2"]');
+          const stageBottom = document.getElementById('dayStage').getBoundingClientRect().bottom;
+          const line = matchMedia('(max-width: 1099px)').matches ? stageBottom + (innerHeight - stageBottom) * .35 : innerHeight * .45;
+          window.scrollBy(0, stop.getBoundingClientRect().top - line + 10);
+        });
+        await page.waitForTimeout(150);
       }
+      await page.waitForFunction(() => document.querySelector('.day-stop.is-current').dataset.scene === '2' && window.__mgaDemo.state().idx === 2, null, { polling: 100 });
+      // a scenario tab brings its stop into view
+      await page.locator('.scen-tab', { hasText: '飞书' }).click();
+      await page.waitForFunction(() => document.querySelector('.day-stop.is-current').dataset.scene === '5' && document.getElementById('demoLabel').textContent === 'DEMO // FEISHU', null, { polling: 100 });
+      // the current stop is marked in ink once its .3s color transition settles
+      await page.waitForFunction(() => {
+        const el = document.querySelector('.day-stop.is-current');
+        return getComputedStyle(el).borderLeftColor === 'rgb(25, 25, 25)' && getComputedStyle(el.querySelector('.day-time span')).color === 'rgb(25, 25, 25)';
+      }, null, { polling: 100, timeout: 3000 });
+      if (shots) await page.screenshot({ path: path.join(shots, `${name}-feishu.png`), animations: 'disabled' });
       console.log('PASS computed styles:', name);
       passed++;
     } finally { await page.close(); }

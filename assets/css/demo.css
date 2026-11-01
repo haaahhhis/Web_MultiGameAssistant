@@ -1,6 +1,4 @@
 /* ============ FEATURE DEMO (iframe bridge + tab row) ============ */
-.feat-layout { position: relative; z-index: 1; padding: 0 7vw; max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
-.feat-layout .feat-panel-wrap { max-width: 1120px; margin: 0 auto; width: 100%; }
 .demo-outer { position: relative; max-width: 1120px; margin: 0 auto; width: 100%; }
 .demo-outer::before, .demo-outer::after { content: ''; position: absolute; width: 14px; height: 14px; border: 2px solid var(--ink); z-index: 2; }
 .demo-outer::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
@@ -18,7 +16,7 @@
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
 /* scenario tabs */
-.scen-tabs { display: flex; align-items: center; gap: 8px; max-width: 1120px; margin: 0 auto; width: 100%; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
+.scen-tabs { display: flex; align-items: center; gap: 8px; max-width: 1120px; margin: 14px auto 0; width: 100%; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
 .scen-tabs::-webkit-scrollbar { display: none; }
 .scen-tab { flex: 1 0 auto; min-width: 90px; display: flex; flex-direction: column; gap: 5px; padding: 6px 2px; font-size: 12.5px; color: var(--grey-600); text-align: left; white-space: nowrap; scroll-snap-align: start; }
 .scen-tab.on { color: var(--ink); font-weight: 700; }
@@ -46,7 +44,7 @@
 .fs-card-btns b + b { border-left: 1px solid #f0f0f0; }
 .fs-card-btns b.on { background: #6fe3ee; color: #0c4a52; }
 
-@media (max-width: 768px) { .feat-layout { padding: 0 6vw; } .scen-tab { padding: 6px 10px; } .demo-phone { width: 200px; right: 10px; } }
+@media (max-width: 768px) { .scen-tab { padding: 6px 10px; } .demo-phone { width: 200px; right: 10px; } }
 @media (prefers-reduced-motion: reduce) { .fs-msg, .fs-card, .demo-phone { transition: none; } }
 
 /* feishu dark phone (recording-accurate) */

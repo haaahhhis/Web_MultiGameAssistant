@@ -8,7 +8,7 @@ const asset = (version, arch) => ({ name: `MultiGameAssistant-Setup-${version}${
 const release = (version = '2.0.0', arches = ['x64', 'arm64']) => ({ tag_name: 'v' + version, published_at: '2026-10-31T10:00:00Z', body: 'Release notes', assets: arches.map(a => asset(version, a)) });
 let passed = 0;
 async function check(name, options, run) {
-  const context = await browser.newContext({ viewport: options.mobile ? { width: 390, height: 844 } : { width: 1280, height: 900 } });
+  const context = await browser.newContext({ viewport: options.mobile ? { width: 390, height: 844 } : { width: 1280, height: 900 }, userAgent: options.userAgent });
   await context.addInitScript(({ arch, platform }) => {
     Object.defineProperty(navigator, 'platform', { value: platform });
     Object.defineProperty(navigator, 'userAgentData', { value: { platform, getHighEntropyValues: async () => ({ architecture: arch, bitness: '64' }) } });
@@ -18,19 +18,20 @@ async function check(name, options, run) {
   await page.route('https://api.github.com/**', r => options.offline ? r.fulfill({ status: 503, json: {} }) : r.fulfill({ json: options.releases ?? [release()] }));
   if (options.offline) await page.route('**/data/releases.json', r => r.fulfill({ json: [release()] }));
   try {
-    await page.goto(base);
-    await page.waitForFunction(() => document.querySelector('#heroDownload').textContent.includes('v2.0.0'));
+    await page.goto(base + (options.page ?? ''));
+    await page.waitForFunction(selector => document.querySelector(selector).textContent.includes('v2.0.0'), options.page ? '#relDownload' : '#heroDownload');
     await run(page);
     assert.deepEqual(errors, []);
     passed++; console.log('PASS', name);
   } finally { await context.close(); }
 }
-const href = page => page.locator('#heroDownload').getAttribute('href');
+const href = page => page.locator('#heroDownload, #relDownload').first().getAttribute('href');
 try {
   await check('Windows x64 automatic', {}, async p => assert.match(await href(p), /setup-x64\.exe$/));
   await check('Windows ARM64 automatic', { arch: 'arm' }, async p => assert.match(await href(p), /setup-arm64\.exe$/));
   await check('unrecognized architecture defaults x64', { arch: '' }, async p => assert.match(await href(p), /setup-x64\.exe$/));
-  await check('non-Windows defaults Windows x64', { platform: 'macOS', arch: 'arm' }, async p => assert.match(await href(p), /setup-x64\.exe$/));
+  // the UA is set too: on a Windows host Chrome's real UA would still say Windows
+  await check('non-Windows defaults Windows x64', { platform: 'macOS', arch: 'arm', userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' },async p => assert.match(await href(p), /setup-x64\.exe$/));
   await check('missing ARM64 falls back x64', { arch: 'arm', releases: [release('2.0.0', ['x64'])] }, async p => {
     assert.match(await href(p), /setup-x64\.exe$/);
     assert.match(await p.locator('#downloadHint').innerText(), /回退/);
@@ -45,9 +46,19 @@ try {
   });
   await check('new stable release supersedes old and preview', { releases: [{ ...release('3.0.0-beta'), prerelease: true }, { ...release('1.0.0'), published_at: '2026-01-01' }, release()] }, async p => {
     assert.match(await href(p), /v2\.0\.0/);
-    assert.equal(await p.locator('#releasesFeatured .rel-tag').innerText(), 'v2.0.0');
+    assert.equal(await p.locator('#heroReleaseTag').innerText(), 'v2.0.0');
+    assert.equal(await p.locator('#heroRelease').getAttribute('href'), 'releases.html#v2.0.0');
   });
-  await check('API unavailable uses static snapshot', { offline: true }, async p => assert.match(await p.locator('#releasesStats').innerText(), /本站快照/));
+  await check('releases page shows latest, archive and deep links', { page: 'releases.html', releases: [{ ...release('1.0.0'), published_at: '2026-01-01' }, release()] }, async p => {
+    assert.equal(await p.locator('#relLatestTag').innerText(), 'v2.0.0');
+    assert.equal(await p.locator('#relHistory details').count(), 2);
+    assert.match(await href(p), /v2\.0\.0\/setup-x64\.exe$/);
+    assert.match(await p.locator('#relCmdDsh').innerText(), /download\/v2\.0\.0\/dsh-multigameassistant-2\.0\.0\.tgz/);
+    assert.equal(await p.locator('.rail-item.is-active').getAttribute('href'), 'releases.html');
+    await p.goto(base + 'releases.html#v1.0.0');
+    await p.waitForFunction(() => document.getElementById('v1.0.0') && document.getElementById('v1.0.0').open);
+  });
+  await check('API unavailable uses static snapshot', { offline: true, page: 'releases.html' }, async p => assert.match(await p.locator('#relStats').innerText(), /本站快照/));
   await check('removed sidebar buttons and mobile layout', { mobile: true }, async p => {
     assert.equal(await p.locator('.rail-logo, .rail-dl, #railDownload, .rail-gh').count(), 0);
     assert.equal(await p.locator('.hero-ctas .btn-github svg').count(), 1);
@@ -59,4 +70,4 @@ try {
     assert.equal(await p.locator('#burger').getAttribute('aria-expanded'), 'false');
   });
 } finally { await browser.close(); }
-console.log(`SITE: ${passed}/10 passed`);
+console.log(`SITE: ${passed}/11 passed`);
