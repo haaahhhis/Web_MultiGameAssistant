@@ -51,12 +51,22 @@
   }
   function fit() {
     var w = clipEl.clientWidth;
-    lw = w < 900 ? LW_M : LW; lh = w < 900 ? LH_M : LH;
+    /* below 1100px the app is laid out at 1024 wide, so its text stays readable */
+    lw = w < 1100 ? LW_M : LW; lh = w < 1100 ? LH_M : LH;
     k = w / lw;
     clipEl.style.height = (lh * k) + 'px';
     paintCamera();
   }
   window.addEventListener('resize', fit); fit();
+  /* layout can change the clip width without a window resize (scrollbar, fullscreen, fonts) */
+  if ('ResizeObserver' in window) {
+    var fittedWidth = clipEl.clientWidth;
+    new ResizeObserver(function () {
+      if (clipEl.clientWidth === fittedWidth) return;
+      fittedWidth = clipEl.clientWidth;
+      fit();
+    }).observe(clipEl);
+  }
   frame.addEventListener('load', paintCamera);
 
   /* tab row */
