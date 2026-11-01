@@ -138,11 +138,9 @@
      Scroll reveals + rail active state
      ============================================================ */
   var revealEls = document.querySelectorAll('.reveal-block');
-  var wipeEls = document.querySelectorAll('.wipe-title');
 
   if (REDUCED || !('IntersectionObserver' in window)) {
     revealEls.forEach(function (el) { el.classList.add('in'); });
-    wipeEls.forEach(function (el) { el.classList.add('wiped'); });
   } else {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -153,16 +151,6 @@
       });
     }, { threshold: 0.12 });
     revealEls.forEach(function (el) { io.observe(el); });
-
-    var wio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.classList.add('wiped');
-          wio.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.6 });
-    wipeEls.forEach(function (el) { wio.observe(el); });
   }
 
   var bridge = document.querySelector('.section-bridge');
@@ -196,7 +184,16 @@
     var current = sections[0];
     sections.forEach(function (s) { if (s.offsetTop <= y) current = s; });
     railItems.forEach(function (a) {
-      a.classList.toggle('is-active', current && a.dataset.section === current.id);
+      var active = current && a.dataset.section === current.id;
+      a.classList.toggle('is-active', active);
+      if (active) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+    document.querySelectorAll('.mobile-menu-list a').forEach(function (a) {
+      var active = current && a.getAttribute('href') === '#' + current.id;
+      a.classList.toggle('is-active', active);
+      if (active) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
     });
   }
   var railTick = false;
@@ -224,7 +221,7 @@
       ]
     },
     {
-      zh: '编排与定时', en: 'PIPELINE // MODULE-02',
+      zh: '编排与定时', en: 'SCHEDULE // MODULE-02',
       items: [
         ['流水线画布', '脚本任务、agent 步骤、等待、发消息、人工确认连成图；不冲突的并行执行，抢同一模拟器 / 屏幕的自动排队；失败可重试、跳过或停下。'],
         ['运行前检查', '成环、找不到的脚本或任务、参数不对，跑之前先查出来。'],
@@ -499,8 +496,8 @@
     statsEl.appendChild(s3);
   }
 
-  function renderState(title, msg, withBtn) {
-    var box = el('div', 'rel-state');
+  function renderState(title, msg, withBtn, isError) {
+    var box = el('div', 'rel-state' + (isError ? ' is-error' : ''));
     box.appendChild(el('strong', null, title));
     box.appendChild(el('p', null, msg));
     if (withBtn) {
@@ -538,6 +535,7 @@
     var asset = MGADownloads.chooseAsset(latest, arch);
     var href = asset ? asset.browser_download_url : RELEASES_PAGE;
     var actual = asset && MGADownloads.assetArchitecture(asset.name);
+    var armFallback = !!asset && arch === 'arm64' && actual !== 'arm64';
     var label = asset ? '下载 ' + latest.tag_name + ' · Windows ' + (actual === 'arm64' ? 'ARM64' : 'x64') : '查看 ' + latest.tag_name + ' 下载';
     var hero = document.getElementById('heroDownload');
     hero.href = href;
@@ -546,8 +544,9 @@
     mm.href = href;
     mm.textContent = label;
     var hint = document.getElementById('downloadHint');
+    hint.classList.toggle('is-warn', armFallback);
     if (!asset) hint.textContent = '该版本没有可匹配的 Windows 安装包，请在发布页选择；不会链接到旧版本。';
-    else if (actual !== arch) hint.textContent = '该版本未提供 ARM64 包，已回退到 Windows x64；也可在下方版本发布区查看全部文件。';
+    else if (armFallback) hint.textContent = '该版本未提供 ARM64 包，已回退到 Windows x64；也可在下方版本发布区查看全部文件。';
     else hint.textContent = (downloadMode !== 'auto' ? '已手动选择' : detectedArchitecture.detected ? '检测到' : '无法识别或非 Windows 设备，默认') + ' Windows ' + (actual === 'arm64' ? 'ARM64' : 'x64') + ' · 支持 Windows 10 / 11';
   }
 
@@ -627,6 +626,7 @@
             renderState(
               '暂时无法获取版本信息',
               'GitHub API 与本站快照均无法访问（API 未登录每小时限 60 次）。可直接前往发布页下载。',
+              true,
               true
             );
           });
@@ -644,16 +644,14 @@
 
 
 /* ============================================================
-   TITLE SPINE — vertical connector through the page's section
-   titles; scroll progress fills the line and lights each
-   reached title (accent bar + highlight). Hidden <=768px.
+   TITLE SPINE — vertical connector through the four chapter bars.
    ============================================================ */
 (function () {
   'use strict';
   var spine = document.getElementById('titleSpine');
   if (!spine) return;
-  var titles = Array.prototype.slice.call(document.querySelectorAll('.hero-title-zh, .sec-head-title'));
-  if (titles.length < 2) return;
+  var bars = Array.prototype.slice.call(document.querySelectorAll('.chapter-bar'));
+  if (bars.length !== 4) return;
   var line = document.createElement('i');
   line.className = 'spine-line';
   var fill = document.createElement('i');
@@ -665,14 +663,11 @@
     var main = document.getElementById('main');
     var mainRect = main.getBoundingClientRect();
     var mainTop = mainRect.top + window.scrollY, mainLeft = mainRect.left;
-    var pts = titles.map(function (t) {
-      var r = t.getBoundingClientRect();
-      return { el: t, x: r.left - mainLeft, y: r.top + window.scrollY - mainTop + r.height / 2 };
+    var pts = bars.map(function (bar) {
+      var r = bar.getBoundingClientRect();
+      return { x: r.left - mainLeft, y: r.top + window.scrollY - mainTop + r.height / 2 };
     });
-    var vbar = document.querySelector('.hero-vbar');
-    var minX = Math.min.apply(null, pts.map(function (p) { return p.x; }));
-    var x = vbar ? vbar.getBoundingClientRect().left - mainLeft - 26 : minX - 30;
-    if (x < 20) x = minX - 30;
+    var x = Math.min.apply(null, pts.map(function (p) { return p.x; })) - 26;
     var top = pts[0].y, bottom = pts[pts.length - 1].y;
     spine.style.left = x + 'px';
     spine.style.top = top + 'px';
@@ -682,13 +677,13 @@
       d.className = 'spine-dot';
       d.style.top = (p.y - top) + 'px';
       spine.appendChild(d);
-      dots.push({ dot: d, title: p.el, frac: (p.y - top) / (bottom - top) });
+      dots.push({ dot: d, frac: (p.y - top) / (bottom - top) });
     });
     spine.dataset.ready = '1';
+    spine.dataset.stops = pts.length;
     paint();
   }
   function paint() {
-    var main = document.getElementById('main');
     var top = spine.getBoundingClientRect().top + window.scrollY;
     var h = spine.offsetHeight || 1;
     var progress = Math.max(0, Math.min(1, (window.scrollY + window.innerHeight * .5 - top) / h));
@@ -696,7 +691,6 @@
     dots.forEach(function (n) {
       var lit = progress >= n.frac - 0.001;
       n.dot.classList.toggle('lit', lit);
-      n.title.classList.toggle('spine-lit', lit);
     });
   }
   var tick = false;

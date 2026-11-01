@@ -6,11 +6,11 @@
   <title>MultiGameAssistant — 让 agent 替你管好各个游戏的日常脚本</title>
   <meta name="description" content="MultiGameAssistant（多游戏助手）：通用的游戏脚本管家——任意脚本、任意游戏、任意模型。安装脚本、编排定时流水线、监控运行、查询游戏活动，并通过飞书汇报结果的 Windows 桌面应用。">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=cd0ec307e919">
-  <link rel="stylesheet" href="assets/css/demo.css?v=d27b5e416cbc">
+  <link rel="stylesheet" href="assets/css/style.css?v=acdd56fbcb57">
+  <link rel="stylesheet" href="assets/css/demo.css?v=2b18642f2ebb">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
-  <script src="assets/js/main.js?v=277600e1f7ae" defer></script>
-  <script src="assets/js/demo.js?v=e7a9b8f914d8" defer></script>
+  <script src="assets/js/main.js?v=419aa2b5836c" defer></script>
+  <script src="assets/js/demo.js?v=6e9f8743a20b" defer></script>
 </head>
 <body>
 
@@ -32,16 +32,16 @@
   <!-- ============ LEFT RAIL (desktop) ============ -->
   <nav class="rail" aria-label="页面导航">
     <ul class="rail-list">
-      <li><a class="rail-item is-active" href="#home" data-section="home" aria-label="首页" data-scramble-label="首页">
+      <li><a class="rail-item is-active" href="#home" data-section="home" aria-label="情报封面" data-scramble-label="首页">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 10v9h11v-9"/></svg>
       </a></li>
-      <li><a class="rail-item" href="#features" data-section="features" aria-label="功能介绍" data-scramble-label="功能">
+      <li><a class="rail-item" href="#features" data-section="features" aria-label="功能模块" data-scramble-label="功能">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><path d="M13 16.5h7M16.5 13v7"/></svg>
       </a></li>
       <li><a class="rail-item" href="#releases" data-section="releases" aria-label="版本发布" data-scramble-label="发布">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v10"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>
       </a></li>
-      <li><a class="rail-item" href="#footer" data-section="footer" aria-label="页脚信息" data-scramble-label="信息">
+      <li><a class="rail-item" href="#info" data-section="info" aria-label="规格与说明" data-scramble-label="信息">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 10.8v5"/><circle cx="12" cy="7.6" r=".4" fill="currentColor"/></svg>
       </a></li>
     </ul>
@@ -49,7 +49,7 @@
 
   <!-- ============ TOP BAR (mobile) ============ -->
   <header class="topbar">
-    <a class="topbar-logo" href="#home" aria-label="MultiGameAssistant 首页">
+    <a class="topbar-logo" href="#home" aria-label="MultiGameAssistant 情报封面">
       <span class="topbar-logo-box" aria-hidden="true">MGA</span>
       <span class="topbar-logo-name">MultiGameAssistant<small>多游戏助手</small></span>
     </a>
@@ -61,10 +61,10 @@
     <div class="mobile-menu-grid" aria-hidden="true"></div>
     <span class="menu-wordmark" aria-hidden="true">// MGA</span>
     <ul class="mobile-menu-list">
-      <li><a href="#home"><span class="mm-idx">01</span><span class="mm-zh">首页</span><span class="mm-en">HOME</span></a></li>
-      <li><a href="#features"><span class="mm-idx">02</span><span class="mm-zh">功能介绍</span><span class="mm-en">FEATURES</span></a></li>
+      <li><a href="#home"><span class="mm-idx">01</span><span class="mm-zh">情报封面</span><span class="mm-en">HOME</span></a></li>
+      <li><a href="#features"><span class="mm-idx">02</span><span class="mm-zh">功能模块</span><span class="mm-en">FEATURES</span></a></li>
       <li><a href="#releases"><span class="mm-idx">03</span><span class="mm-zh">版本发布</span><span class="mm-en">RELEASES</span></a></li>
-      <li><a href="#footer"><span class="mm-idx">04</span><span class="mm-zh">页脚信息</span><span class="mm-en">INFO</span></a></li>
+      <li><a href="#info"><span class="mm-idx">04</span><span class="mm-zh">规格与说明</span><span class="mm-en">INFO</span></a></li>
     </ul>
     <div class="mobile-menu-foot">
       <a class="btn btn-accent" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" id="mobileMenuDownload">下载最新版</a>
@@ -76,7 +76,7 @@
     <div class="title-spine" id="titleSpine" aria-hidden="true"></div>
 
     <!-- ============ 01 HERO ============ -->
-    <section class="hero section" id="home" aria-label="首页">
+    <section class="hero section" id="home" aria-label="情报封面">
       <div class="bg-grid" aria-hidden="true"></div>
       <div class="bg-hatch hero-hatch" aria-hidden="true"></div>
       <svg class="contour hero-contour" viewBox="0 0 400 400" aria-hidden="true">
@@ -98,21 +98,27 @@
       <div class="crosshair hero-cross-2" aria-hidden="true"></div>
       <div class="hero-annotations" aria-hidden="true">
         <span class="anno" style="top:4.5%;left:4%">INFO.//MULTIGAMEASSISTANT</span>
-        <span class="anno" style="top:8%;right:6%">SYS-01 <i class="tag-blue"></i></span>
+        <span class="anno" style="top:8%;right:6%">SYS-01 <i class="tag-mark"></i></span>
         <span class="anno" style="bottom:18%;left:8%">[REC] // 0x2F</span>
-        <span class="anno" style="top:16%;right:6%">DESKTOP.AGENT / DAILY.PIPELINE</span>
+        <span class="anno" style="top:16%;right:6%">DESKTOP.AGENT / DAILY.ROUTINE</span>
       </div>
 
       <div class="hero-inner">
+        <header class="chapter-head reveal-block">
+          <span class="chapter-bar" aria-hidden="true"></span>
+          <p class="chapter-idx">01 / 04</p>
+          <p class="chapter-title">情报封面</p>
+          <p class="chapter-sub">HOME · BRIEFING</p>
+        </header>
         <div class="hero-copy">
-          <span class="hero-vbar" aria-hidden="true"><i>MGA — V1 SERIES</i></span>
-          <p class="hero-eyebrow reveal-line"><span class="tag-blue" aria-hidden="true"></span>INFO.//DESKTOP AGENT — v1 SERIES</p>
+          <div class="hero-cut" aria-hidden="true"></div>
+          <p class="hero-eyebrow reveal-line"><span class="tag-mark" aria-hidden="true"></span>INFO.//DESKTOP AGENT — v1 SERIES</p>
           <h1 class="hero-title">
             <span class="hero-en-line"><span class="hero-en-word"><span class="glyph" style="--d:.00s">M</span><span class="glyph" style="--d:.04s">u</span><span class="glyph" style="--d:.08s">l</span><span class="glyph" style="--d:.12s">t</span><span class="glyph" style="--d:.16s">i</span><span class="glyph" style="--d:.20s">G</span><span class="glyph" style="--d:.24s">a</span><span class="glyph" style="--d:.28s">m</span><span class="glyph" style="--d:.32s">e</span></span></span>
-            <span class="hero-en-line hero-en-accent"><span class="hero-en-word"><span class="glyph" style="--d:.38s">A</span><span class="glyph" style="--d:.42s">s</span><span class="glyph" style="--d:.46s">s</span><span class="glyph" style="--d:.50s">i</span><span class="glyph" style="--d:.54s">s</span><span class="glyph" style="--d:.58s">t</span><span class="glyph" style="--d:.62s">a</span><span class="glyph" style="--d:.66s">n</span><span class="glyph" style="--d:.70s">t</span></span></span>
+            <span class="hero-en-line"><span class="hero-en-word"><span class="glyph" style="--d:.38s">A</span><span class="glyph" style="--d:.42s">s</span><span class="glyph" style="--d:.46s">s</span><span class="glyph" style="--d:.50s">i</span><span class="glyph" style="--d:.54s">s</span><span class="glyph" style="--d:.58s">t</span><span class="glyph" style="--d:.62s">a</span><span class="glyph" style="--d:.66s">n</span><span class="glyph" style="--d:.70s">t</span></span></span>
             <span class="hero-title-zh">多游戏助手</span>
           </h1>
-          <p class="hero-meta reveal-line">// 桌面 AGENT · 多游戏日常自动化 <span>DAILY.PIPELINE / 325</span></p>
+          <p class="hero-meta reveal-line">// 桌面 AGENT · 多游戏日常自动化 <span>DAILY.ROUTINE / 325</span></p>
           <p class="hero-tagline reveal-line">「让 agent 替你管好各个游戏的日常脚本」</p>
           <p class="hero-desc reveal-line">MultiGameAssistant 是一款 Windows 桌面软件，用 AI agent 替你管好各个游戏的自动化脚本：帮你安装和更新脚本、读懂脚本怎么用，把几个游戏的日常排成每天定时自动运行的流水线；运行中出错或卡住，先自己处理，处理不了再由 agent 看画面动手排查；它还会整理各游戏的活动和你的进度，最后通过飞书把结果告诉你。</p>
           <p class="hero-desc hero-desc-strong reveal-line">「不绑定某个游戏、某个脚本或某家模型——你用什么，它就管什么。」</p>
@@ -138,7 +144,7 @@
 
       </div>
 
-      <a class="hero-scroll" href="#features" aria-label="向下滚动到功能介绍">
+      <a class="hero-scroll" href="#features" aria-label="向下滚动到功能模块">
         <span class="hero-scroll-text">SCROLL</span>
         <span class="hero-scroll-bar" aria-hidden="true"></span>
       </a>
@@ -152,13 +158,13 @@
     </div>
 
     <!-- ============ 02 FEATURES ============ -->
-    <section class="features section" id="features" aria-label="功能介绍">
+    <section class="features section" id="features" aria-label="功能模块">
       <div class="bg-grid" aria-hidden="true"></div>
-      <header class="sec-head reveal-block">
-        <span class="sec-head-en" aria-hidden="true">FEATURES</span>
-        <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>features // module.list</p>
-        <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 功能介绍</span></span></h2>
-        <p class="sec-head-counter">02 / 04</p>
+      <header class="chapter-head reveal-block">
+        <span class="chapter-bar" aria-hidden="true"></span>
+        <p class="chapter-idx">02 / 04</p>
+        <h2 class="chapter-title">功能模块</h2>
+        <p class="chapter-sub">FEATURES · MODULE INDEX</p>
       </header>
 
       <div class="feat-layout">
@@ -196,44 +202,44 @@
     <!-- ============ 03 RELEASES ============ -->
     <section class="releases section" id="releases" aria-label="版本发布">
       <div class="bg-grid" aria-hidden="true"></div>
-      <div class="releases-layout">
-        <div class="releases-banner" aria-hidden="true">
-          <span class="releases-banner-zh">最新</span>
-          <span class="releases-banner-en">RELEASES</span>
-          <span class="releases-banner-mark"></span>
-        </div>
-        <div class="releases-main">
-          <header class="sec-head sec-head-inline reveal-block">
-            <span class="sec-head-en" aria-hidden="true">RELEASES</span>
-            <p class="sec-head-label"><span class="tag-blue" aria-hidden="true"></span>releases // github.api</p>
-            <h2 class="sec-head-title"><span class="wipe-title"><span class="wipe-title-text">## 版本发布</span></span></h2>
-            <p class="sec-head-counter">03 / 04</p>
-          </header>
-
-          <div class="releases-stats" id="releasesStats" aria-live="polite"></div>
-          <div class="releases-featured" id="releasesFeatured" aria-live="polite">
-            <div class="rel-skel" aria-hidden="true">
-              <div class="rel-skel-line w60"></div>
-              <div class="rel-skel-line w30"></div>
-              <div class="rel-skel-block"></div>
-              <div class="rel-skel-line w45"></div>
-            </div>
+      <header class="chapter-head reveal-block">
+        <span class="chapter-bar" aria-hidden="true"></span>
+        <p class="chapter-idx">03 / 04</p>
+        <h2 class="chapter-title">版本发布</h2>
+        <p class="chapter-sub">RELEASES · BUILD ARCHIVE</p>
+      </header>
+      <div class="releases-main">
+        <div class="releases-stats" id="releasesStats" aria-live="polite"></div>
+        <div class="releases-featured" id="releasesFeatured" aria-live="polite">
+          <div class="rel-skel" aria-hidden="true">
+            <div class="rel-skel-line w60"></div>
+            <div class="rel-skel-line w30"></div>
+            <div class="rel-skel-block"></div>
+            <div class="rel-skel-line w45"></div>
           </div>
-          <div class="releases-list" id="releasesList"></div>
         </div>
+        <div class="releases-list" id="releasesList"></div>
       </div>
     </section>
 
-    <!-- ============ 05 FOOTER ============ -->
-    <footer class="footer section" id="footer" aria-label="页脚信息">
-      <span class="footer-word" aria-hidden="true">MULTIGAMEASSISTANT</span>
+    <!-- ============ 04 INFO ============ -->
+    <footer class="footer section info" id="info" aria-label="规格与说明">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <header class="chapter-head reveal-block">
+        <span class="chapter-bar" aria-hidden="true"></span>
+        <p class="chapter-idx">04 / 04</p>
+        <h2 class="chapter-title">规格与说明</h2>
+        <p class="chapter-sub">INFO · SYSTEM SPECIFICATION</p>
+      </header>
+      <p class="info-wordmark">MultiGame<br>Assistant<span>多游戏助手 · 桌面工具 / 开源项目</span></p>
       <div class="footer-inner">
-        <div class="footer-brand">
-          <span class="footer-logo" aria-hidden="true">MGA</span>
-          <p class="footer-brand-zh">MultiGameAssistant</p>
-          <p class="footer-brand-sub">多游戏助手</p>
-          <p class="footer-brand-en">DESKTOP.AGENT // DAILY.PIPELINE</p>
-        </div>
+        <dl class="spec-table">
+          <div><dt>PRODUCT</dt><dd>MultiGameAssistant / 多游戏助手</dd></div>
+          <div><dt>PLATFORM</dt><dd>Windows 10 / 11 · x64 / ARM64</dd></div>
+          <div><dt>RUNTIME</dt><dd>本地桌面 · 脚本来自各自开源项目</dd></div>
+          <div><dt>LICENSE</dt><dd>AGPL-3.0 · 开源</dd></div>
+          <div><dt>DELIVERY</dt><dd>GitHub Pages / 纯静态站点</dd></div>
+        </dl>
         <div class="footer-col">
           <h3 class="footer-col-title">项目地址</h3>
           <ul class="footer-links">
@@ -254,7 +260,7 @@
           </ul>
         </div>
         <div class="footer-col">
-          <h3 class="footer-col-title">联系 / 社区</h3>
+          <h3 class="footer-col-title">联系·社区</h3>
           <ul class="footer-links footer-links-empty">
             <!-- 添加联系方式：同上，把占位 <li> 换成链接 <li><a ...>名称</a></li> -->
             <li><span class="footer-placeholder">— 待添加 —</span></li>

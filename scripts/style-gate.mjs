@@ -19,6 +19,13 @@ async function assertStyles(page) {
     const css = selector => getComputedStyle(document.querySelector(selector));
     return {
       spine: (() => { const s = document.getElementById('titleSpine'); return s ? s.querySelectorAll('.spine-dot').length : -1; })(),
+      chapterCount: document.querySelectorAll('.chapter-head').length,
+      chapterIndexes: Array.from(document.querySelectorAll('.chapter-idx'), el => el.textContent.trim()),
+      chapterBarBackground: css('.chapter-bar').backgroundColor,
+      chapterBarWidth: parseFloat(css('.chapter-bar').width),
+      bodyBackground: css('body').backgroundColor,
+      legacyPipeline: document.querySelectorAll('#pipeline, .flow-board, .rail-item[data-section=pipeline]').length,
+      railCount: document.querySelectorAll('.rail-item').length,
       wordmarkSize: parseFloat(css('.bridge-wordmark').fontSize),
       wordmark: document.querySelector('.bridge-wordmark').textContent,
       wordmarkFits: (() => {
@@ -36,7 +43,14 @@ async function assertStyles(page) {
       overflow: document.documentElement.scrollWidth > innerWidth
     };
   });
-  assert.equal(styles.spine, 3, 'title spine must connect the three section titles');
+  assert.equal(styles.spine, 4, 'title spine must connect the four chapter titles');
+  assert.equal(styles.chapterCount, 4);
+  assert.deepEqual(styles.chapterIndexes, ['01 / 04', '02 / 04', '03 / 04', '04 / 04']);
+  assert.equal(styles.chapterBarBackground, 'rgb(255, 250, 0)');
+  assert.ok(styles.chapterBarWidth >= 10);
+  assert.equal(styles.bodyBackground, 'rgb(242, 242, 242)');
+  assert.equal(styles.legacyPipeline, 0);
+  assert.equal(styles.railCount, 4);
   assert.ok(styles.wordmarkSize >= 27, 'transition must display the complete wordmark');
   assert.equal(styles.wordmark, '// MultiGameAssistant');
   assert.ok(styles.wordmarkFits, 'complete name must fit in the bridge at this viewport');
@@ -86,7 +100,7 @@ async function warmCache() {
   try {
     const url = `http://127.0.0.1:${server.address().port}${prefix}`;
     await page.goto(url);
-    assert.equal(await page.locator('.wipe-title-text').first().evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(0, 0, 0, 0)');
+    assert.equal(await page.locator('.chapter-title').first().evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(0, 0, 0, 0)');
     await page.goto(url);
     assert.equal(unversionedRequests, 1, 'legacy CSS must actually be cached');
     published = true;
