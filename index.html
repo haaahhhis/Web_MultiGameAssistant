@@ -12,12 +12,12 @@
   <meta property="og:image" content="https://haaahhhis.github.io/Web_MultiGameAssistant/assets/img/og-cover.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=c42f2be4d7ab">
+  <link rel="stylesheet" href="assets/css/style.css?v=c910c23a86ac">
   <link rel="stylesheet" href="assets/css/demo.css?v=1d6f0afedaeb">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
   <script src="assets/js/release-data.js?v=5c3d6dae6fb3" defer></script>
-  <script src="assets/js/main.js?v=2029d36383e2" defer></script>
-  <script src="assets/js/demo.js?v=4fe94a6f8c49" defer></script>
+  <script src="assets/js/main.js?v=6e3e03eccd6f" defer></script>
+  <script src="assets/js/demo.js?v=36eed3bd77ea" defer></script>
 </head>
 <body>
 
@@ -166,8 +166,8 @@
 
           <figure class="hero-visual reveal-block">
             <div class="shot-frame">
-              <div class="shot-bar" aria-hidden="true"><span>SCREEN // PIPELINE CANVAS</span><span>[REAL UI]</span></div>
-              <img src="assets/img/pipeline-canvas.webp" width="1600" height="1000" alt="流水线画布：MAA 和三月七小助手两条分支同时运行，全部结束后由 agent 查活动进度，再发飞书">
+              <div class="shot-bar" aria-hidden="true"><span>SCREEN // PIPELINE CANVAS</span><span>点击看完整界面 ⤢</span></div>
+              <a class="shot-zoom" href="assets/img/pipeline-canvas.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/hero-pipeline.webp" width="1290" height="620" alt="流水线画布局部：MAA 和三月七小助手两条分支同时运行，结束后由 agent 查活动进度，再发飞书"></a>
             </div>
             <div class="hero-toast" aria-hidden="true">
               <span class="hero-toast-head">早间日常 · 已完成</span>
@@ -206,7 +206,7 @@
           <div class="demo-outer anno-frame" id="demoOuter">
             <div class="demo-outer-top">
               <span class="demo-label" id="demoLabel">DEMO // SCRIPTS</span>
-              <div class="demo-top-controls"><span class="day-clock" id="dayClock" aria-hidden="true">08:30</span><span class="demo-rec" aria-hidden="true">[REC]</span></div>
+              <div class="demo-top-controls"><span class="day-clock" id="dayClock" aria-hidden="true">08:30</span><button type="button" class="demo-expand" id="demoExpand" hidden>全屏查看 ⤢</button><span class="demo-rec" aria-hidden="true">[REC]</span></div>
             </div>
             <div class="appwin-clip" id="appwinClip">
               <iframe class="appwin-frame" id="demoFrame" title="MultiGameAssistant 界面演示" tabindex="-1" aria-hidden="true"></iframe>
@@ -359,16 +359,16 @@ dsh mga --no-open</code><button type="button" class="code-copy" data-copy="cmdDs
 
       <div class="start-shots">
         <figure class="shot reveal-block">
-          <a class="shot-link" href="assets/img/install-mirror.webp" target="_blank" rel="noopener"><img src="assets/img/install-mirror.webp" width="1600" height="844" loading="lazy" alt="从 Mirror酱 安装：输入「原神」就能搜到相关工具，不需要 CDK"></a>
-          <figcaption><b>按游戏名搜脚本</b>从 Mirror酱 安装，输入「原神」就能搜到相关工具，查找不需要 CDK。</figcaption>
+          <a class="shot-link" href="assets/img/install-mirror.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/install-mirror-crop.webp" width="1717" height="821" loading="lazy" alt="从 Mirror酱 安装：输入「原神」就能搜到相关工具，不需要 CDK"></a>
+          <figcaption><span class="shot-idx">01</span><b>按游戏名搜脚本</b>从 Mirror酱 安装，输入「原神」就能搜到相关工具，查找不需要 CDK。下载、续传、校验、解压和补齐运行环境一步到位。<span class="shot-more">点击图片看完整界面 ⤢</span></figcaption>
         </figure>
         <figure class="shot reveal-block">
-          <a class="shot-link" href="assets/img/script-import.webp" target="_blank" rel="noopener"><img src="assets/img/script-import.webp" width="1600" height="1000" loading="lazy" alt="导入本地的 MAA：自动认出版本、对应的 GitHub 仓库和 Mirror酱 资源，并检查出缺少的运行环境"></a>
-          <figcaption><b>已有脚本直接导入</b>自动认出版本、GitHub 仓库和 Mirror酱 资源，缺少的运行环境也会标出来。</figcaption>
+          <a class="shot-link" href="assets/img/script-import.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/script-import-crop.webp" width="1717" height="1073" loading="lazy" alt="导入本地的 MAA：自动认出版本、对应的 GitHub 仓库和 Mirror酱 资源，并检查出缺少的运行环境"></a>
+          <figcaption><span class="shot-idx">02</span><b>已有脚本直接导入</b>不移动、不复制、不修改原目录。版本号从程序文件读出来，GitHub 仓库和 Mirror酱 资源自动对上，缺少的运行环境也会标出来。<span class="shot-more">点击图片看完整界面 ⤢</span></figcaption>
         </figure>
         <figure class="shot reveal-block">
-          <a class="shot-link" href="assets/img/script-config.webp" target="_blank" rel="noopener"><img src="assets/img/script-config.webp" width="1600" height="1000" loading="lazy" alt="脚本的任务和配置：运行时用本地保存的配置副本，原项目的配置不会被改动"></a>
-          <figcaption><b>任务和配置一目了然</b>运行时用单独保存的配置副本，一个脚本可以存几份配置。</figcaption>
+          <a class="shot-link" href="assets/img/script-config.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/script-config-crop.webp" width="1717" height="1073" loading="lazy" alt="脚本的任务和配置：运行时用本地保存的配置副本，原项目的配置不会被改动"></a>
+          <figcaption><span class="shot-idx">03</span><b>任务和配置一目了然</b>每个任务要用模拟器还是鼠标键盘、大概跑多久，一眼看清。运行时用单独保存的配置副本，一个脚本可以存几份配置。<span class="shot-more">点击图片看完整界面 ⤢</span></figcaption>
         </figure>
       </div>
     </section>
