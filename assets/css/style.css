@@ -269,9 +269,10 @@ body.anim-ready .contour-line:nth-child(5) { animation-delay: .4s; }
   .hero-grid { grid-template-columns: minmax(0, 480px) minmax(0, 1fr); gap: 48px; }
   /* scoped to .hero-grid so it outranks the base .hero-en-line size defined below */
   .hero-grid .hero-en-line { font-size: clamp(52px, 4.4vw, 78px); }
-  /* the screenshot runs to the right edge of the page for more width */
-  .hero-visual { margin-top: 36px; margin-right: calc(-7vw + 16px); }
+  /* the screenshot and run log run to the right edge of the page for more width */
+  .hero-side { margin-top: 36px; margin-right: calc(-7vw + 16px); }
 }
+.hero-side { display: grid; gap: 28px; }
 .hero-visual { position: relative; margin: 0; }
 .shot-zoom { display: block; cursor: zoom-in; }
 .shot-frame { background: var(--white); border: 1px solid var(--ink); padding: 8px; box-shadow: 0 30px 70px rgba(0,0,0,.12); }
@@ -281,17 +282,40 @@ body.anim-ready .contour-line:nth-child(5) { animation-delay: .4s; }
   font: 10px var(--font-mono); letter-spacing: .14em; color: var(--grey-600);
 }
 .shot-frame img { display: block; width: 100%; height: auto; border: 1px solid var(--grey-200); }
-.hero-toast {
-  position: absolute; left: -28px; bottom: 60px;
-  min-width: 220px; padding: 12px 18px 12px 14px;
-  background: var(--ink); color: var(--white);
+.hero-visual figcaption { margin-top: 12px; font-size: 12px; color: var(--grey-600); }
+/* run log: one morning of the pipeline as a terminal-style list */
+.hero-log {
+  position: relative;
+  background: var(--ink); color: #e6e6e6;
   border-left: 6px solid var(--accent);
-  box-shadow: 0 16px 36px rgba(0,0,0,.22);
+  padding: 16px 20px 18px;
+  box-shadow: 0 24px 50px rgba(0,0,0,.16);
 }
-.hero-toast-head { display: block; font-size: 13px; font-weight: 700; }
-.hero-toast-head::before { content: "✓"; display: inline-block; margin-right: 8px; color: var(--accent); }
-.hero-toast-body { display: block; margin-top: 4px; font: 11px/1.6 var(--font-mono); color: #bbb; }
-.hero-visual figcaption { margin-top: 14px; font-size: 12px; color: var(--grey-600); }
+.hero-log-head {
+  display: flex; justify-content: space-between;
+  padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #333;
+  font: 10px var(--font-mono); letter-spacing: .16em; color: #8c8c8c;
+}
+.hero-log-head span:first-child { color: var(--accent); }
+.hero-log-list li {
+  display: grid; grid-template-columns: 44px 16px minmax(0, 1fr) auto; gap: 8px; align-items: baseline;
+  padding: 4px 0; font-size: 13px; line-height: 1.5;
+}
+.hero-log-list time { font: 12px var(--font-mono); color: #8c8c8c; }
+.hero-log-list i { font-style: normal; font: 700 12px var(--font-mono); text-align: center; }
+.hero-log-list em { font: normal 11px var(--font-mono); color: #8c8c8c; white-space: nowrap; }
+.hero-log-list .is-ok { color: #6fdc9a; }
+.hero-log-list .is-warn { color: #ffb35c; }
+.hero-log-list .is-run { color: var(--accent); }
+.hero-log-list .is-done span { color: var(--white); font-weight: 700; }
+.hero-log-more {
+  display: inline-block; margin-top: 12px;
+  font: 11px var(--font-mono); letter-spacing: .12em; color: var(--accent);
+  border-bottom: 1px solid currentColor;
+}
+/* lines arrive one by one, like a run in progress */
+body.anim-ready .hero-log-list li { animation: logLine .45s var(--ease-out) both; animation-delay: calc(.9s + var(--i) * .22s); }
+@keyframes logLine { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
 .hero-release {
   display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
   margin-top: 6px; padding: 8px 12px;
@@ -457,7 +481,15 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
   transition: background .3s, border-color .3s;
 }
 .day-stop.is-current { border-left-color: var(--ink); }
+.day-stop.is-past::before { background: var(--ink); border-color: var(--ink); }
 .day-stop.is-current::before { background: var(--accent); border-color: var(--ink); }
+/* where the title spine is shown, the stops hang on it instead of drawing their own line:
+   the spine runs 26px left of the chapter bars, and the stops start at the bars */
+@media (min-width: 769px) {
+  .day-layout { z-index: 3; }
+  .day-stop { padding-left: 0; border-left: 0; }
+  .day-stop::before { left: -31px; }
+}
 .day-time {
   display: flex; align-items: baseline; gap: 12px;
   font: 12px var(--font-mono); letter-spacing: .14em; color: var(--grey-600);
@@ -475,12 +507,15 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 .day-points li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 8px; background: var(--ink); }
 .day-points b { color: var(--ink); margin-right: 8px; }
 @media (min-width: 1100px) {
-  /* the demo gets most of the width; the reading column stays narrow */
+  /* timeline on the left, starting where the chapter titles start (same as
+     .chapter-head: centred 1360px box + 7vw), so it hangs on the title spine;
+     the demo takes the rest and runs closer to the right edge */
   .day-layout {
-    max-width: 1600px; padding: 0 4vw;
-    grid-template-columns: minmax(0, 2.6fr) minmax(260px, 1fr); gap: 40px; align-items: start;
+    max-width: none; padding: 0 4vw 0 calc(max(0px, (100% - 1360px) / 2) + 7vw);
+    grid-template-columns: minmax(250px, 320px) minmax(0, 1fr); gap: 44px; align-items: start;
   }
-  .day-stage { top: 20px; padding: 0; background: transparent; box-shadow: none; }
+  .day-stops { grid-column: 1; grid-row: 1; }
+  .day-stage { grid-column: 2; grid-row: 1; top: 20px; padding: 0; background: transparent; box-shadow: none; }
   /* keep the whole sticky stage inside the viewport height (app is ~1.42:1) */
   .day-stage .demo-outer, .day-stage .scen-tabs { max-width: calc((100vh - 120px) * 1.42); margin-left: 0; }
   .day-stop { min-height: 70vh; }
@@ -756,7 +791,7 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1179px) {
-  .hero-visual { max-width: 760px; }
+  .hero-side { max-width: 760px; }
 }
 
 @media (max-width: 1080px) {
@@ -840,7 +875,6 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
   .hero-inner { padding: 50px 6vw 70px; }
   .hero-scroll { display: none; }
   .hero-contour { width: 480px; height: 480px; right: -90px; bottom: -40px; }
-  .hero-toast { left: 10px; bottom: 46px; min-width: 0; }
 
   .chapter-head { padding: 64px 6vw 28px; column-gap: 14px; grid-template-columns: 10px minmax(0, max-content); }
   .chapter-bar { width: 10px; }
@@ -908,4 +942,4 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 .section-bridge p span { font: 9px var(--font-mono); color: #777; }
 .menu-wordmark { display: none; }
 @media (max-width: 768px) { .section-bridge { padding: 22px 6vw; } .bridge-meta span:last-child { display: none; } .section-bridge p span { display: none; } .menu-wordmark { display: block; position: absolute; bottom: 120px; left: 6vw; font: 900 23vw var(--font-wide); letter-spacing: -.05em; color: #e3e3e3; pointer-events: none; transform: translateX(-15px); opacity: 0; transition: transform .6s var(--ease-out), opacity .6s; } .mobile-menu.open .menu-wordmark { transform: none; opacity: 1; } .mobile-menu-list, .mobile-menu-foot { position: relative; z-index: 1; } }
-@media (prefers-reduced-motion: reduce) { .bridge-wordmark { clip-path: none; transform: none; transition: none; } .bridge-track b { transform: none; transition: none; } .menu-wordmark { transition: none; } .shot img { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .bridge-wordmark { clip-path: none; transform: none; transition: none; } .bridge-track b { transform: none; transition: none; } .menu-wordmark { transition: none; } .shot img { transition: none; } body.anim-ready .hero-log-list li { animation: none; } }

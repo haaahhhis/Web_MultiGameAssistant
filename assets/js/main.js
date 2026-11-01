@@ -229,7 +229,10 @@
     var markStop = function (i) {
       if (i === currentStop || !stops[i]) return;
       currentStop = i;
-      stops.forEach(function (s, j) { s.classList.toggle('is-current', j === i); });
+      stops.forEach(function (s, j) {
+        s.classList.toggle('is-current', j === i);
+        s.classList.toggle('is-past', j < i);
+      });
       var clock = document.getElementById('dayClock');
       if (clock) scramble(clock, stops[i].dataset.time, 320);
     };
