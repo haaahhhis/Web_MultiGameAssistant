@@ -39,7 +39,7 @@ python -m http.server 8080
 
 ## 结构
 
-- `index.html` — 宣传主页，六个章节：首页 / 你的一天（时间线 + 演示）/ 九大亮点 / 开始使用 / 支持清单 / 安全与问答，结尾下载区和页脚
+- `index.html` — 宣传主页，五个章节：首页 / 你的一天（时间线 + 演示）/ 九大亮点 / 工作原理（脚本包、一次运行、消息链路）/ 安全与问答，结尾下载区和页脚
 - `releases.html` — 版本发布页：最新版本下载、安装与更新方式、全部版本（`releases.html#v1.1.0` 可直接定位并展开）、系统要求
 - `assets/css/style.css` — 两个页面共用的样式；`assets/css/releases.css` — 版本发布页样式
 - `assets/css/demo.css` / `assets/js/demo.js` — 「你的一天」里的真实界面演示；滚动到某个时间点时切换到对应场景，场景播完原地重放

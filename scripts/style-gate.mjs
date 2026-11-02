@@ -26,6 +26,8 @@ async function assertStyles(page) {
       bodyBackground: css('body').backgroundColor,
       legacyPipeline: document.querySelectorAll('#pipeline, .flow-board, .rail-item[data-section=pipeline]').length,
       railCount: document.querySelectorAll('.rail-item').length,
+      howLanes: document.querySelectorAll('#how .flow-lane').length,
+      oldChapters: document.querySelectorAll('#start, #support').length,
       wordmarkSize: parseFloat(css('.bridge-wordmark').fontSize),
       wordmark: document.querySelector('.bridge-wordmark').textContent,
       wordmarkFits: (() => {
@@ -46,14 +48,16 @@ async function assertStyles(page) {
       overflow: document.documentElement.scrollWidth > innerWidth
     };
   });
-  assert.equal(styles.spine, 6, 'title spine must connect the six chapter titles');
-  assert.equal(styles.chapterCount, 6);
-  assert.deepEqual(styles.chapterIndexes, ['01 / 06', '02 / 06', '03 / 06', '04 / 06', '05 / 06', '06 / 06']);
+  assert.equal(styles.spine, 5, 'title spine must connect the five chapter titles');
+  assert.equal(styles.chapterCount, 5);
+  assert.deepEqual(styles.chapterIndexes, ['01 / 05', '02 / 05', '03 / 05', '04 / 05', '05 / 05']);
   assert.equal(styles.chapterBarBackground, 'rgb(255, 250, 0)');
   assert.ok(styles.chapterBarWidth >= 10);
   assert.equal(styles.bodyBackground, 'rgb(242, 242, 242)');
   assert.equal(styles.legacyPipeline, 0);
-  assert.equal(styles.railCount, 7, 'six sections plus the releases page');
+  assert.equal(styles.railCount, 6, 'five sections plus the releases page');
+  assert.equal(styles.howLanes, 3, 'how-it-works shows the report, reply and chat lanes');
+  assert.equal(styles.oldChapters, 0, 'get-started and support chapters are gone');
   assert.ok(styles.releasesLink, 'rail must link to the releases page');
   assert.ok(styles.wordmarkSize >= 27, 'transition must display the complete wordmark');
   assert.equal(styles.wordmark, '// MultiGameAssistant');

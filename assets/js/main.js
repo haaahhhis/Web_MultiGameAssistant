@@ -86,33 +86,47 @@
     requestAnimationFrame(frame);
   }
 
-  /* scramble on hover for labelled buttons + mobile menu items
-     — reads the label's CURRENT text, locks the element width during the
-     scramble so neighbours don't shift, and ignores re-entry while busy */
-  document.querySelectorAll('[data-scramble-label]').forEach(function (el) {
-    var label = el.querySelector('.btn-label') || el.querySelector('.mm-zh');
-    if (!label) return;
-    el.addEventListener('mouseenter', function () {
+  /* scramble on hover — reads the label's CURRENT text (download labels change
+     after load), optionally locks the host width so neighbours don't shift,
+     and ignores re-entry while busy */
+  function scrambleOnHover(host, label, lockWidth) {
+    host.addEventListener('mouseenter', function () {
       if (label.dataset.busy === '1') return;
       label.dataset.busy = '1';
       var current = label.textContent;
-      el.style.width = el.getBoundingClientRect().width + 'px';
+      if (lockWidth) host.style.width = host.getBoundingClientRect().width + 'px';
       scramble(label, current, 380, function () {
-        el.style.width = '';
+        if (lockWidth) host.style.width = '';
         delete label.dataset.busy;
       });
     });
+  }
+  // buttons, the mobile menu, and text links whose label is the last thing on its line
+  document.querySelectorAll('.btn').forEach(function (el) {
+    var label = el.querySelector('.btn-label');
+    if (label) scrambleOnHover(el, label, true);
   });
   document.querySelectorAll('.mobile-menu-list a').forEach(function (a) {
     var zh = a.querySelector('.mm-zh');
-    if (!zh) return;
-    a.addEventListener('mouseenter', function () {
-      if (zh.dataset.busy === '1') return;
-      zh.dataset.busy = '1';
-      var current = zh.textContent;
-      scramble(zh, current, 380, function () { delete zh.dataset.busy; });
-    });
+    if (zh) scrambleOnHover(a, zh, false);
   });
+  document.querySelectorAll('.hero-release-go, .hero-log-more, .footer-links a').forEach(function (el) {
+    scrambleOnHover(el.closest('a') || el, el, false);
+  });
+
+  /* mono English labels scramble in once as they scroll into view */
+  if (!REDUCED && 'IntersectionObserver' in window) {
+    var labelIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        labelIo.unobserve(e.target);
+        scramble(e.target, e.target.textContent, 700);
+      });
+    }, { threshold: 0.6 });
+    document.querySelectorAll('.chapter-sub, .hl-en, .how-k, .flow-nodes span').forEach(function (el) {
+      if (!el.children.length) labelIo.observe(el);
+    });
+  }
 
   /* ============================================================
      Mobile menu

@@ -12,11 +12,11 @@
   <meta property="og:image" content="https://haaahhhis.github.io/Web_MultiGameAssistant/assets/img/og-cover.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=b40956784ce6">
+  <link rel="stylesheet" href="assets/css/style.css?v=14e22a81500b">
   <link rel="stylesheet" href="assets/css/demo.css?v=1d6f0afedaeb">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
   <script src="assets/js/release-data.js?v=5c3d6dae6fb3" defer></script>
-  <script src="assets/js/main.js?v=fe246cdc8e1e" defer></script>
+  <script src="assets/js/main.js?v=86224e689cb8" defer></script>
   <script src="assets/js/demo.js?v=c98043650c61" defer></script>
 </head>
 <body>
@@ -48,11 +48,8 @@
       <li><a class="rail-item" href="#highlights" data-section="highlights" aria-label="九大亮点">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="4" height="4"/><rect x="10" y="4" width="4" height="4"/><rect x="16" y="4" width="4" height="4"/><rect x="4" y="10" width="4" height="4"/><rect x="10" y="10" width="4" height="4"/><rect x="16" y="10" width="4" height="4"/><rect x="4" y="16" width="4" height="4"/><rect x="10" y="16" width="4" height="4"/><rect x="16" y="16" width="4" height="4"/></svg>
       </a></li>
-      <li><a class="rail-item" href="#start" data-section="start" aria-label="开始使用">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14"/><path d="m7.5 10 2.5 2-2.5 2M12.5 15h4"/></svg>
-      </a></li>
-      <li><a class="rail-item" href="#support" data-section="support" aria-label="支持清单">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4 20 8l-8 4-8-4z"/><path d="m4 12 8 4 8-4"/><path d="m4 16 8 4 8-4"/></svg>
+      <li><a class="rail-item" href="#how" data-section="how" aria-label="工作原理">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3.5" y="4.5" width="6" height="5"/><rect x="14.5" y="14.5" width="6" height="5"/><path d="M6.5 9.5v7.5h8M17.5 14.5V7h-8"/></svg>
       </a></li>
       <li><a class="rail-item" href="#faq" data-section="faq" aria-label="安全与常见问题">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3.5 19 6v5.5c0 4.2-3 7.4-7 9-4-1.6-7-4.8-7-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -81,9 +78,8 @@
       <li><a href="#home"><span class="mm-idx">01</span><span class="mm-zh">首页</span><span class="mm-en">HOME</span></a></li>
       <li><a href="#day"><span class="mm-idx">02</span><span class="mm-zh">你的一天</span><span class="mm-en">A DAY</span></a></li>
       <li><a href="#highlights"><span class="mm-idx">03</span><span class="mm-zh">九大亮点</span><span class="mm-en">HIGHLIGHTS</span></a></li>
-      <li><a href="#start"><span class="mm-idx">04</span><span class="mm-zh">开始使用</span><span class="mm-en">GET STARTED</span></a></li>
-      <li><a href="#support"><span class="mm-idx">05</span><span class="mm-zh">支持清单</span><span class="mm-en">SUPPORT</span></a></li>
-      <li><a href="#faq"><span class="mm-idx">06</span><span class="mm-zh">安全与问答</span><span class="mm-en">FAQ</span></a></li>
+      <li><a href="#how"><span class="mm-idx">04</span><span class="mm-zh">工作原理</span><span class="mm-en">HOW IT WORKS</span></a></li>
+      <li><a href="#faq"><span class="mm-idx">05</span><span class="mm-zh">安全与问答</span><span class="mm-en">FAQ</span></a></li>
       <li><a href="releases.html"><span class="mm-idx">↗</span><span class="mm-zh">版本发布</span><span class="mm-en">RELEASES</span></a></li>
     </ul>
     <div class="mobile-menu-foot">
@@ -125,7 +121,7 @@
       <div class="hero-inner">
         <header class="chapter-head reveal-block">
           <span class="chapter-bar" aria-hidden="true"></span>
-          <p class="chapter-idx">01 / 06</p>
+          <p class="chapter-idx">01 / 05</p>
           <p class="chapter-title">首页</p>
           <p class="chapter-sub">HOME · BRIEFING</p>
         </header>
@@ -145,8 +141,8 @@
               <li class="chip">任意模型</li>
             </ul>
             <div class="hero-ctas">
-              <a class="btn btn-primary" id="heroDownload" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener" data-scramble-label="下载最新版"><span class="btn-label">下载最新版</span></a>
-              <a class="btn btn-outline btn-github" href="https://github.com/haaahhhis/MultiGameAssistant" target="_blank" rel="noopener" data-scramble-label="GitHub 仓库"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5A9.5 9.5 0 0 0 2.5 12c0 4.2 2.7 7.7 6.5 9 .5.1.6-.2.6-.5v-1.7c-2.6.6-3.2-1.2-3.2-1.2-.4-1.1-1-1.4-1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.1-.2-4.3-1-4.3-4.6 0-1 .4-1.9 1-2.5-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.6 1a9 9 0 0 1 4.7 0c1.8-1.3 2.6-1 2.6-1 .5 1.3.2 2.3.1 2.6.6.6 1 1.5 1 2.5 0 3.6-2.2 4.4-4.3 4.6.3.3.6.9.6 1.8V20c0 .3.2.6.7.5a9.5 9.5 0 0 0 6.5-9A9.5 9.5 0 0 0 12 2.5z"/></svg><span class="btn-label">GitHub 仓库</span></a>
+              <a class="btn btn-primary" id="heroDownload" href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener"><span class="btn-label">下载最新版</span></a>
+              <a class="btn btn-outline btn-github" href="https://github.com/haaahhhis/MultiGameAssistant" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5A9.5 9.5 0 0 0 2.5 12c0 4.2 2.7 7.7 6.5 9 .5.1.6-.2.6-.5v-1.7c-2.6.6-3.2-1.2-3.2-1.2-.4-1.1-1-1.4-1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.1-.2-4.3-1-4.3-4.6 0-1 .4-1.9 1-2.5-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.6 1a9 9 0 0 1 4.7 0c1.8-1.3 2.6-1 2.6-1 .5 1.3.2 2.3.1 2.6.6.6 1 1.5 1 2.5 0 3.6-2.2 4.4-4.3 4.6.3.3.6.9.6 1.8V20c0 .3.2.6.7.5a9.5 9.5 0 0 0 6.5-9A9.5 9.5 0 0 0 12 2.5z"/></svg><span class="btn-label">GitHub 仓库</span></a>
             </div>
             <div class="download-options" role="group" aria-label="Windows 安装包架构">
               <span>安装包</span>
@@ -213,7 +209,7 @@
       <div class="bg-grid" aria-hidden="true"></div>
       <header class="chapter-head reveal-block">
         <span class="chapter-bar" aria-hidden="true"></span>
-        <p class="chapter-idx">02 / 06</p>
+        <p class="chapter-idx">02 / 05</p>
         <h2 class="chapter-title">你的一天</h2>
         <p class="chapter-sub">A DAY · 08:30 → 12:30</p>
       </header>
@@ -311,7 +307,7 @@
       <div class="bg-grid" aria-hidden="true"></div>
       <header class="chapter-head reveal-block">
         <span class="chapter-bar" aria-hidden="true"></span>
-        <p class="chapter-idx">03 / 06</p>
+        <p class="chapter-idx">03 / 05</p>
         <h2 class="chapter-title">九大亮点</h2>
         <p class="chapter-sub">HIGHLIGHTS · AT A GLANCE</p>
       </header>
@@ -328,118 +324,112 @@
       </ol>
     </section>
 
-    <!-- ============ 04 GET STARTED ============ -->
-    <section class="start section" id="start" aria-label="开始使用">
+    <!-- ============ 04 HOW IT WORKS ============ -->
+    <section class="how section" id="how" aria-label="工作原理">
       <div class="bg-grid" aria-hidden="true"></div>
       <header class="chapter-head reveal-block">
         <span class="chapter-bar" aria-hidden="true"></span>
-        <p class="chapter-idx">04 / 06</p>
-        <h2 class="chapter-title">开始使用</h2>
-        <p class="chapter-sub">GET STARTED · INSTALL → CONNECT → RUN</p>
+        <p class="chapter-idx">04 / 05</p>
+        <h2 class="chapter-title">工作原理</h2>
+        <p class="chapter-sub">HOW IT WORKS · PACK → RUN → WATCH → NOTIFY</p>
       </header>
 
-      <div class="start-main">
-        <ol class="start-steps reveal-block">
-          <li><span class="start-step-idx">STEP 01</span><b>安装软件</b><p>下面三种方式任选其一；装在当前用户下，不需要管理员。</p></li>
-          <li><span class="start-step-idx">STEP 02</span><b>选模型、填 API key</b><p>DeepSeek、Claude、ChatGPT、Gemini、国内各家，或者本机的 Ollama。</p></li>
-          <li><span class="start-step-idx">STEP 03</span><b>装脚本、排流水线</b><p>可选：在「设置 → 飞书 → 第一次使用」里接上飞书机器人。</p></li>
-        </ol>
-
-        <div class="install corner-frame reveal-block" data-tabs>
-          <div class="install-tabs" role="tablist" aria-label="安装方式">
-            <button type="button" role="tab" id="tabSetup" aria-controls="panelSetup" aria-selected="true">安装包</button>
-            <button type="button" role="tab" id="tabCmd" aria-controls="panelCmd" aria-selected="false" tabindex="-1">一行命令</button>
-            <button type="button" role="tab" id="tabDsh" aria-controls="panelDsh" aria-selected="false" tabindex="-1">dsh 插件</button>
+      <div class="how-body">
+        <!-- A: script packs -->
+        <div class="how-block how-pack reveal-block">
+          <div class="how-copy">
+            <p class="how-k">A // SCRIPT PACK</p>
+            <h3 class="how-title">脚本一行不改，靠脚本包接进来</h3>
+            <p class="how-lead">每个脚本配一份脚本包：<code>adg.script.yaml</code> 给软件读，<code>SKILL.md</code> 给 agent 读。怎么装、怎么跑、配置在哪、日志怎么看、出错怎么恢复，都写在包里，软件代码里不出现任何具体的脚本名。</p>
+            <ol class="how-routes">
+              <li><span>内置</span><p><b>MAA、MaaEnd、三月七小助手</b>自带脚本包，装好就能用。</p></li>
+              <li><span>安装</span><p><b>GitHub 或 Mirror酱</b>按游戏名搜索下载（M9A、ok-ww、一条龙、BetterGI……），版本自动识别，运行环境缺什么补什么。</p></li>
+              <li><span>导入</span><p><b>已有的脚本目录原地导入</b>。agent 读目录、读 <code>--help</code>、读更新日志，写出脚本包草稿，你确认后才生效。</p></li>
+            </ol>
+            <p class="how-note">脚本当黑盒用：成功与否只看脚本自己的输出（完成规则或退出码），不靠软件去猜。</p>
           </div>
-          <div class="install-panel" role="tabpanel" id="panelSetup" aria-labelledby="tabSetup">
-            <p>下载安装包，双击安装。页面会按你的电脑自动选择 x64 或 ARM64 安装包。软件内可以检查更新，一键安装新版本。</p>
-            <div class="install-actions">
-              <a class="btn btn-primary" data-latest-download href="https://github.com/haaahhhis/MultiGameAssistant/releases" target="_blank" rel="noopener"><span class="btn-label">下载最新版</span></a>
-              <a class="btn btn-outline" href="releases.html"><span class="btn-label">全部版本与文件</span></a>
+          <figure class="how-yaml">
+            <figcaption><span>adg.script.yaml</span><span>示意 · 字段有删减</span></figcaption>
+<pre><code><i>id:</i> example
+<i>source:</i> github · mirrorchyan     <em># 从哪下载、怎么更新</em>
+<i>detect:</i> 版本文件 / exe 版本号      <em># 怎么认出版本</em>
+<i>config:</i>
+  <i>files:</i> [config/gui.json]       <em># 运行时换成配置副本</em>
+<i>tasks:</i>
+  <i>daily:</i>
+    <i>resources:</i> [adb]             <em># 占用模拟器 / 键鼠 / 账号</em>
+    <i>expectedDuration:</i> 30m        <em># 超过两倍算超时</em>
+<i>logs:</i>
+  <i>rules:</i>                         <em># 日志行 → 级别和标签</em>
+    - { match: 连接失败, level: error, tag: adb-lost }
+  <i>stallAfter:</i> 10m                <em># 多久没新日志算卡住</em>
+  <i>done:</i> 任务已全部完成              <em># 完成规则</em>
+<i>recovery:</i>                        <em># 出错先按这里自救</em>
+  - { on: adb-lost, do: reconnect-adb, max: 2 }
+  - { on: adb-lost, do: restart, max: 1 }</code></pre>
+          </figure>
+        </div>
+
+        <!-- B: one run -->
+        <div class="how-block reveal-block">
+          <p class="how-k">B // ONE RUN</p>
+          <h3 class="how-title">跑一次脚本，软件替你做这些事</h3>
+          <ol class="how-run">
+            <li style="--i:0"><span>01</span><b>读脚本包</b><p>要跑哪个任务、带什么参数、占用哪些资源。</p></li>
+            <li style="--i:1"><span>02</span><b>拿资源锁</b><p>键鼠、模拟器、游戏账号各一把锁，被占用就排队，两个桌面脚本自动轮流。</p></li>
+            <li style="--i:2"><span>03</span><b>准备环境</b><p>拉起模拟器；换上这次用的配置副本，原件先备份。</p></li>
+            <li style="--i:3"><span>04</span><b>启动</b><p>需要时先开游戏，再在后台启动脚本。</p></li>
+            <li style="--i:4"><span>05</span><b>跟日志</b><p>输出和日志文件按规则打上级别和标签，一行一行实时交给看护。</p></li>
+            <li style="--i:5"><span>06</span><b>收尾</b><p>还原配置、释放资源，按完成规则或退出码记下结果。</p></li>
+          </ol>
+        </div>
+
+        <!-- C: message flow -->
+        <div class="how-block reveal-block">
+          <p class="how-k">C // MESSAGE FLOW</p>
+          <h3 class="how-title">出了问题，消息这样走</h3>
+          <div class="flow">
+            <div class="flow-lane">
+              <p class="flow-name"><b>上报</b><span>脚本 → 你</span></p>
+              <ol class="flow-nodes">
+                <li style="--i:0"><span>RUNNER</span><b>运行器</b><p>日志行按规则打标</p></li>
+                <li style="--i:1"><span>MONITOR</span><b>看护</b><p>报错、卡住、超时都算异常</p></li>
+                <li style="--i:2" class="flow-tier"><span>L0</span><b>脚本包自救</b><p>重连 ADB、重跑任务</p></li>
+                <li style="--i:3" class="flow-tier"><span>L1 · L2</span><b>agent 排查</b><p>暂停脚本、截图看屏幕、动手处理</p></li>
+                <li style="--i:4" class="flow-tier flow-end"><span>L3</span><b>推送到飞书</b><p>截图 + 已试过的步骤 + 按钮</p></li>
+              </ol>
+              <p class="flow-hint">哪一级解决了，就停在哪一级。</p>
             </div>
-            <p class="install-note">安装包支持 <code>/S</code> 静默安装。</p>
+            <div class="flow-lane">
+              <p class="flow-name"><b>回传</b><span>你 → 脚本</span></p>
+              <ol class="flow-nodes">
+                <li style="--i:5" class="flow-you"><span>YOU</span><b>点按钮</b><p>或直接回复「停止」</p></li>
+                <li style="--i:6"><span>NOTIFY</span><b>消息层</b><p>找到你回复的那条通知</p></li>
+                <li style="--i:7"><span>MONITOR</span><b>看护</b><p>按你的选择处理这次异常</p></li>
+                <li style="--i:8" class="flow-end"><span>RUNNER</span><b>运行器</b><p>停止 / 重跑 / 继续</p></li>
+              </ol>
+            </div>
+            <div class="flow-lane">
+              <p class="flow-name"><b>对话</b><span>飞书 ↔ agent</span></p>
+              <ol class="flow-nodes">
+                <li style="--i:9" class="flow-you"><span>YOU</span><b>发一句话</b><p>「把明日方舟的日常跑一下」</p></li>
+                <li style="--i:10"><span>NOTIFY</span><b>消息层</b><p>转进你自己的 agent 会话</p></li>
+                <li style="--i:11"><span>AGENT</span><b>调用工具</b><p>敏感操作先审批，软件或飞书里先答为准</p></li>
+                <li style="--i:12" class="flow-end"><span>REPLY</span><b>回复</b><p>整个回合的话和步骤发回飞书</p></li>
+              </ol>
+            </div>
           </div>
-          <div class="install-panel" role="tabpanel" id="panelCmd" aria-labelledby="tabCmd" hidden>
-            <p>在 PowerShell 里运行一行命令：自动选好安装包、校验 SHA-256、静默安装并启动。再运行一次就是更新到最新版本，设置和数据都保留。</p>
-            <div class="code-block"><code id="cmdInstall">irm https://raw.githubusercontent.com/haaahhhis/MultiGameAssistant/main/scripts/install.ps1 | iex</code><button type="button" class="code-copy" data-copy="cmdInstall">复制</button></div>
-            <p class="install-note">GitHub 下载慢时先设置镜像：<code>$env:MGA_MIRROR='https://ghproxy.net/'</code>，再运行上面的命令。</p>
-          </div>
-          <div class="install-panel" role="tabpanel" id="panelDsh" aria-labelledby="tabDsh" hidden>
-            <p>已经装了 <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener">DeepSeek Harness</a>（dsh）的话，装成插件就行（十几 MB）。它装进单独的 profile <code>mga</code>，不影响你平时的 dsh 对话。</p>
-            <div class="code-block code-block-multi"><code id="cmdDsh" data-version-fill>dsh --profile mga --from-default-profile web --help
-dsh plugin --profile mga add https://github.com/haaahhhis/MultiGameAssistant/releases/download/v&lt;版本&gt;/dsh-multigameassistant-&lt;版本&gt;.tgz
-dsh mga --no-open</code><button type="button" class="code-copy" data-copy="cmdDsh">复制</button></div>
-            <p class="install-note">第一行只在第一次运行。插件版没有托盘、开机自启和定时唤醒：定时任务只在 <code>dsh mga</code> 运行时执行。</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="start-shots">
-        <figure class="shot reveal-block">
-          <a class="shot-link" href="assets/img/install-mirror.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/install-mirror-crop.webp" width="1717" height="821" loading="lazy" alt="从 Mirror酱 安装：输入「原神」就能搜到相关工具，不需要 CDK"></a>
-          <figcaption><span class="shot-idx">01</span><b>按游戏名搜脚本</b>从 Mirror酱 安装，输入「原神」就能搜到相关工具，查找不需要 CDK。下载、续传、校验、解压和补齐运行环境一步到位。<span class="shot-more">点击图片看完整界面 ⤢</span></figcaption>
-        </figure>
-        <figure class="shot reveal-block">
-          <a class="shot-link" href="assets/img/script-import.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/script-import-crop.webp" width="1717" height="1073" loading="lazy" alt="导入本地的 MAA：自动认出版本、对应的 GitHub 仓库和 Mirror酱 资源，并检查出缺少的运行环境"></a>
-          <figcaption><span class="shot-idx">02</span><b>已有脚本直接导入</b>不移动、不复制、不修改原目录。版本号从程序文件读出来，GitHub 仓库和 Mirror酱 资源自动对上，缺少的运行环境也会标出来。<span class="shot-more">点击图片看完整界面 ⤢</span></figcaption>
-        </figure>
-        <figure class="shot reveal-block">
-          <a class="shot-link" href="assets/img/script-config.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/script-config-crop.webp" width="1717" height="1073" loading="lazy" alt="脚本的任务和配置：运行时用本地保存的配置副本，原项目的配置不会被改动"></a>
-          <figcaption><span class="shot-idx">03</span><b>任务和配置一目了然</b>每个任务要用模拟器还是鼠标键盘、大概跑多久，一眼看清。运行时用单独保存的配置副本，一个脚本可以存几份配置。<span class="shot-more">点击图片看完整界面 ⤢</span></figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- ============ 05 SUPPORT ============ -->
-    <section class="support section" id="support" aria-label="支持清单">
-      <div class="bg-grid" aria-hidden="true"></div>
-      <header class="chapter-head reveal-block">
-        <span class="chapter-bar" aria-hidden="true"></span>
-        <p class="chapter-idx">05 / 06</p>
-        <h2 class="chapter-title">支持清单</h2>
-        <p class="chapter-sub">SUPPORT · SCRIPTS / GAMES / MODELS</p>
-      </header>
-      <div class="support-grid">
-        <div class="support-card support-card-wide reveal-block">
-          <p class="support-k">BUILT-IN // 内置支持</p>
-          <table class="support-table">
-            <thead><tr><th scope="col">脚本</th><th scope="col">游戏</th><th scope="col">活动数据</th></tr></thead>
-            <tbody>
-              <tr><td><a href="https://github.com/MaaAssistantArknights/MaaAssistantArknights" target="_blank" rel="noopener">MAA</a><small>明日方舟小助手</small></td><td>明日方舟</td><td>PRTS</td></tr>
-              <tr><td><a href="https://github.com/MaaEnd/MaaEnd" target="_blank" rel="noopener">MaaEnd</a></td><td>明日方舟：终末地</td><td>SRA 公共 API</td></tr>
-              <tr><td><a href="https://github.com/moesnow/March7thAssistant" target="_blank" rel="noopener">三月七小助手</a></td><td>崩坏：星穹铁道</td><td>SRA 公共 API · B 站游戏 WIKI</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="support-card reveal-block">
-          <p class="support-k">MIRROR // 从 Mirror酱 直接安装</p>
-          <ul class="tag-list"><li>M9A</li><li>ok-ww</li><li>一条龙</li><li>BetterGI</li><li>……</li></ul>
-          <p class="support-note">其他脚本：导入后让 agent 分析接入；任意 GitHub 链接也能直接安装。</p>
-        </div>
-        <div class="support-card reveal-block">
-          <p class="support-k">GAMES // 游戏信息</p>
-          <p class="support-big"><b>18</b>个游戏可直接关注</p>
-          <p class="support-note">来自 SRA 公共 API。其他游戏输入名字，agent 会去找它的 Wiki 和官网，自动建好游戏包。</p>
-        </div>
-        <div class="support-card reveal-block">
-          <p class="support-k">MODELS // 模型自己选</p>
-          <ul class="tag-list"><li>DeepSeek</li><li>Claude</li><li>ChatGPT</li><li>Gemini</li><li>国内各家</li><li>Ollama（本机）</li></ul>
-          <p class="support-note">agent 核心是 <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener">DeepSeek Harness</a>。</p>
-        </div>
-        <div class="support-card reveal-block">
-          <p class="support-k">SYSTEM // 运行环境</p>
-          <ul class="tag-list"><li>Windows 10</li><li>Windows 11</li><li>x64</li><li>ARM64</li></ul>
-          <p class="support-note">自动检测 MuMu 模拟器和多开实例；其他模拟器填 ADB 地址。</p>
+          <p class="how-note">飞书只负责转发：通知、按钮和对话是什么意思，都由消息层决定。以后接别的聊天软件，只需要再接一个渠道。</p>
         </div>
       </div>
     </section>
 
-    <!-- ============ 06 SAFETY + FAQ ============ -->
+    <!-- ============ 05 SAFETY + FAQ ============ -->
     <section class="faq section" id="faq" aria-label="安全与常见问题">
       <div class="bg-grid" aria-hidden="true"></div>
       <header class="chapter-head reveal-block">
         <span class="chapter-bar" aria-hidden="true"></span>
-        <p class="chapter-idx">06 / 06</p>
+        <p class="chapter-idx">05 / 05</p>
         <h2 class="chapter-title">安全与问答</h2>
         <p class="chapter-sub">SAFETY · FAQ</p>
       </header>
@@ -478,7 +468,7 @@ dsh mga --no-open</code><button type="button" class="code-copy" data-copy="cmdDs
           </details>
           <details>
             <summary>已经装了 dsh，还要装完整安装包吗？</summary>
-            <p>不用，装成 dsh 插件就行，见「开始使用 → dsh 插件」。插件版没有托盘、开机自启和定时唤醒。</p>
+            <p>不用，装成 dsh 插件就行，见「版本发布」页的「dsh 插件」。插件版没有托盘、开机自启和定时唤醒。</p>
           </details>
           <details>
             <summary>支持 macOS 或 Linux 吗？</summary>
