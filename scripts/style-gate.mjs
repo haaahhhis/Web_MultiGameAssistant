@@ -40,7 +40,7 @@ async function assertStyles(page) {
       githubIconSize: css('.hero-ctas .btn-github svg').width,
       githubRail: document.querySelectorAll('.rail-gh').length,
       releasesLink: document.querySelector('.rail-item[href="releases.html"]') !== null,
-      heroShot: (() => { const img = document.querySelector('.hero-visual img'); return img.complete && img.naturalWidth > 0; })(),
+      heroPipeline: document.querySelectorAll('#heroPipeline .pl-node').length,
       dayStops: Array.from(document.querySelectorAll('.day-stop'), el => el.dataset.scene).join(','),
       stagePosition: css('.day-stage').position,
       demoControls: css('.demo-top-controls').display,
@@ -64,7 +64,7 @@ async function assertStyles(page) {
   assert.equal(styles.architectureBorder, '1px');
   assert.equal(styles.githubIconSize, '18px');
   assert.equal(styles.githubRail, 0);
-  assert.ok(styles.heroShot, 'hero screenshot must load');
+  assert.equal(styles.heroPipeline, 7, 'hero pipeline canvas draws all seven nodes');
   assert.equal(styles.dayStops, '0,1,2,5,4,3', 'timeline stops follow the day, mapped to demo scenes');
   assert.equal(styles.stagePosition, 'sticky');
   assert.equal(styles.demoControls, 'flex');

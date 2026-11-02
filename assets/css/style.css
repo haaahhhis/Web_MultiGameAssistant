@@ -265,11 +265,11 @@ body.anim-ready .contour-line:nth-child(5) { animation-delay: .4s; }
   /* the visual runs to the right edge of the page */
   .hero-side { margin-top: 40px; margin-right: calc(-7vw + 16px); }
 }
-/* with room to spare, the run log overlaps the bottom-right corner of the
-   screenshot (an empty part of the canvas) and hangs below it */
+/* with room to spare, the run log sits right-aligned and just overlaps the
+   canvas's bottom edge (its empty strip), so no pipeline node is covered */
 @media (min-width: 1500px) {
-  .hero-side { position: relative; padding-bottom: 150px; }
-  .hero-side .hero-log { position: absolute; right: -12px; bottom: 0; width: min(440px, 76%); }
+  .hero-side { row-gap: 0; }
+  .hero-side .hero-log { position: relative; z-index: 1; justify-self: end; width: min(440px, 76%); margin: -44px -12px 0 0; }
 }
 .hero-side { display: grid; gap: 28px; }
 /* key numbers under the hero */
@@ -286,11 +286,61 @@ body.anim-ready .contour-line:nth-child(5) { animation-delay: .4s; }
 .shot-zoom { display: block; cursor: zoom-in; }
 .shot-frame { background: var(--white); border: 1px solid var(--ink); padding: 8px; box-shadow: 0 30px 70px rgba(0,0,0,.12); }
 .shot-bar {
-  display: flex; justify-content: space-between;
+  display: flex; align-items: center; gap: 14px;
   padding: 2px 4px 8px;
   font: 10px var(--font-mono); letter-spacing: .14em; color: var(--grey-600);
 }
-.shot-frame img { display: block; width: 100%; height: auto; border: 1px solid var(--grey-200); }
+.shot-bar > :first-child { margin-right: auto; }
+.pl-live { display: inline-flex; align-items: center; gap: 6px; }
+.pl-live i { width: 7px; height: 7px; border-radius: 50%; background: #1c9a57; }
+.pl-live.is-running i { background: #1fb8cd; animation: plPulse 1.2s ease-in-out infinite; }
+@keyframes plPulse { 50% { opacity: .3; } }
+.pl-live b { font-family: var(--font-wide); font-size: 12px; letter-spacing: .04em; color: var(--ink); }
+.pl-real { color: var(--grey-600); border-bottom: 1px solid var(--grey-400); }
+.pl-real:hover { color: var(--ink); border-color: var(--ink); }
+
+/* hero pipeline canvas — the app's 流水线 screen redrawn in SVG (assets/js/pipeline.js plays it) */
+.pl { display: block; width: 100%; height: auto; border: 1px solid var(--grey-200); font-family: var(--font-zh); }
+.pl-bg { fill: #fafafa; }
+.pl-dots { fill: url(#plDots); }
+#plDots circle { fill: #d6d6d6; }
+.pl-edge { fill: none; stroke: #c4c4c4; stroke-width: 1.2; transition: stroke .3s; }
+.pl-edge-wait { stroke-dasharray: 2 3; }
+.pl-edge[data-state="done"] { stroke: #8f8f8f; }
+.pl-edge[data-state="run"] { stroke: #1fb8cd; stroke-width: 1.6; stroke-dasharray: 5 4; animation: plFlow .6s linear infinite; }
+@keyframes plFlow { to { stroke-dashoffset: -9; } }
+.pl-elabel { font-size: 8.5px; fill: #777; paint-order: stroke; stroke: #fafafa; stroke-width: 4px; stroke-linejoin: round; }
+
+.pl-card { fill: #fff; stroke: #dedede; stroke-width: 1; transition: stroke .3s, fill .3s; }
+.pl-kind { font-size: 9.5px; fill: #8a8a8a; }
+.pl-chip rect { fill: #f0f0f0; }
+.pl-chip text { font-size: 8.5px; fill: #777; }
+.pl-name { font-size: 12.5px; font-weight: 700; fill: #1f1f1f; }
+.pl-desc { font-size: 9px; fill: #9a9a9a; }
+.pl-badge { font-size: 9.5px; font-weight: 700; fill: #8a8a8a; }
+.pl-bar { stroke: transparent; stroke-width: 2; stroke-linecap: round; }
+.pl-pill .pl-card { fill: #f3f3f3; }
+.pl-pill .pl-name { font-size: 11px; }
+
+.pl-node[data-state="idle"] { opacity: .55; }
+.pl-node { transition: opacity .3s; }
+.pl-node[data-state="run"] .pl-card, .pl-node[data-state="fix"] .pl-card { stroke: #1fb8cd; stroke-width: 1.6; }
+.pl-node[data-state="run"] .pl-badge, .pl-node[data-state="fix"] .pl-badge { fill: #0f93a6; }
+.pl-node[data-state="run"] .pl-bar, .pl-node[data-state="fix"] .pl-bar { stroke: #1fb8cd; stroke-dasharray: 28 140; animation: plBar 1.1s linear infinite; }
+@keyframes plBar { from { stroke-dashoffset: 28; } to { stroke-dashoffset: -140; } }
+.pl-node[data-state="warn"] .pl-card { stroke: #f0a23c; stroke-width: 1.6; fill: #fff8ee; }
+.pl-node[data-state="warn"] .pl-badge { fill: #d07a14; }
+.pl-node[data-state="wait"] .pl-card { stroke: #b5b5b5; stroke-dasharray: 4 3; }
+.pl-node[data-state="ok"] .pl-badge { fill: #1c9a57; }
+.pl-pill[data-state="ok"] .pl-card { fill: #e9f7ef; stroke: #9fd9b8; }
+
+.pl-tools rect { fill: #fff; stroke: #e2e2e2; }
+.pl-tools text { font-size: 13px; fill: #555; }
+.pl-progress-k { font: 8.5px var(--font-mono); letter-spacing: .12em; fill: #9a9a9a; }
+.pl-progress-n { font-size: 11px; font-weight: 700; fill: #333; }
+.pl-track { fill: #e6e6e6; }
+.pl-fill { fill: #1fb8cd; transition: width .4s; }
+.pl.is-finished .pl-fill, .pl:not(.is-live) .pl-fill { fill: #1c9a57; }
 /* run log: one morning of the pipeline as a terminal-style list */
 .hero-log {
   position: relative;
@@ -321,9 +371,15 @@ body.anim-ready .contour-line:nth-child(5) { animation-delay: .4s; }
   font: 11px var(--font-mono); letter-spacing: .12em; color: var(--accent);
   border-bottom: 1px solid currentColor;
 }
-/* lines arrive one by one, like a run in progress */
-body.anim-ready .hero-log-list li { animation: logLine .45s var(--ease-out) both; animation-delay: calc(.9s + var(--i) * .22s); }
-@keyframes logLine { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+/* while the pipeline plays (assets/js/pipeline.js), lines arrive with the canvas;
+   hidden lines keep their space so the panel never changes height */
+.hero-log.is-live .hero-log-list li { opacity: 0; transform: translateX(-8px); transition: opacity .35s var(--ease-out), transform .35s var(--ease-out); }
+.hero-log.is-live .hero-log-list li.on { opacity: 1; transform: none; }
+.hero-log-list li.is-cur span::after {
+  content: ""; display: inline-block; width: 7px; height: 1em; margin-left: 6px; vertical-align: -2px;
+  background: var(--accent); animation: logCursor 1s steps(1) infinite;
+}
+@keyframes logCursor { 50% { opacity: 0; } }
 .hero-release {
   display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
   margin-top: 6px; padding: 8px 12px;
@@ -868,7 +924,7 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 .section-bridge p span { font: 9px var(--font-mono); color: #777; }
 .menu-wordmark { display: none; }
 @media (max-width: 768px) { .section-bridge { padding: 22px 6vw; } .bridge-meta span:last-child { display: none; } .section-bridge p span { display: none; } .menu-wordmark { display: block; position: absolute; bottom: 120px; left: 6vw; font: 900 23vw var(--font-wide); letter-spacing: -.05em; color: #e3e3e3; pointer-events: none; transform: translateX(-15px); opacity: 0; transition: transform .6s var(--ease-out), opacity .6s; } .mobile-menu.open .menu-wordmark { transform: none; opacity: 1; } .mobile-menu-list, .mobile-menu-foot { position: relative; z-index: 1; } }
-@media (prefers-reduced-motion: reduce) { .bridge-wordmark { clip-path: none; transform: none; transition: none; } .bridge-track b { transform: none; transition: none; } .menu-wordmark { transition: none; } body.anim-ready .hero-log-list li { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .bridge-wordmark { clip-path: none; transform: none; transition: none; } .bridge-track b { transform: none; transition: none; } .menu-wordmark { transition: none; } }
 
 
 /* ============ 1K / 2K SCREENS ============
@@ -924,10 +980,13 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
   .hero-release b { font-size: calc(14px * var(--k)); }
   .hero-release-k { font-size: calc(10px * var(--k)); }
   .hero-release-date { font-size: calc(11px * var(--k)); }
-  .hero-side { margin-top: calc(40px * var(--k)); gap: calc(28px * var(--k)); padding-bottom: calc(150px * var(--k)); }
+  .hero-side { margin-top: calc(40px * var(--k)); gap: calc(28px * var(--k)); }
   .shot-frame { padding: calc(8px * var(--k)); }
   .shot-bar { font-size: calc(10px * var(--k)); }
-  .hero-side .hero-log { width: min(calc(440px * var(--k)), 76%); }
+  .pl-live b { font-size: calc(12px * var(--k)); }
+  .pl-live i { width: calc(7px * var(--k)); height: calc(7px * var(--k)); }
+  .hero-side { row-gap: 0; }
+  .hero-side .hero-log { width: min(calc(440px * var(--k)), 76%); margin-top: calc(-44px * var(--k)); }
   .hero-log { padding: calc(16px * var(--k)) calc(20px * var(--k)) calc(18px * var(--k)); }
   .hero-stats { margin-top: calc(56px * var(--k)); }
   .hero-stats li { padding: calc(18px * var(--k)) calc(20px * var(--k)) 0; }

@@ -12,11 +12,12 @@
   <meta property="og:image" content="https://haaahhhis.github.io/Web_MultiGameAssistant/assets/img/og-cover.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="assets/css/style.css?v=38d3685172b7">
+  <link rel="stylesheet" href="assets/css/style.css?v=c8a8559a1ee1">
   <link rel="stylesheet" href="assets/css/demo.css?v=1d6f0afedaeb">
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
   <script src="assets/js/release-data.js?v=5c3d6dae6fb3" defer></script>
   <script src="assets/js/main.js?v=bdf9d5899837" defer></script>
+  <script src="assets/js/pipeline.js?v=8c63fdd612f2" defer></script>
   <script src="assets/js/demo.js?v=c98043650c61" defer></script>
 </head>
 <body>
@@ -158,13 +159,104 @@
           <div class="hero-side">
             <figure class="hero-visual reveal-block">
               <div class="shot-frame">
-                <div class="shot-bar" aria-hidden="true"><span>SCREEN // PIPELINE CANVAS</span><span>点击看完整界面 ⤢</span></div>
-                <a class="shot-zoom" href="assets/img/pipeline-canvas.webp" target="_blank" rel="noopener" data-lightbox><img src="assets/img/hero-pipeline.webp" width="1290" height="620" alt="流水线画布局部：MAA 和三月七小助手两条分支同时运行，结束后由 agent 查活动进度，再发飞书"></a>
+                <div class="shot-bar">
+                  <span>PIPELINE // 早间日常</span>
+                  <span class="pl-live" aria-hidden="true"><i></i><b id="plClock">09:49</b><span id="plState">已完成</span></span>
+                  <a class="pl-real" href="assets/img/pipeline-canvas.webp" target="_blank" rel="noopener" data-lightbox>真实界面 ⤢</a>
+                </div>
+                <!-- the app's pipeline canvas redrawn in SVG; assets/js/pipeline.js plays one morning -->
+                <svg class="pl" id="heroPipeline" viewBox="0 0 820 400" role="img" aria-label="流水线「早间日常」：MAA 和三月七小助手两条分支同时运行，清体力被公告挡住后由 agent 处理并重试，两条分支结束后 agent 查活动进度，再发飞书汇报">
+                  <defs>
+                    <pattern id="plDots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".9"/></pattern>
+                  </defs>
+                  <rect class="pl-bg" width="820" height="400"/>
+                  <rect class="pl-dots" width="820" height="400" fill="url(#plDots)"/>
+
+                  <g class="pl-edges">
+                    <path class="pl-edge" data-edge="e1" data-state="done" d="M68 165 C86 165 86 75 104 75"/>
+                    <path class="pl-edge" data-edge="e2" data-state="done" d="M68 165 C86 165 86 255 104 255"/>
+                    <path class="pl-edge" data-edge="e3" data-state="done" d="M276 75 L328 75"/>
+                    <path class="pl-edge" data-edge="e4" data-state="done" d="M276 255 L328 255"/>
+                    <path class="pl-edge pl-edge-wait" data-edge="e5" data-state="done" d="M500 255 C548 255 420 176 420 112"/>
+                    <path class="pl-edge" data-edge="e6" data-state="done" d="M512 75 C540 75 538 165 566 165"/>
+                    <path class="pl-edge" data-edge="e7" data-state="done" d="M742 165 L760 165"/>
+                    <text class="pl-elabel" x="78" y="120">成功后</text>
+                    <text class="pl-elabel" x="78" y="214">成功后</text>
+                    <text class="pl-elabel" x="302" y="70" text-anchor="middle">结束后</text>
+                    <text class="pl-elabel" x="302" y="250" text-anchor="middle">结束后</text>
+                    <text class="pl-elabel" x="486" y="196">结束后</text>
+                    <text class="pl-elabel" x="546" y="122">结束后</text>
+                  </g>
+
+                  <g class="pl-node pl-pill" data-node="start" data-state="ok" transform="translate(12 150)">
+                    <rect class="pl-card" width="56" height="30" rx="15"/>
+                    <text class="pl-name" x="28" y="19.5" text-anchor="middle">开始</text>
+                  </g>
+                  <g class="pl-node" data-node="maa" data-state="ok" transform="translate(104 46)">
+                    <rect class="pl-card" width="172" height="58" rx="6"/>
+                    <text class="pl-kind" x="10" y="18">脚本任务</text>
+                    <g class="pl-chip" transform="translate(54 8)"><rect width="34" height="14" rx="3"/><text x="17" y="10.5" text-anchor="middle">模拟器</text></g>
+                    <text class="pl-name" x="10" y="41">MAA · 日常</text>
+                    <text class="pl-badge" x="162" y="41" text-anchor="end">✓ 38 分钟</text>
+                    <line class="pl-bar" x1="6" y1="55" x2="166" y2="55"/>
+                  </g>
+                  <g class="pl-node" data-node="m7d" data-state="ok" transform="translate(104 226)">
+                    <rect class="pl-card" width="172" height="58" rx="6"/>
+                    <text class="pl-kind" x="10" y="18">脚本任务</text>
+                    <g class="pl-chip" transform="translate(54 8)"><rect width="42" height="14" rx="3"/><text x="21" y="10.5" text-anchor="middle">鼠标键盘</text></g>
+                    <text class="pl-name" x="10" y="41">三月七 · 日常</text>
+                    <text class="pl-badge" x="162" y="41" text-anchor="end">✓ 21 分钟</text>
+                    <line class="pl-bar" x1="6" y1="55" x2="166" y2="55"/>
+                  </g>
+                  <g class="pl-node" data-node="m7s" data-state="ok" transform="translate(328 226)">
+                    <rect class="pl-card" width="172" height="58" rx="6"/>
+                    <text class="pl-kind" x="10" y="18">脚本任务</text>
+                    <g class="pl-chip" transform="translate(54 8)"><rect width="42" height="14" rx="3"/><text x="21" y="10.5" text-anchor="middle">鼠标键盘</text></g>
+                    <text class="pl-name" x="10" y="41">三月七 · 清体力</text>
+                    <text class="pl-badge" x="162" y="41" text-anchor="end">✓ 重试 1 次</text>
+                    <line class="pl-bar" x1="6" y1="55" x2="166" y2="55"/>
+                  </g>
+                  <g class="pl-node" data-node="agent" data-state="ok" transform="translate(328 38)">
+                    <rect class="pl-card" width="184" height="74" rx="6"/>
+                    <text class="pl-kind" x="10" y="18">agent 步骤</text>
+                    <g class="pl-chip" transform="translate(66 8)"><rect width="34" height="14" rx="3"/><text x="17" y="10.5" text-anchor="middle">等全部</text></g>
+                    <text class="pl-name" x="10" y="41">查活动进度</text>
+                    <text class="pl-badge" x="174" y="41" text-anchor="end">✓ 2 个活动快结束</text>
+                    <text class="pl-desc" x="10" y="60">进游戏看看各活动还有哪些没做完</text>
+                    <line class="pl-bar" x1="6" y1="71" x2="178" y2="71"/>
+                  </g>
+                  <g class="pl-node" data-node="feishu" data-state="ok" transform="translate(566 128)">
+                    <rect class="pl-card" width="176" height="74" rx="6"/>
+                    <text class="pl-kind" x="10" y="18">发消息</text>
+                    <text class="pl-name" x="10" y="41">发飞书</text>
+                    <text class="pl-badge" x="166" y="41" text-anchor="end">✓ 已发送</text>
+                    <text class="pl-desc" x="10" y="60">早间日常跑完了，附上各游戏进度</text>
+                    <line class="pl-bar" x1="6" y1="71" x2="170" y2="71"/>
+                  </g>
+                  <g class="pl-node pl-pill" data-node="end" data-state="ok" transform="translate(760 150)">
+                    <rect class="pl-card" width="50" height="30" rx="15"/>
+                    <text class="pl-name" x="25" y="19.5" text-anchor="middle">结束</text>
+                  </g>
+
+                  <!-- canvas controls and run progress, bottom-left like the app -->
+                  <g class="pl-tools" transform="translate(12 300)">
+                    <rect width="26" height="80" rx="5"/>
+                    <text x="13" y="21" text-anchor="middle">+</text>
+                    <text x="13" y="45" text-anchor="middle">−</text>
+                    <text x="13" y="69" text-anchor="middle">⛶</text>
+                  </g>
+                  <g class="pl-progress" transform="translate(52 352)">
+                    <text class="pl-progress-k" x="0" y="0">运行进度</text>
+                    <text class="pl-progress-n" id="plCount" x="0" y="20">5 / 5 个节点</text>
+                    <rect class="pl-track" x="0" y="26" width="150" height="3"/>
+                    <rect class="pl-fill" id="plFill" x="0" y="26" width="150" height="3"/>
+                  </g>
+                </svg>
               </div>
             </figure>
 
-            <div class="hero-log reveal-block">
-              <div class="hero-log-head"><span>RUN LOG // 早间日常</span><span>示例</span></div>
+            <div class="hero-log reveal-block" id="heroLog">
+              <div class="hero-log-head"><span>RUN LOG // 早间日常</span><span id="heroLogState">示例</span></div>
               <ol class="hero-log-list">
                 <li style="--i:0"><time>09:00</time><i class="is-run" aria-hidden="true">▶</i><span>按时开工，两条分支并行</span></li>
                 <li style="--i:1"><time>09:21</time><i class="is-ok" aria-hidden="true">✓</i><span>三月七 · 日常</span><em>21 分钟</em></li>
