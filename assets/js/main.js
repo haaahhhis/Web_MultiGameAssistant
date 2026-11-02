@@ -123,7 +123,7 @@
         scramble(e.target, e.target.textContent, 700);
       });
     }, { threshold: 0.6 });
-    document.querySelectorAll('.chapter-sub, .hl-en, .how-k, .flow-nodes span').forEach(function (el) {
+    document.querySelectorAll('.chapter-sub, .hl-en').forEach(function (el) {
       if (!el.children.length) labelIo.observe(el);
     });
   }
