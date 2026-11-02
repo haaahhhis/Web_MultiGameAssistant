@@ -39,10 +39,10 @@ python -m http.server 8080
 
 ## 结构
 
-- `index.html` — 宣传主页，四个章节：首页 / 你的一天（时间线 + 演示）/ 九大亮点 / 安全与问答，结尾下载区和页脚
+- `index.html` — 宣传主页，四个章节：首页 / 日常（时间线 + 演示）/ 九大亮点 / 安全与问答，结尾下载区和页脚
 - `releases.html` — 版本发布页：最新版本下载、安装与更新方式、全部版本（`releases.html#v1.1.0` 可直接定位并展开）、系统要求
 - `assets/css/style.css` — 两个页面共用的样式；`assets/css/releases.css` — 版本发布页样式
-- `assets/css/demo.css` / `assets/js/demo.js` — 「你的一天」里的真实界面演示；滚动到某个时间点时切换到对应场景，场景播完原地重放
+- `assets/css/demo.css` / `assets/js/demo.js` — 「日常」里的真实界面演示；滚动到某个时间点时切换到对应场景，场景播完原地重放
 - `assets/js/main.js` — 加载动画（每个会话只播一次）、滚动动效、时间线联动、安装方式切换、复制按钮、首页下载按钮与最新版本条
 - `assets/js/release-data.js` — 两个页面共用的版本数据读取与下载选择；`assets/js/releases.js` — 版本发布页渲染
 - `assets/img/` — 软件真实截图（webp）与分享卡片图 `og-cover.jpg`

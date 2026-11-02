@@ -27,14 +27,7 @@ async function assertStyles(page) {
       legacyPipeline: document.querySelectorAll('#pipeline, .flow-board, .rail-item[data-section=pipeline]').length,
       railCount: document.querySelectorAll('.rail-item').length,
       oldChapters: document.querySelectorAll('#start, #support, #how').length,
-      wordmarkSize: parseFloat(css('.bridge-wordmark').fontSize),
-      wordmark: document.querySelector('.bridge-wordmark').textContent,
-      wordmarkFits: (() => {
-        const mark = document.querySelector('.bridge-wordmark');
-        const bridge = document.querySelector('.section-bridge');
-        const style = getComputedStyle(bridge);
-        return mark.scrollWidth <= bridge.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) + 1;
-      })(),
+      oldBlocks: document.querySelectorAll('.section-bridge, .spec-table').length,
       architectureLayout: css('.download-options').display,
       architectureBorder: css('.download-options button').borderTopWidth,
       githubIconSize: css('.hero-ctas .btn-github svg').width,
@@ -57,9 +50,7 @@ async function assertStyles(page) {
   assert.equal(styles.railCount, 5, 'four sections plus the releases page');
   assert.equal(styles.oldChapters, 0, 'get-started, support and how-it-works chapters are gone');
   assert.ok(styles.releasesLink, 'rail must link to the releases page');
-  assert.ok(styles.wordmarkSize >= 27, 'transition must display the complete wordmark');
-  assert.equal(styles.wordmark, '// MultiGameAssistant');
-  assert.ok(styles.wordmarkFits, 'complete name must fit in the bridge at this viewport');
+  assert.equal(styles.oldBlocks, 0, 'bridge banner and footer spec table are gone');
   assert.equal(styles.architectureLayout, 'flex');
   assert.equal(styles.architectureBorder, '1px');
   assert.equal(styles.githubIconSize, '18px');
@@ -134,26 +125,6 @@ try {
       await page.waitForSelector('.loader', { state: 'hidden' });
       if (shots) {
         await page.screenshot({ path: path.join(shots, `${name}-hero.png`), animations: 'disabled' });
-      }
-      await page.locator('.section-bridge').scrollIntoViewIfNeeded();
-      await page.waitForFunction(() => {
-        const bridge = document.querySelector('.section-bridge');
-        const clip = getComputedStyle(bridge.querySelector('.bridge-wordmark')).clipPath;
-        return bridge.classList.contains('in') && (clip === 'none' || clip === 'inset(0px)');
-      });
-      if (shots) await page.screenshot({ path: path.join(shots, `${name}-bridge.png`), animations: 'disabled' });
-      const shift = () => page.locator('.bridge-wordmark').evaluate(el => new DOMMatrixReadOnly(getComputedStyle(el).transform).m41);
-      const before = await shift();
-      await page.evaluate(() => window.scrollBy(0, 180));
-      if (reducedMotion !== 'reduce') {
-        await page.waitForFunction(previous => new DOMMatrixReadOnly(getComputedStyle(document.querySelector('.bridge-wordmark')).transform).m41 < previous - 4, before);
-      }
-      const after = await shift();
-      if (reducedMotion === 'reduce') assert.equal(after, before, 'reduced motion must not move the wordmark');
-      else {
-        assert.ok(after < before - 4, 'downward scroll must move the wordmark left');
-        await page.evaluate(() => window.scrollBy(0, -180));
-        await page.waitForFunction(previous => Math.abs(new DOMMatrixReadOnly(getComputedStyle(document.querySelector('.bridge-wordmark')).transform).m41 - previous) < 2, before);
       }
       await page.locator('#dayStage').scrollIntoViewIfNeeded();
       await page.waitForFunction(() => window.__mgaDemo && window.__mgaDemo.state().ready, null, { polling: 100 });

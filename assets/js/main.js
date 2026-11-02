@@ -173,28 +173,6 @@
     revealEls.forEach(function (el) { io.observe(el); });
   }
 
-  var bridge = document.querySelector('.section-bridge');
-  if (bridge && !REDUCED) {
-    var bridgeTick = false;
-    function updateBridge() {
-      var rect = bridge.getBoundingClientRect();
-      var start = window.innerHeight * .82;
-      var end = window.innerHeight * .18 - rect.height;
-      var progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
-      bridge.style.setProperty('--bridge-x', ((1 - progress) * Math.min(180, window.innerWidth * .16)).toFixed(1) + 'px');
-    }
-    function scheduleBridge() {
-      if (bridgeTick) return;
-      bridgeTick = true;
-      requestAnimationFrame(function () { updateBridge(); bridgeTick = false; });
-    }
-    window.addEventListener('scroll', scheduleBridge, { passive: true });
-    window.addEventListener('resize', scheduleBridge);
-    /* the reveal slides the bridge up; measure again once it has settled */
-    bridge.addEventListener('transitionend', function (e) { if (e.target === bridge) scheduleBridge(); });
-    updateBridge();
-  }
-
   /* rail active section tracking */
   var railItems = Array.prototype.slice.call(document.querySelectorAll('.rail-item'));
   var sections = railItems
