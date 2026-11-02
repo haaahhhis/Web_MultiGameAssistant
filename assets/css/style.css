@@ -408,23 +408,12 @@ body.anim-ready .contour-line:nth-child(5) { animation-delay: .4s; }
   white-space: nowrap;
 }
 .hero-en-word { position: relative; display: inline-block; }
-.hero-title-zh {
-  display: block;
-  font-size: clamp(26px, 2.8vw, 38px);
-  font-weight: 700;
-  letter-spacing: .12em;
-  margin-top: 16px;
-}
 .glyph { display: inline-block; }
 body.anim-ready .glyph {
   clip-path: inset(100% 0 0 0);
   transform: translateY(18%);
   animation: glyphUp .7s var(--ease-out) forwards;
   animation-delay: var(--d, 0s);
-}
-body.anim-ready .hero-title-zh {
-  clip-path: inset(0 0 100% 0);
-  animation: lineUp .6s var(--ease-out) .6s forwards;
 }
 @keyframes glyphUp {
   to { clip-path: inset(0 0 0 0); transform: translateY(0); }
@@ -967,7 +956,6 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
   .hero-grid .hero-en-line { font-size: clamp(56px, 5vw, calc(92px * var(--k))); }
   .hero-copy { padding-top: calc(8px * var(--k)); }
   .hero-eyebrow { font-size: calc(11px * var(--k)); margin-bottom: calc(22px * var(--k)); }
-  .hero-title-zh { font-size: calc(38px * var(--k)); }
   .hero-tagline { font-size: calc(26px * var(--k)); }
   .hero-desc { max-width: calc(560px * var(--k)); }
   .hero-chips { gap: calc(8px * var(--k)) calc(22px * var(--k)); margin-bottom: calc(28px * var(--k)); }
