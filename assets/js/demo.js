@@ -21,7 +21,7 @@
     { zh: '监控与干预', en: 'MONITOR', t: '10:20' },
     { zh: '游戏信息', en: 'INTEL', t: '12:30' },
     { zh: 'Agent', en: 'AGENT', t: '10:58' },
-    { zh: '飞书', en: 'FEISHU', t: '10:50' }
+    { zh: '飞书 · QQ', en: 'REMOTE', t: '10:50' }
   ];
   var ORDER = [0, 1, 2, 5, 4, 3];
   function nextScene(i, step) { return ORDER[(ORDER.indexOf(i) + step + ORDER.length) % ORDER.length]; }
@@ -145,26 +145,25 @@
     else if (d.type === 'error') { paused.manual = true; syncPause(); labelEl.textContent = 'DEMO // 演示暂时无法播放，请重新选择场景'; }
   });
 
-  /* feishu phone mock — dark, code-drawn from the real recording */
+  /* Feishu phone mock — dark, code-drawn after the real app: notices with buttons, 助手's replies, the daily report */
   var phone = mk('div', 'demo-phone', null, clipEl);
   phone.setAttribute('aria-hidden', 'true');
-  var CARD_FOOT = 'MultiGameAssistant · 2026/10/27';
   phone.innerHTML =
     '<div class="fs-phone dk">' +
     '<div class="fs-status"><span class="fs-st-l"><b>20:25</b><i class="fs-app"></i><i class="fs-app"></i></span><span class="fs-sig"><svg class="fs-ic" viewBox="0 0 16 16"><path d="M8 4a6 6 0 0 1 6 3"/><path d="M8 7a3.5 3.5 0 0 1 3.5 1.7"/><circle cx="8" cy="11" r="1"/></svg><svg class="fs-ic" viewBox="0 0 16 16"><rect x="6" y="2" width="4" height="9" rx="2"/><path d="M4 8a4 4 0 0 0 8 0M8 12v3"/></svg><b>5G</b><b>5G</b><svg class="fs-ic" viewBox="0 0 16 16"><path d="M1 6a11 11 0 0 1 14 0M4 9a7 7 0 0 1 8 0M7 12a3 3 0 0 1 2 0"/><circle cx="8" cy="14" r=".8"/></svg><b>49%</b></span></div>' +
     '<div class="fs-head"><span class="fs-back">‹</span><i class="fs-pill">5</i><span class="fs-ttl">MultiGameAssistant <em class="fs-bot">机器人</em></span><span class="fs-sub">325</span><span class="fs-head-r"><svg class="fs-ic" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3l2 1.5"/></svg><b>⋯</b></span></div>' +
     '<div class="fs-chat" id="fsChat">' +
-      '<div class="fs-msg"><i class="fs-av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1aa6f7"/><rect x="7" y="9" width="10" height="7" rx="2.5" fill="#fff"/><circle cx="10" cy="12" r="1.1" fill="#1aa6f7"/><circle cx="14" cy="12" r="1.1" fill="#1aa6f7"/><path d="M12 5v3" stroke="#fff" stroke-width="1.4"/></svg></i><div class="fs-card c-orange"><div class="fs-ct">三游戏日常 · 桌面任务依次运行：已取消</div><div class="fs-cb">开机后运行，0 个成功，3 个取消（已取消）<br>用时 1 分钟</div><div class="fs-cf">MultiGameAssistant · 2026/10/26 17:04:22</div></div></div>' +
-      '<div class="fs-sep">今天</div><div class="fs-sep">09:39</div>' +
-      '<div class="fs-msg"><i class="fs-av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1aa6f7"/><rect x="7" y="9" width="10" height="7" rx="2.5" fill="#fff"/><circle cx="10" cy="12" r="1.1" fill="#1aa6f7"/><circle cx="14" cy="12" r="1.1" fill="#1aa6f7"/><path d="M12 5v3" stroke="#fff" stroke-width="1.4"/></svg></i><div class="fs-card c-blue"><div class="fs-ct">三游戏日常 · 桌面任务依次运行</div><div class="fs-cb">三游戏日常跑完：方舟 → 终末地 → 星铁（桌面任务依次运行，不互相抢屏幕）</div><div class="fs-cf">MultiGameAssistant · 2026/10/27 09:39:34</div></div></div>' +
-      '<div class="fs-msg"><i class="fs-av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1aa6f7"/><rect x="7" y="9" width="10" height="7" rx="2.5" fill="#fff"/><circle cx="10" cy="12" r="1.1" fill="#1aa6f7"/><circle cx="14" cy="12" r="1.1" fill="#1aa6f7"/><path d="M12 5v3" stroke="#fff" stroke-width="1.4"/></svg></i><div class="fs-card c-green"><div class="fs-ct">三游戏日常 · 桌面任务依次运行：已完成</div><div class="fs-cb">开机后运行，3 个成功<br>用时 49 分钟</div><div class="fs-cf">MultiGameAssistant · 2026/10/27 09:39:35</div></div></div>' +
+      '<div class="fs-msg"><i class="fs-av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1aa6f7"/><rect x="7" y="9" width="10" height="7" rx="2.5" fill="#fff"/><circle cx="10" cy="12" r="1.1" fill="#1aa6f7"/><circle cx="14" cy="12" r="1.1" fill="#1aa6f7"/><path d="M12 5v3" stroke="#fff" stroke-width="1.4"/></svg></i><div class="fs-card c-green"><div class="fs-ct">早间日常：已完成</div><div class="fs-cb">3 个成功 · 用时 49 分钟</div><div class="fs-cf">MultiGameAssistant · 2026/11/04 09:49:12</div></div></div>' +
+      '<div class="fs-sep">今天</div><div class="fs-sep">09:24</div>' +
+      '<div class="fs-msg"><i class="fs-av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1aa6f7"/><rect x="7" y="9" width="10" height="7" rx="2.5" fill="#fff"/><circle cx="10" cy="12" r="1.1" fill="#1aa6f7"/><circle cx="14" cy="12" r="1.1" fill="#1aa6f7"/><path d="M12 5v3" stroke="#fff" stroke-width="1.4"/></svg></i><div class="fs-card c-orange"><div class="fs-ct">三月七小助手 · 清体力：被活动公告挡住</div><div class="fs-cb">画面停在活动公告弹窗，已交给干预处理；流水线等它处理完再继续。</div><div class="fs-card-btns"><b>停止</b><b>继续</b><b>忽略</b></div><div class="fs-cf">MultiGameAssistant · 2026/11/05 09:24:08</div></div></div>' +
+      '<div class="fs-msg"><i class="fs-av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1aa6f7"/><rect x="7" y="9" width="10" height="7" rx="2.5" fill="#fff"/><circle cx="10" cy="12" r="1.1" fill="#1aa6f7"/><circle cx="14" cy="12" r="1.1" fill="#1aa6f7"/><path d="M12 5v3" stroke="#fff" stroke-width="1.4"/></svg></i><div class="fs-card"><div class="fs-cb">干预关掉了公告，清体力重试成功，后面的步骤接着跑了。</div></div></div>' +
       '<div class="fs-sep fx" data-anim="1">20:25</div>' +
-      '<div class="fs-msg fx" data-anim="1"><i class="fs-av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1aa6f7"/><rect x="7" y="9" width="10" height="7" rx="2.5" fill="#fff"/><circle cx="10" cy="12" r="1.1" fill="#1aa6f7"/><circle cx="14" cy="12" r="1.1" fill="#1aa6f7"/><path d="M12 5v3" stroke="#fff" stroke-width="1.4"/></svg></i><div class="fs-card c-blue" id="fsReport"><div class="fs-ct">今日活动日报（演示）</div><div class="fs-cb fs-report" id="fsReportBody"></div><div class="fs-cf">MultiGameAssistant · 2026/10/27 20:25:24</div></div></div>' +
+      '<div class="fs-msg fx" data-anim="1"><i class="fs-av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1aa6f7"/><rect x="7" y="9" width="10" height="7" rx="2.5" fill="#fff"/><circle cx="10" cy="12" r="1.1" fill="#1aa6f7"/><circle cx="14" cy="12" r="1.1" fill="#1aa6f7"/><path d="M12 5v3" stroke="#fff" stroke-width="1.4"/></svg></i><div class="fs-card c-blue" id="fsReport"><div class="fs-ct">今日活动日报（演示）</div><div class="fs-cb fs-report" id="fsReportBody"></div><div class="fs-cf">MultiGameAssistant · 2026/11/05 20:25:24</div></div></div>' +
     '</div>' +
     '<div class="fs-input"><span>发送给 MultiGameAssistant</span><svg class="fs-ic" viewBox="0 0 16 16"><path d="M3 9l5-5 5 5"/></svg></div>' +
     '<div class="fs-iconsrow"><svg class="fs-ic2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><circle cx="5.8" cy="6.5" r=".9"/><circle cx="10.2" cy="6.5" r=".9"/><path d="M5.5 10.5a3.5 3.5 0 0 0 5 0"/></svg><svg class="fs-ic2" viewBox="0 0 16 16"><text x="4" y="12" font-size="11">@</text></svg><svg class="fs-ic2" viewBox="0 0 16 16"><rect x="6" y="2" width="4" height="9" rx="2"/><path d="M4 8a4 4 0 0 0 8 0M8 12v3"/></svg><svg class="fs-ic2" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1.5"/><circle cx="5.5" cy="6.5" r="1.2"/><path d="M2 11l4-3 3 2 3-3 2 2"/></svg><svg class="fs-ic2" viewBox="0 0 16 16"><text x="2" y="12" font-size="9" font-family="serif">Aa</text></svg><svg class="fs-ic2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v7M4.5 8h7"/></svg><svg class="fs-ic2 send" viewBox="0 0 16 16"><path d="M2 8l12-5-4 5 4 5z" fill="#1aa6f7"/></svg></div>' +
     '</div>';
-var REPORT_LINES = ['主人，今天的日报来啦喵～', '【明日方舟】打捞方案和恒远津梁都只剩 2 天，10/30 03:59 就结束了，其中恒远津梁活动页那份「点击领取」的奖励还没领，记得去点一下喵～2026「感谢庆典」的前瞻签到和特别招募已经在 10/24 21:30 开始了，这两项可以顺手做起来。', '【明日方舟：终末地】「危机筹备」限时活动 10/29 04:00 开始，「百趣演武」挑战活动 10/29 12:00 开始，这两天留意一下就好喵～', '【崩坏：星穹铁道】日常已完成；版本活动和剩余时间可在游戏页查看喵～'];
+var REPORT_LINES = ['主人，今天的日报来啦喵～', '【明日方舟】SideStory「时间啊，向前！」还在进行；「2026感谢庆典·限时签到」每天点一下就好喵～', '【明日方舟：终末地】「百趣演武」挑战活动还没打完，「理智补给」限时活动记得领喵～', '【崩坏：星穹铁道】早间日常已完成：清体力被活动公告挡了一下，干预处理后重试成功喵～'];
   function phoneFit() {
     var narrow = window.matchMedia('(max-width: 768px)').matches;
     var s = Math.min((clipEl.clientHeight - (narrow ? 12 : 36)) / 792, (clipEl.clientWidth * (narrow ? 0.9 : 0.44)) / 360);

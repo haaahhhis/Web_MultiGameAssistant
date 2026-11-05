@@ -39,7 +39,7 @@ async function check(name, run) {
     await page.close();
   }
 }
-const ends = ['三月七小助手是崩坏：星穹铁道的日常助手', '成功', '已关闭公告弹窗', '崩坏：星穹铁道', 'close-event-notice', 'MGA 助手'];
+const ends = ['三月七小助手是崩坏：星穹铁道的日常助手', '成功', '学到的', '崩坏：星穹铁道', 'close-event-notice', 'WebSocket 连接'];
 try {
   for (let index = 0; index < 6; index++) await check('scene-' + index, async page => {
     await page.goto(base + 'app-demo/index.html?validate=1');
@@ -85,7 +85,7 @@ try {
     await page.goto(base + '?validate=1#features');
     await page.locator('#demoOuter').scrollIntoViewIfNeeded();
     await page.waitForFunction(() => window.__mgaDemo?.state().ready);
-    await page.getByRole('tab', { name: /飞书$/ }).click();
+    await page.getByRole('tab', { name: /飞书 · QQ$/ }).click();
     await page.waitForFunction(() => document.querySelectorAll('#fsReportBody > div').length === 4);
     await page.getByRole('button', { name: '暂停演示', exact: true }).click();
     const frame = page.frames().find(f => f.url().includes('/app-demo/'));
@@ -96,7 +96,7 @@ try {
     await page.evaluate(() => window.__mgaDemo.seek(0.5));
     await page.waitForFunction(() => document.querySelectorAll('#fsReportBody > div').length === 4);
     await page.getByRole('tab', { name: /脚本$/ }).click();
-    await page.getByRole('tab', { name: /飞书$/ }).click();
+    await page.getByRole('tab', { name: /飞书 · QQ$/ }).click();
     assert.equal(await page.locator('#fsReportBody > div').count(), 0);
     await page.getByRole('button', { name: '播放演示', exact: true }).click();
     await page.waitForFunction(() => document.querySelectorAll('#fsReportBody > div').length === 4);
@@ -113,7 +113,7 @@ try {
     const frame = page.frames().find(f => f.url().includes('/app-demo/'));
     await page.waitForTimeout(400);
     assert.equal(await frame.evaluate(() => window.__mgaDemo.state().vt), 0);
-    await page.getByRole('tab', { name: /飞书$/ }).click();
+    await page.getByRole('tab', { name: /飞书 · QQ$/ }).click();
     await page.getByRole('button', { name: '播放演示', exact: true }).click();
     await page.waitForFunction(() => document.querySelectorAll('#fsReportBody > div').length === 4);
     await page.getByRole('button', { name: '暂停演示', exact: true }).click();

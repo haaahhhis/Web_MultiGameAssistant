@@ -69,6 +69,9 @@
 .c-orange .fs-ct { background: #a05a18; color: #ffedd5; }
 .fs-cb { font-size: 10px; color: #cfcfcf; line-height: 1.55; padding: 8px 9px; }
 .fs-cf { font-size: 8.5px; color: #777; padding: 0 9px 7px; }
+.fs-msg .fs-card .fs-card-btns { margin: 0 0 7px; border-top: 1px solid #3a3a3a; }
+.fs-msg .fs-card .fs-card-btns b { color: #8ab8ff; font-size: 10px; font-weight: 600; }
+.fs-msg .fs-card .fs-card-btns b + b { border-left-color: #3a3a3a; }
 .fs-rl { margin-bottom: 4px; }
 .fs-rl { opacity: 0; transform: translateY(5px); transition: opacity .35s, transform .35s; }
 .fs-rl.in { opacity: 1; transform: none; }

@@ -12,7 +12,7 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 let current = -1, total = 0, seeking = false;
 const post = (type: string, payload: object = {}) => parent.postMessage({ src: 'mga-demo', type, idx: current, ...payload }, location.origin);
 const progress = () => post('progress', { frac: total ? Math.min(1, clock.time / total) : 0, elapsed: clock.time });
-const nodeRun = (state: string, detail?: string) => ({ state, runIds: [], attempts: state === 'pending' ? 0 : 1, ...(detail ? { detail } : {}) });
+const nodeRun = (state: string, detail?: string, attempts = state === 'pending' ? 0 : 1) => ({ state, runIds: [], attempts, ...(detail ? { detail } : {}) });
 function runPhase(nodes: Record<string, ReturnType<typeof nodeRun>>, state = 'running') {
   const run = lastRun.current;
   if (!run) throw new Error('流水线尚未启动');
@@ -36,16 +36,18 @@ const scenes: Step[][] = [
   [go('#/p/scripts'), wait(700), click('导入本地项目'), focus('#import-path'), type('#import-path', 'D:\\Scripts\\March7thAssistant'),
     type('#import-name', '三月七小助手'), click('导入'), wait(900), click('让 AI 总结'), wait(3200)],
   [go('#/p/pipelines/morning-daily'), wait(1100), focus('.pipeline-editor'), click('定时与失败'), wait(2200), click('检查'), wait(1600), click('运行'), wait(700),
-    effect(() => runPhase({ emu: nodeRun('running'), clear: nodeRun('running'), farm: nodeRun('waiting', '等待桌面资源') })), wait(2200),
-    effect(() => runPhase({ emu: nodeRun('succeeded'), clear: nodeRun('succeeded'), farm: nodeRun('running') })), wait(2200),
+    effect(() => runPhase({ emu: nodeRun('running'), clear: nodeRun('running'), farm: nodeRun('waiting', '等待桌面资源') })), wait(2000),
+    effect(() => runPhase({ emu: nodeRun('succeeded'), clear: nodeRun('waiting', '被活动公告挡住，交给干预处理'), farm: nodeRun('waiting', '等清体力的问题处理完') })), wait(2400),
+    effect(() => runPhase({ clear: nodeRun('running', '干预关掉了公告，重试', 2) })), wait(1800),
+    effect(() => runPhase({ clear: nodeRun('succeeded', undefined, 2), farm: nodeRun('running') })), wait(1800),
     effect(() => runPhase({ farm: nodeRun('succeeded'), done: nodeRun('succeeded') }, 'succeeded')), click('运行记录'), wait(2400)],
   [go('#/p/runs'), wait(1000), effect(() => incident(false)), focus('.incident-title'), wait(2400), click('.incident-title'), wait(2400),
-    effect(() => incident(true)), wait(3000)],
+    effect(() => incident(true)), wait(2400), click('监控设置'), focus('.stall-list'), wait(3400)],
   [go('#/p/games/farecho'), click('刷新全部'), wait(900), focus('.version-card'), wait(3400),
     click('明日方舟：终末地'), focus('.version-card'), wait(3400), click('崩坏：星穹铁道'), focus('.version-card'), wait(3400)],
   [go('#/chat'), wait(1400), focus('.delegation', 1.15), wait(2200), click('.delegation .exchange-line'), wait(3200),
     go('#/p/skills'), wait(1200), focus('.main', 1), wait(3000)],
-  [go('#/settings/feishu'), wait(1200), click('重新检查'), wait(9000)],
+  [go('#/settings/feishu'), wait(1200), click('重新检查'), wait(4200), click('QQ 机器人'), wait(900), click('重新检查'), wait(4200)],
 ];
 const duration = (s: Step) => s.kind === 'wait' ? s.ms : s.kind === 'type' ? 750 + s.text.length * 60 : s.kind === 'effect' || s.kind === 'focus' ? 0 : 900;
 function find(target: string): HTMLElement | undefined {

@@ -141,7 +141,7 @@ try {
       await page.waitForFunction(() => document.querySelector('.day-stop.is-current').dataset.scene === '2' && window.__mgaDemo.state().idx === 2, null, { polling: 100 });
       // a scenario tab brings its stop into view
       await page.locator('.scen-tab', { hasText: '飞书' }).click();
-      await page.waitForFunction(() => document.querySelector('.day-stop.is-current').dataset.scene === '5' && document.getElementById('demoLabel').textContent === 'DEMO // FEISHU', null, { polling: 100 });
+      await page.waitForFunction(() => document.querySelector('.day-stop.is-current').dataset.scene === '5' && document.getElementById('demoLabel').textContent === 'DEMO // REMOTE', null, { polling: 100 });
       // the current stop gets a yellow marker and an ink time once its .3s transition settles
       await page.waitForFunction(() => {
         const el = document.querySelector('.day-stop.is-current');

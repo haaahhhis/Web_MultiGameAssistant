@@ -176,6 +176,9 @@ const demoSkills = [
   { name: 'pipeline-planning', description: '把多个脚本任务排成流水线，处理资源冲突。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\pipeline-planning', modelInvocable: true, userInvocable: true },
   { name: 'script-analysis', description: '读懂一个陌生脚本，写出脚本包草稿。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\script-analysis', modelInvocable: true, userInvocable: true },
 ];
+/* the QQ official bot, connected beside Feishu */
+const qqChecks = [{ id: 'config', label: 'AppID 和 AppSecret', ok: true }, { id: 'bot', label: '机器人信息', ok: true, detail: 'MGA 助手' }, { id: 'ws', label: 'WebSocket 连接', ok: true }, { id: 'users', label: '已允许用户', ok: true }];
+const qqView = () => ({ settings: { enabled: true, appId: '102458731', allowedUsers: [{ openId: 'D3A1F07C9B2E4D61', name: '演示用户', addedAt: Date.now() - 2 * 864e5 }] }, secretConfigured: true, pending: [] });
 export const lastRun: { current: any } = { current: null };
 const initialWorld = structuredClone(world);
 const initialEvents = structuredClone(sessionEvents);
@@ -346,10 +349,15 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   'games/read': () => ok({ sessionId: 's-game' }),
   'games/report/preview': () => ok({ title: '今日活动日报（演示）', text: snapshot.games.filter(g => g.builtin || followed.has(g.sra)).map(g => g.name + '：' + snapshot.activities.filter(a => a.game === g.id).slice(0, 3).map(a => a.name).join('、')).join('\n') }),
   'games/report/send': () => ok({ channels: ['飞书（演示）'], text: '演示日报，不发送真实消息。' }),
-  'notify/status': () => ok({ channels: [{ id: 'feishu', name: '飞书', state: 'ready' as const, recipients: 1, checks: [{ id: 'config', label: '凭证已配置', ok: true }, { id: 'bot', label: '机器人信息', ok: true, detail: 'MGA 助手' }, { id: 'ws', label: '长连接', ok: true }, { id: 'users', label: '已允许用户', ok: true }] }] }),
+  'notify/status': () => ok({ channels: [{ id: 'feishu', name: '飞书', state: 'ready' as const, recipients: 1, checks: [{ id: 'config', label: '凭证已配置', ok: true }, { id: 'bot', label: '机器人信息', ok: true, detail: 'MGA 助手' }, { id: 'ws', label: '长连接', ok: true }, { id: 'users', label: '已允许用户', ok: true }] }, { id: 'qq', name: 'QQ', state: 'ready' as const, recipients: 1, checks: qqChecks }] }),
   'feishu/settings': () => ok({ settings: { enabled: true, appId: world.feishu.appId, domain: 'feishu' as const, allowedUsers: [{ openId: 'ou_demo', name: '演示用户', addedAt: Date.now() - 30 * 864e5 }], otherApprovals: true }, secretConfigured: true, pending: [] }),
   'feishu/settings/set': () => ok({ settings: { enabled: true, appId: world.feishu.appId, domain: 'feishu' as const, allowedUsers: [{ openId: 'ou_demo', name: '演示用户', addedAt: Date.now() - 30 * 864e5 }], otherApprovals: true }, secretConfigured: true, pending: [] }),
   'feishu/users/allow': (p) => ok({ settings: { enabled: true, appId: world.feishu.appId, domain: 'feishu' as const, allowedUsers: [{ openId: 'ou_demo', name: '演示用户', addedAt: Date.now() - 30 * 864e5 }, { openId: p.openId, name: p.name, addedAt: Date.now() }], otherApprovals: true }, secretConfigured: true, pending: [] }),
+  'qqbot/settings': () => ok(qqView()),
+  'qqbot/settings/set': () => ok(qqView()),
+  'qqbot/users/allow': () => ok(qqView()),
+  'qqbot/users/remove': () => ok(qqView()),
+  'qqbot/check': () => ok({ checks: qqChecks }),
   'feishu/check': () => ok({ checks: [{ id: 'config', label: '凭证已配置', ok: true }, { id: 'bot', label: '机器人信息', ok: true, detail: 'MGA 助手' }, { id: 'ws', label: '长连接', ok: true }, { id: 'users', label: '已允许用户', ok: true }] }),
   'providers/list': () => ok({ revision: 1, providers: [{ id: 'demo', displayName: '演示模型', models: [{ id: 'demo-1', name: '演示模型 v1' }], api: 'openai-completions', baseURL: 'http://demo.local/v1', declared: true, active: true, credential: { kind: 'apiKey', configured: true, writable: true } }], writable: false, protocols: ['openai-completions'], taken: ['demo'] } as any),
   'models/catalog': () => ok({

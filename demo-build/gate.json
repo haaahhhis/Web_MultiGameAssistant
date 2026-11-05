@@ -13,7 +13,7 @@
     { "name": "chat", "hash": "#/chat", "must": ["优化脚本：三月七小助手", "交回了", "监控", "进行中"] },
     { "name": "session-diag", "hash": "#/s/s-diag", "must": ["模拟器卡在启动页", "允许本次"] },
     { "name": "skills", "hash": "#/p/skills", "must": ["pipeline-planning"] },
-    { "name": "feishu", "hash": "#/settings/feishu", "must": ["MGA 助手"] },
+    { "name": "feishu", "hash": "#/settings/feishu", "must": ["远程连接", "QQ 机器人", "MGA 助手"] },
     { "name": "settings", "hash": "#/settings", "must": ["设置"] }
   ]
 }
