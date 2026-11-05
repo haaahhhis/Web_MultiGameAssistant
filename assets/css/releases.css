@@ -106,6 +106,7 @@
 .rel-how-card { background: var(--white); border: 1px solid var(--grey-200); border-top: 4px solid var(--ink); padding: 22px 22px 24px; min-width: 0; }
 .rel-how-card h3 { font-size: 18px; font-weight: 900; margin-bottom: 10px; }
 .rel-how-card > p { font-size: 13.5px; color: #4d4d4d; }
+.rel-how-card > p a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .rel-how .code-block code { font-size: 12px; }
 .rel-how-update { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--grey-400); }
 .rel-how-update b { margin-right: 8px; color: var(--ink); }

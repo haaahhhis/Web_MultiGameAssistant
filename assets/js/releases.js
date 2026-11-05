@@ -80,7 +80,7 @@
     var arch = MGADownloads.assetArchitecture(name);
     if (arch === 'arm64') return { label: 'Windows ARM64', note: '骁龙等 ARM 处理器的电脑' };
     if (arch === 'x64') return { label: 'Windows x64', note: '大多数电脑' };
-    if (/^dsh-multigameassistant-.*\.tgz$/i.test(name)) return { label: 'dsh 插件包', note: '已经装了 dsh 时使用' };
+    if (/^dsh-multigameassistant(-.*)?\.tgz$/i.test(name)) return { label: 'dsh 插件包', note: '已经装了 dsh 时使用' };
     return { label: name, note: '' };
   }
 
@@ -90,9 +90,15 @@
     return arch === 'x64' ? 0 : arch === 'arm64' ? 1 : /\.tgz$/i.test(name) ? 2 : 3;
   }
 
+  /* dsh-multigameassistant.tgz is the versioned package again under a fixed name, for the always-latest link */
+  function withoutAlias(assets) {
+    var versioned = assets.some(function (a) { return /^dsh-multigameassistant-.+\.tgz$/i.test(a.name); });
+    return assets.filter(function (a) { return !(versioned && /^dsh-multigameassistant\.tgz$/i.test(a.name)); });
+  }
+
   function buildAssets(assets) {
     var wrap = el('div', 'rel-assets');
-    (assets || []).slice().sort(function (a, b) { return assetRank(a.name) - assetRank(b.name); }).forEach(function (a) {
+    withoutAlias(assets || []).sort(function (a, b) { return assetRank(a.name) - assetRank(b.name); }).forEach(function (a) {
       if (!/^https:\/\//i.test(a.browser_download_url || '')) return;
       var info = assetInfo(a.name);
       var link = el('a', 'rel-asset');
