@@ -33,8 +33,10 @@ function incident(resolved: boolean) {
   emit('runs/state', world.runs[2]);
 }
 const scenes: Step[][] = [
-  [go('#/p/scripts'), wait(700), click('导入本地项目'), focus('#import-path'), type('#import-path', 'D:\\Scripts\\March7thAssistant'),
-    type('#import-name', '三月七小助手'), click('导入'), wait(900), click('让 AI 总结'), wait(3200)],
+  [go('#/p/scripts'), wait(700), click('导入本地项目'), focus('#import-path'), type('#import-path', 'D:\\Scripts\\M9A'),
+    type('#import-name', 'M9A'), click('导入'), wait(900), click('让 AI 总结'), wait(3000),
+    // 三月七小助手 has run clean 5 times: the 优化脚本 offer, handed to the 脚本 agent
+    click('.script-row:nth-of-type(3)'), wait(900), focus('.pack-review'), wait(2600), click('.pack-review .primary'), wait(3000)],
   [go('#/p/pipelines/morning-daily'), wait(1100), focus('.pipeline-editor'), click('定时与失败'), wait(2200), click('检查'), wait(1600), click('运行'), wait(700),
     effect(() => runPhase({ emu: nodeRun('running'), clear: nodeRun('running'), farm: nodeRun('waiting', '等待桌面资源') })), wait(2000),
     effect(() => runPhase({ emu: nodeRun('succeeded'), clear: nodeRun('waiting', '被活动公告挡住，交给干预处理'), farm: nodeRun('waiting', '等清体力的问题处理完') })), wait(2400),

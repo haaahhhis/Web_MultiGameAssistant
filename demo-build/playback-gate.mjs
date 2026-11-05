@@ -39,7 +39,7 @@ async function check(name, run) {
     await page.close();
   }
 }
-const ends = ['三月七小助手是崩坏：星穹铁道的日常助手', '成功', '学到的', '崩坏：星穹铁道', 'close-event-notice', 'WebSocket 连接'];
+const ends = ['清体力前先关活动公告', '成功', '学到的', '崩坏：星穹铁道', 'close-event-notice', 'WebSocket 连接'];
 try {
   for (let index = 0; index < 6; index++) await check('scene-' + index, async page => {
     await page.goto(base + 'app-demo/index.html?validate=1');

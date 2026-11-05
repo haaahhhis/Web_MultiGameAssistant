@@ -28,9 +28,9 @@ export const world = {
     { id: 's-game', title: '游戏信息：崩坏：星穹铁道', updatedAt: Date.now() - 400e3, running: false, blank: false, live: false, role: 'games', requestedBy: '定时', home: 'games' },
   ] as any[],
   scripts: [
-    { id: 'emu-daily', name: 'MAA', source: { kind: 'local' as const, path: 'D:\\MGA\\tools\\emu-daily' }, current: 'local', dir: 'D:\\MGA\\tools\\emu-daily', versions: [{ version: '1.2.0', dir: 'D:\\MGA\\tools\\emu-daily', installedAt: Date.now() - 30 * 864e5, current: true }], channels: {}, addedAt: Date.now() - 30 * 864e5, enabled: true, summary: { state: 'done' as const, at: Date.now() - 20 * 864e5, text: '模拟器上的每日任务，自动领取奖励。' } },
-    { id: 'desk-daily', name: 'MaaEnd', source: { kind: 'local' as const, path: 'D:\\MGA\\tools\\desk-daily' }, current: 'local', dir: 'D:\\MGA\\tools\\desk-daily', versions: [{ version: '1.0.4', dir: 'D:\\MGA\\tools\\desk-daily', installedAt: Date.now() - 60 * 864e5, current: true }], channels: {}, addedAt: Date.now() - 60 * 864e5, enabled: true, summary: { state: 'done' as const, at: Date.now() - 20 * 864e5, text: '桌面上的每日任务合集。' } },
-    { id: 'daily-helper', name: '三月七小助手', source: { kind: 'local' as const, path: 'D:\\Scripts\\March7thAssistant' }, current: 'local', dir: 'D:\\Scripts\\March7thAssistant', versions: [{ version: '1.1.0', dir: 'D:\\Scripts\\March7thAssistant', installedAt: Date.now() - 10 * 864e5, current: true }], channels: {}, addedAt: Date.now() - 10 * 864e5, enabled: true, summary: { state: 'done' as const, at: Date.now() - 20 * 864e5, text: '配置驱动的桌面自动化脚本。' } },
+    { id: 'emu-daily', name: 'MAA', packId: 'maa', source: { kind: 'local' as const, path: 'D:\\MGA\\tools\\emu-daily' }, current: 'local', dir: 'D:\\MGA\\tools\\emu-daily', versions: [{ version: '1.2.0', dir: 'D:\\MGA\\tools\\emu-daily', installedAt: Date.now() - 30 * 864e5, current: true }], channels: {}, addedAt: Date.now() - 30 * 864e5, enabled: true, summary: { state: 'done' as const, at: Date.now() - 20 * 864e5, text: '模拟器上的每日任务，自动领取奖励。' } },
+    { id: 'desk-daily', name: 'MaaEnd', packId: 'maaend', source: { kind: 'local' as const, path: 'D:\\MGA\\tools\\desk-daily' }, current: 'local', dir: 'D:\\MGA\\tools\\desk-daily', versions: [{ version: '1.0.4', dir: 'D:\\MGA\\tools\\desk-daily', installedAt: Date.now() - 60 * 864e5, current: true }], channels: {}, addedAt: Date.now() - 60 * 864e5, enabled: true, summary: { state: 'done' as const, at: Date.now() - 20 * 864e5, text: '桌面上的每日任务合集。' } },
+    { id: 'daily-helper', name: '三月七小助手', packId: 'march7th', optimize: { runs: 5, due: 'runs' as const }, source: { kind: 'local' as const, path: 'D:\\Scripts\\March7thAssistant' }, current: 'local', dir: 'D:\\Scripts\\March7thAssistant', versions: [{ version: '1.1.0', dir: 'D:\\Scripts\\March7thAssistant', installedAt: Date.now() - 10 * 864e5, current: true }], channels: {}, addedAt: Date.now() - 10 * 864e5, enabled: true, summary: { state: 'done' as const, at: Date.now() - 20 * 864e5, text: '配置驱动的桌面自动化脚本。' } },
   ] as any[],
   runs: [
     { id: 'run-1', scriptId: 'emu-daily', scriptName: 'MAA', taskId: 'daily', taskTitle: '日常任务', params: {}, state: 'succeeded', startedAt: Date.now() - 5000e3, endedAt: Date.now() - 4800e3, command: ['MAA.exe', '--task', 'daily'], resources: ['adb'], tags: [], warnings: [], kind: 'task', outcome: '成功' },
@@ -87,6 +87,22 @@ export const world = {
     { id: 'h-iv', fromSession: 's-home', by: '监控', to: 'intervene', toSession: 's-diag', title: '三月七小助手 · 材料速刷：遇到了不认识的界面',
       task: '脚本停在一个不认识的界面，看看画面，能处理就处理。', state: 'running' as const, startedAt: Date.now() - 200e3 },
   ] as any[],
+  /* the homepage canvas's pipeline, as the app draws it */
+  early: Pipeline.parse({
+    id: 'early-daily', name: '早间日常',
+    nodes: [
+      { id: 'maa', kind: 'script-task', title: 'MAA · 日常', scriptId: 'emu-daily', taskId: 'daily', params: {}, position: { x: 140, y: 40 } },
+      { id: 'm7d', kind: 'script-task', title: '三月七 · 日常', scriptId: 'daily-helper', taskId: 'daily', params: {}, position: { x: 140, y: 260 } },
+      { id: 'm7s', kind: 'script-task', title: '三月七 · 清体力', scriptId: 'daily-helper', taskId: 'clear', params: {}, position: { x: 440, y: 260 } },
+      { id: 'agent', kind: 'agent', title: '查活动进度', prompt: '进游戏看看各活动还有哪些没做完，记下快结束的', waitForAll: true, position: { x: 440, y: 40 } },
+      { id: 'feishu', kind: 'notify', title: '发飞书', text: '早间日常跑完了，附上各游戏进度', position: { x: 740, y: 150 } },
+    ],
+    edges: [
+      { from: 'maa', to: 'agent', when: 'always' }, { from: 'm7d', to: 'm7s', when: 'always' }, { from: 'm7s', to: 'agent', when: 'always' },
+      { from: 'agent', to: 'feishu', when: 'always' },
+    ],
+    schedule: { enabled: true, times: ['09:00'], days: [1, 2, 3, 4, 5], catchUpMinutes: 30 },
+  }),
   feishu: { appId: 'cli_a1b2c3d4e5f60718', enabled: true, connected: true, bot: 'MGA 助手', users: [{ openId: 'ou_demo', name: '演示用户' }] },
 };
 
@@ -255,27 +271,33 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   'scripts/list': () => ok({ scripts: world.scripts, packs: [], known: [], setups: [], toolsDir: 'D:\\MGA\\tools' } as any),
   'scripts/get': (p: any) => ok(world.scripts.find(s => s.id === p.id) ?? world.scripts[0]),
   'scripts/import': (p: any, push) => {
-    const s: any = { id: 'daily-helper-2', name: p.name || '三月七小助手', source: { kind: 'local' as const, path: p.path }, current: 'local', dir: p.path, versions: [], channels: {}, addedAt: Date.now(), enabled: true };
+    const s: any = { id: 'm9a', name: p.name || 'M9A', source: { kind: 'local' as const, path: p.path }, current: 'local', dir: p.path, versions: [], channels: {}, addedAt: Date.now(), enabled: true };
     world.scripts.push(s);
     push('scripts/changed', {});
     return ok(s);
   },
+  'configs/profiles': () => ok({ current: 'main', items: [{ id: 'main', name: '大号', createdAt: Date.now() - 20 * 864e5 }, { id: 'alt', name: '小号', createdAt: Date.now() - 6 * 864e5 }] }),
+  'configs/launch': (p) => ok(p.scriptId === 'emu-daily'
+    ? { settings: { mode: 'auto' as const, androidPackage: 'com.hypergryph.arknights' }, game: { name: '明日方舟', androidPackage: 'com.hypergryph.arknights', selfLaunch: '脚本会自己在模拟器里打开游戏' }, uses: { adb: true, desktop: false } }
+    : { settings: { mode: 'auto' as const }, game: { name: p.scriptId === 'desk-daily' ? '明日方舟：终末地' : '崩坏：星穹铁道', selfLaunch: '脚本会自己启动游戏' }, uses: { adb: false, desktop: true } }),
+  'configs/status': (p) => ok({ importedAt: Date.now() - 10 * 864e5, dir: 'D:\\MGA\\configs\\' + p.scriptId, profile: { id: 'main', name: '大号' }, files: [{ file: 'config.yaml', local: true, original: true, changed: false }], drift: [] }),
+  'scripts/optimize': (p) => ok(p.decision === 'run' ? { sessionId: 's-scripts' } : {}),
   'scripts/summarize': (p, push) => {
     const sc = world.scripts.find((x: any) => x.id === p.id);
     if (sc) {
       sc.summary = { state: 'running', at: Date.now(), sessionId: 's-sum' };
       later(() => push('scripts/changed', { id: p.id }), 50);
-      later(() => { sc.summary = { state: 'done', at: Date.now(), sessionId: 's-sum', text: '三月七小助手是崩坏：星穹铁道的日常助手，可自动完成每日实训、开拓力消耗和奖励领取。可导入本地目录，选择任务后加入每天定时运行的流水线。（本页为模拟演示）' }; push('scripts/changed', { id: p.id }); }, 2200);
+      later(() => { sc.summary = { state: 'done', at: Date.now(), sessionId: 's-sum', text: 'M9A 是重返未来：1999 的日常助手，可自动完成每日荒原、意志解析和奖励领取。导入后不移动原目录，选好任务就能加入每天定时运行的流水线。（本页为模拟演示）' }; push('scripts/changed', { id: p.id }); }, 2200);
     }
     return ok({ sessionId: 's-sum' });
   },
   'scripts/install': () => ok({ jobId: 'job-1', scriptId: 'daily-helper' }),
   'scripts/update': () => ok({ upToDate: false, jobId: 'job-2' }),
   'scripts/settings/set': () => ok({ apiBase: 'https://api.github.com', downloadMirror: '', mirrorFallback: true, tokenRef: '', keepVersions: 3, includePrereleases: false, cdkRef: '' }),
-  'pipelines/list': () => ok({ items: [{ id: world.pipeline.id, name: world.pipeline.name, nodes: world.pipeline.nodes.length, draft: false, schedule: world.pipeline.schedule }] }),
-  'pipelines/get': () => ok(world.pipeline),
+  'pipelines/list': () => ok({ items: [world.pipeline, world.early].map(p => ({ id: p.id, name: p.name, nodes: p.nodes.length, draft: false, schedule: p.schedule })) }),
+  'pipelines/get': (p: any) => ok(p.id === world.early.id ? world.early : world.pipeline),
   'pipelines/save': (p) => { Object.assign(world.pipeline, p.pipeline); return ok({ pipeline: world.pipeline, check: { ok: true, issues: [], serialized: [] } }); },
-  'pipelines/check': () => ok({ ok: true, issues: [{ level: 'info' as const, message: '「MaaEnd·清体力」和「三月七小助手·材料速刷」都要用桌面鼠标键盘，会自动排队依次运行。' }], serialized: [{ a: 'clear', b: 'farm', resource: 'desktop' }], estimateMinutes: 4 }),
+  'pipelines/check': (p) => p.pipeline.id === world.early.id ? ok({ ok: true, issues: [], serialized: [], estimateMinutes: 49 }) : ok({ ok: true, issues: [{ level: 'info' as const, message: '「MaaEnd·清体力」和「三月七小助手·材料速刷」都要用桌面鼠标键盘，会自动排队依次运行。' }], serialized: [{ a: 'clear', b: 'farm', resource: 'desktop' }], estimateMinutes: 4 }),
   'pipelines/run': (p, push) => {
     const pending = { state: 'pending' as const, runIds: [], attempts: 0 };
     const run: any = { id: 'prun-' + Date.now(), pipelineId: world.pipeline.id, pipelineName: world.pipeline.name, trigger: { kind: 'manual' as const }, state: 'running' as const, startedAt: Date.now(), nodes: Object.fromEntries(world.pipeline.nodes.map((n: any) => [n.id, { ...pending }])) };

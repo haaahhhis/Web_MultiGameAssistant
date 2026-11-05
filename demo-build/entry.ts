@@ -1,12 +1,12 @@
-/* Demo entry: install the fake gateway socket, force light theme + token,
+/* Demo entry: install the fake gateway socket, force dark theme + token,
    then boot the REAL apps/web frontend. */
 import { FakeGatewaySocket } from './gateway/fake';
 import { startDirector } from './scenarios/director';
 
 (globalThis as any).WebSocket = FakeGatewaySocket;
 try { sessionStorage.setItem('adg.token', 'demo-token'); } catch { }
-document.documentElement.dataset.theme = 'light';
-try { localStorage.setItem('adg.theme', 'light'); } catch { }
+document.documentElement.dataset.theme = 'dark';
+try { localStorage.setItem('adg.theme', 'dark'); } catch { }
 
 /* prevent in-app focus calls scrolling the parent page */
 const _focus = HTMLElement.prototype.focus;
