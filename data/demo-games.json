@@ -1,5 +1,5 @@
 {
-  "fetchedAt": 1793457751878,
+  "fetchedAt": 1793881671738,
   "games": [
     {
       "id": "startrail",
@@ -27,13 +27,13 @@
         "endsAt": 1794348000000,
         "cover": "https://i0.hdslb.com/bfs/new_dyn/31af0eb88c8c6dcfab5b7cbc72d67c781340190821.jpg",
         "source": "sra",
-        "at": 1793457751878
+        "at": 1793881671738
       },
       "art": "https://i0.hdslb.com/bfs/new_dyn/31af0eb88c8c6dcfab5b7cbc72d67c781340190821.jpg",
       "refreshed": {
-        "at": 1793457751878,
+        "at": 1793881671738,
         "ok": true,
-        "count": 13
+        "count": 12
       },
       "pools": []
     },
@@ -63,13 +63,13 @@
         "endsAt": 1795291199000,
         "cover": "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG",
         "source": "sra",
-        "at": 1793457751878
+        "at": 1793881671738
       },
       "art": "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG",
       "refreshed": {
-        "at": 1793457751878,
+        "at": 1793881671738,
         "ok": true,
-        "count": 2
+        "count": 8
       },
       "pools": []
     },
@@ -99,13 +99,13 @@
         "endsAt": 1795644000000,
         "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
         "source": "sra",
-        "at": 1793457751878
+        "at": 1793881671738
       },
       "art": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
       "refreshed": {
-        "at": 1793457751878,
+        "at": 1793881671738,
         "ok": true,
-        "count": 13
+        "count": 7
       },
       "pools": []
     }
@@ -124,7 +124,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -140,7 +140,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -156,7 +156,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -171,7 +171,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -187,7 +187,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -203,7 +203,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -218,7 +218,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -234,22 +234,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
-      }
-    },
-    {
-      "id": "startrail/混沌回忆•来生泅渡",
-      "game": "startrail",
-      "name": "混沌回忆•来生泅渡",
-      "startsAt": 1790564400000,
-      "endsAt": 1793563199000,
-      "description": "我方编队中第一位角色获得欢愉技【极乐漩涡】，可对敌方全体造成100%的角色属性欢愉伤害。每个轮开始时，使阿哈立即获得1个固定计入20笑点的额外回合，该回合不消耗笑点。",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -265,7 +250,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -281,7 +266,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -296,7 +281,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -311,7 +296,37 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
+      }
+    },
+    {
+      "id": "farecho/「冻土与火种」网页活动",
+      "game": "farecho",
+      "name": "「冻土与火种」网页活动",
+      "startsAt": 1792843200000,
+      "endsAt": 1795463999000,
+      "description": "《冻土与火种》网页活动现已开启，参与活动有机会获取精美实物奖励。活动链接：https://hgto.cc/n/wA198M?source_from=official",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793881671738
+      }
+    },
+    {
+      "id": "farecho/「视相博物馆：演化」限时活动",
+      "game": "farecho",
+      "name": "「视相博物馆：演化」限时活动",
+      "startsAt": 1792848600000,
+      "endsAt": 1794254399000,
+      "description": "活动期间开放「视相博物馆：演化」限时活动，玩家可通过活动关卡作战获取积点卡券，提升【博物馆兑换台】等级获取相应活动奖励。关卡开放至11-07 03:59，【博物馆兑换台】开放至11-10 03:59。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793881671738
       }
     },
     {
@@ -327,22 +342,82 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
-      "id": "farecho/2026感谢庆典·前瞻签到",
+      "id": "farecho/2026感谢庆典·特别登录",
       "game": "farecho",
-      "name": "2026感谢庆典·前瞻签到",
-      "startsAt": 1792848600000,
-      "endsAt": 1793649599000,
-      "description": "活动期间累计活动签到7日可获得活动奖励名片主题【炽烈】。",
+      "name": "2026感谢庆典·特别登录",
+      "startsAt": 1793505600000,
+      "endsAt": 1794686399000,
+      "description": "活动期间登录即可在活动页面领取[故土新程寻访凭证]*1，可用于【将雪投火】限定寻访进行一次十连寻访，每账号限领一次。",
       "todo": [],
       "done": [],
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
+      }
+    },
+    {
+      "id": "farecho/2026感谢庆典·限时签到",
+      "game": "farecho",
+      "name": "2026感谢庆典·限时签到",
+      "startsAt": 1793505600000,
+      "endsAt": 1794686399000,
+      "description": "活动期间累计活动签到10日可获得阿兰娜专属时装【啸风系列-赤土拉力】、可交互家具【“梦之圆舞曲”】、应急理智浓缩液、合成玉等奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793881671738
+      }
+    },
+    {
+      "id": "farecho/「塞梦珂城许愿墙」",
+      "game": "farecho",
+      "name": "「塞梦珂城许愿墙」",
+      "startsAt": 1793505600000,
+      "endsAt": 1794686399000,
+      "description": "活动期间每日登录可获得可选签数，在【塞梦珂城许愿墙】消耗可选签数选取许愿签，当日所选合成玉数量最高的许愿签为当日奖励；当日奖励不足400合成玉时次日增加一次可选签数，每日最多3次。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793881671738
+      }
+    },
+    {
+      "id": "farecho/「卫戍协议·规程·序列I」",
+      "game": "farecho",
+      "name": "「卫戍协议·规程·序列I」",
+      "startsAt": 1794124800000,
+      "endsAt": 1796155199000,
+      "description": "卫戍协议将以赛季化活动形式常驻终端，赛季包含开放期、修订期与终止期，参与活动获取「卫戍认证」兑换【功勋兑换处】奖励；开放期内将进行一次内容更新并扩充奖励。11-08 16:00-17:00 停机维护后开启。赛季结束时间待后续官方公告，此处暂按配套卫戍寻访结束时间（12-02 03:59）估算。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793881671738
+      }
+    },
+    {
+      "id": "farecho/2026感谢庆典·补给签到",
+      "game": "farecho",
+      "name": "2026感谢庆典·补给签到",
+      "startsAt": 1794427200000,
+      "endsAt": 1795291199000,
+      "description": "活动期间累计活动签到7日可获得中坚寻访凭证、2026感谢庆典物资补给等奖励。",
+      "todo": [],
+      "done": [],
+      "site": {
+        "source": "sra",
+        "name": "SRA 公共 API",
+        "at": 1793881671738
       }
     },
     {
@@ -359,107 +434,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
-      }
-    },
-    {
-      "id": "frostland/「万物有灵」签到活动",
-      "game": "frostland",
-      "name": "「万物有灵」签到活动",
-      "startsAt": 1792036800000,
-      "endsAt": 1793851199000,
-      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
-      "description": "累计签到7日，即可获得【万物有灵寻访凭证】×5等奖励。",
-      "kind": "限时签到",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793457751878
-      }
-    },
-    {
-      "id": "frostland/「墨分诸彩」引入活动",
-      "game": "frostland",
-      "name": "「墨分诸彩」引入活动",
-      "startsAt": 1792036800000,
-      "endsAt": 1793851200000,
-      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
-      "description": "前往「武陵」地区的「祀的画」区域完成指定任务，即可领取【嵌晶玉】×1200、【存续的痕迹】活动奖励。",
-      "kind": "引入活动",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793457751878
-      }
-    },
-    {
-      "id": "frostland/「异想赛季」（战争回响）",
-      "game": "frostland",
-      "name": "「异想赛季」（战争回响）",
-      "startsAt": 1792036800000,
-      "endsAt": 1793851199000,
-      "description": "全新赛季「异想赛季」开放，该赛季分为3个轮换周期，每个轮换周期包含3个关卡。「异想赛季」新增3个关卡，完成所有新增关卡的普通难度即可领取【嵌晶玉】×300等奖励。",
-      "kind": "",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793457751878
-      }
-    },
-    {
-      "id": "frostland/「卡莉的芳菲童话」拍照活动",
-      "game": "frostland",
-      "name": "「卡莉的芳菲童话」拍照活动",
-      "startsAt": 1792641600000,
-      "endsAt": 1793822400000,
-      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
-      "description": "完成拍照任务，即可获得【嵌晶玉】×1500、【头像框·卡莉的芳菲集】、【存续的痕迹】等活动奖励。",
-      "kind": "拍照活动",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793457751878
-      }
-    },
-    {
-      "id": "frostland/「丰碑留名·魇林」限时挑战",
-      "game": "frostland",
-      "name": "「丰碑留名·魇林」限时挑战",
-      "startsAt": 1792641600000,
-      "endsAt": 1793822400000,
-      "description": "「深林呓语」系列开放后，将开启「丰碑留名·魇林」限时活动。活动期间在「影拓丰碑」完成对应挑战，即可领取【嵌晶玉】×1200、【高阶培养自选箱Ⅱ】等活动奖励。",
-      "kind": "挑战活动",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793457751878
-      }
-    },
-    {
-      "id": "frostland/「危机筹备」限时活动",
-      "game": "frostland",
-      "name": "「危机筹备」限时活动",
-      "startsAt": 1793217600000,
-      "endsAt": 1793822400000,
-      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
-      "description": "活动期间，每日完成指定任务即可获得【理智消耗许可】【应急理智加强剂】【武陵精锻助剂】及【冷却脂】活动奖励。",
-      "kind": "限时活动",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -476,7 +451,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -493,7 +468,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -510,7 +485,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -527,7 +502,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -543,7 +518,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     },
     {
@@ -559,7 +534,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1793457751878
+        "at": 1793881671738
       }
     }
   ],

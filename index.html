@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MultiGameAssistant — 你去上班上课，日常交给它</title>
-  <meta name="description" content="MultiGameAssistant（多游戏助手）：管脚本的 agent。替你安装和读懂游戏脚本，把几个游戏的日常排成每天定时运行的流水线，出了问题自己查、自己修，再通过飞书告诉你结果。任意脚本、任意游戏、任意模型，Windows 10 / 11。">
+  <meta name="description" content="MultiGameAssistant（多游戏助手）：管脚本的一组 agent。助手和你说话、派活，干预、游戏、脚本、编排各管一摊：替你安装和读懂游戏脚本，把几个游戏的日常排成每天定时运行的流水线，出了问题自己查、自己修，再通过飞书或 QQ 告诉你结果。任意脚本、任意游戏、任意模型，Windows 10 / 11。">
   <meta property="og:type" content="website">
   <meta property="og:title" content="MultiGameAssistant — 你去上班上课，日常交给它">
-  <meta property="og:description" content="管脚本的 agent：装脚本、排流水线、出问题自己修，再通过飞书告诉你结果。">
+  <meta property="og:description" content="管脚本的一组 agent：装脚本、排流水线、出问题自己修，再通过飞书或 QQ 告诉你结果。">
   <meta property="og:url" content="https://haaahhhis.github.io/Web_MultiGameAssistant/">
   <meta property="og:image" content="https://haaahhhis.github.io/Web_MultiGameAssistant/assets/img/og-cover.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -17,7 +17,7 @@
   <script src="assets/js/downloads.js?v=a42ed86ef957" defer></script>
   <script src="assets/js/release-data.js?v=5c3d6dae6fb3" defer></script>
   <script src="assets/js/main.js?v=79e9007679d2" defer></script>
-  <script src="assets/js/pipeline.js?v=8c63fdd612f2" defer></script>
+  <script src="assets/js/pipeline.js?v=6ef9507f1d6f" defer></script>
   <script src="assets/js/demo.js?v=c98043650c61" defer></script>
 </head>
 <body>
@@ -130,7 +130,7 @@
               <span class="hero-en-line"><span class="hero-en-word"><span class="glyph" style="--d:.28s">A</span><span class="glyph" style="--d:.31s">s</span><span class="glyph" style="--d:.34s">s</span><span class="glyph" style="--d:.37s">i</span><span class="glyph" style="--d:.40s">s</span><span class="glyph" style="--d:.43s">t</span><span class="glyph" style="--d:.46s">a</span><span class="glyph" style="--d:.49s">n</span><span class="glyph" style="--d:.52s">t</span></span></span>
             </h1>
             <p class="hero-tagline reveal-line">你去上班上课，日常交给它。</p>
-            <p class="hero-desc reveal-line">它不是又一个脚本，而是<strong>管脚本的 agent</strong>：替你装脚本、读懂脚本，把几个游戏的日常排成每天定时运行的流水线；出了问题自己查、自己修，最后通过飞书把结果告诉你。</p>
+            <p class="hero-desc reveal-line">它不是又一个脚本，而是<strong>管脚本的一组 agent</strong>：助手和你说话、派活，干预、游戏、脚本、编排各管一摊。替你装脚本、读懂脚本，把几个游戏的日常排成每天定时运行的流水线；出了问题自己查、自己修，最后通过飞书或 QQ 把结果告诉你。</p>
             <ul class="hero-chips" aria-label="特点与运行环境">
               <li class="chip">任意脚本</li>
               <li class="chip">任意游戏</li>
@@ -164,7 +164,7 @@
                   <a class="pl-real" href="assets/img/pipeline-canvas.webp" target="_blank" rel="noopener" data-lightbox>真实界面 ⤢</a>
                 </div>
                 <!-- the app's pipeline canvas redrawn in SVG; assets/js/pipeline.js plays one morning -->
-                <svg class="pl" id="heroPipeline" viewBox="0 0 820 400" role="img" aria-label="流水线「早间日常」：MAA 和三月七小助手两条分支同时运行，清体力被公告挡住后由 agent 处理并重试，两条分支结束后 agent 查活动进度，再发飞书汇报">
+                <svg class="pl" id="heroPipeline" viewBox="0 0 820 400" role="img" aria-label="流水线「早间日常」：MAA 和三月七小助手两条分支同时运行，清体力被公告挡住后交给干预处理，处理完再重试，两条分支结束后 agent 查活动进度，再发飞书汇报">
                   <defs>
                     <pattern id="plDots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".9"/></pattern>
                   </defs>
@@ -259,8 +259,8 @@
               <ol class="hero-log-list">
                 <li style="--i:0"><time>09:00</time><i class="is-run" aria-hidden="true">▶</i><span>按时开工，两条分支并行</span></li>
                 <li style="--i:1"><time>09:21</time><i class="is-ok" aria-hidden="true">✓</i><span>三月七 · 日常</span><em>21 分钟</em></li>
-                <li style="--i:2"><time>09:24</time><i class="is-warn" aria-hidden="true">!</i><span>清体力被公告挡住，agent 处理</span></li>
-                <li style="--i:3"><time>09:31</time><i class="is-ok" aria-hidden="true">✓</i><span>三月七 · 清体力</span><em>重试 1 次</em></li>
+                <li style="--i:2"><time>09:24</time><i class="is-warn" aria-hidden="true">!</i><span>清体力被公告挡住，交给干预</span></li>
+                <li style="--i:3"><time>09:31</time><i class="is-ok" aria-hidden="true">✓</i><span>干预关掉公告，清体力重试成功</span></li>
                 <li style="--i:4"><time>09:38</time><i class="is-ok" aria-hidden="true">✓</i><span>MAA · 日常</span><em>38 分钟</em></li>
                 <li style="--i:5"><time>09:47</time><i class="is-ok" aria-hidden="true">✓</i><span>agent：2 个活动快结束</span></li>
                 <li style="--i:6" class="is-done"><time>09:49</time><i class="is-run" aria-hidden="true">→</i><span>飞书：3 个成功 · 用时 49 分钟</span></li>
@@ -273,8 +273,8 @@
         <ul class="hero-stats reveal-block" aria-label="一览">
           <li><b>03</b><span>内置脚本</span><small>MAA · MaaEnd · 三月七小助手</small></li>
           <li><b>18</b><span>款游戏可关注</span><small>活动日历 · 每日日报</small></li>
-          <li><b>06</b><span>类模型可选</span><small>DeepSeek · Claude · ChatGPT …</small></li>
-          <li><b>03</b><span>种安装方式</span><small>安装包 · 一行命令 · dsh 插件</small></li>
+          <li><b>05</b><span>个 agent 各管一摊</span><small>助手 · 干预 · 游戏 · 脚本 · 编排</small></li>
+          <li><b>02</b><span>个手机入口</span><small>飞书 · QQ，同一个对话</small></li>
         </ul>
       </div>
 
@@ -303,7 +303,7 @@
             </div>
             <div class="appwin-clip" id="appwinClip">
               <iframe class="appwin-frame" id="demoFrame" title="MultiGameAssistant 界面演示" tabindex="-1" aria-hidden="true"></iframe>
-              <span class="sr-only">界面演示动画：随页面滚动依次展示脚本、流水线编排、运行监控、飞书通知、Agent 对话和游戏信息。</span>
+              <span class="sr-only">界面演示动画：随页面滚动依次展示脚本、流水线编排、运行监控、飞书通知、助手派活与技能和游戏信息。</span>
             </div>
           </div>
           <div class="scen-tabs" id="scenTabs" role="tablist" aria-label="演示场景"></div>
@@ -315,9 +315,9 @@
             <h3 class="day-title">脚本早已各就各位</h3>
             <p class="day-lead">明日方舟的基建还没换班，星穹铁道的体力快溢出了，终末地的活动还剩两天。没关系，脚本都装好、配好了。</p>
             <ul class="day-points">
-              <li><b>一键安装</b>从 GitHub 或 Mirror酱 安装，断点续传、校验、补齐运行环境；可以更新、回滚、删除。</li>
+              <li><b>一键安装</b>从 GitHub 或 Mirror酱 安装，断点续传、校验、补齐运行环境；运行前先走正式渠道更新，也能回滚、删除。</li>
               <li><b>导入本地脚本</b>不移动、不修改原目录，自动认出版本和更新渠道。</li>
-              <li><b>任意脚本</b>没见过的脚本，agent 先读项目文档再看代码，写成「脚本包」草稿给你确认。</li>
+              <li><b>任意脚本</b>没见过的脚本，「脚本」agent 先读项目文档再看代码，写成「脚本包」草稿给你确认。</li>
               <li><b>配置副本</b>大号、小号各存一份配置，原项目里的设置不受影响。</li>
             </ul>
           </li>
@@ -327,9 +327,9 @@
             <p class="day-lead">把几个游戏的日常连成一张流水线，设成「工作日 09:00」，剩下的就不用管了。</p>
             <ul class="day-points">
               <li><b>流水线画布</b>并行、排队、失败重试、agent 步骤、人工确认，拖到画布上连线即可。</li>
-              <li><b>错过补跑</b>电脑睡着没赶上，在宽限时间内自动补跑；同一天成功过就不再重复。</li>
-              <li><b>无人值守</b>开机自启、定时唤醒、运行期间不睡眠，跑完关游戏、关模拟器或关机。</li>
-              <li><b>用说的也行</b>「帮我把这几个脚本排成每天早上跑的流程」，它起草一份给你确认。</li>
+              <li><b>等问题处理完</b>前一步出的问题还没解决，后面的步骤不会自己开始。</li>
+              <li><b>无人值守</b>开机自启、定时唤醒、错过了在宽限时间内补跑，跑完关游戏、关模拟器或关机。</li>
+              <li><b>用说的也行</b>「帮我把这几个脚本排成每天早上跑的流程」，「编排」agent 起草一份给你确认。</li>
             </ul>
           </li>
           <li class="day-stop" data-scene="2" data-time="10:20">
@@ -337,32 +337,32 @@
             <h3 class="day-title">出了问题，它自己查、自己修</h3>
             <p class="day-lead">脚本最怕的不是报错，而是卡住没人管。</p>
             <ul class="day-points">
+              <li><b>卡住检测</b>默认 1 分钟没有新日志算卡住；每个脚本会从自己跑成功的记录里学会正常时要安静多久。</li>
               <li><b>先自动处理</b>出错、卡住、超时，按脚本包里写好的办法重跑、等待或重启模拟器。</li>
-              <li><b>再交给 agent</b>截图看画面找出原因（比如更新公告挡住了界面），点击、输入排除后让脚本接着跑。</li>
-              <li><b>管多少由你定</b>诊断并处理、只诊断，或者不干预。</li>
-              <li><b>全程留痕</b>每一步都有记录，并推送到飞书。</li>
+              <li><b>再交给干预</b>「干预」agent 先确认还需不需要处理，再截图看画面（报错框被别的窗口挡住也看得到），点击、输入排除后让脚本接着跑。</li>
+              <li><b>全程留痕</b>每一步都有记录，结果回到助手的对话，并推送到飞书和 QQ。</li>
             </ul>
           </li>
           <li class="day-stop" data-scene="5" data-time="10:50">
-            <p class="day-time"><span>10:50</span>飞书</p>
+            <p class="day-time"><span>10:50</span>飞书 · QQ</p>
             <h3 class="day-title">手机一句话，远程指挥电脑</h3>
-            <p class="day-lead">接入飞书机器人（长连接，不需要公网地址），在手机上跟它聊，就像坐在电脑前。</p>
+            <p class="day-lead">接入飞书或 QQ 机器人，在手机上跟助手聊，就像坐在电脑前。</p>
             <ul class="day-points">
               <li><b>直接说想做的事</b>「现在什么状态？」「把明日方舟的日常跑一下。」</li>
-              <li><b>卡片里点一下</b>出问题的通知带截图和「停止 / 重试 / 忽略」按钮，要确认的操作也发成卡片。</li>
-              <li><b>同一个 agent</b>在飞书里聊和在软件里聊是同一个；接入一次，大约 5 分钟。</li>
-              <li><b>每日日报</b>定时发到飞书，只挑近期的事来总结。</li>
+              <li><b>点一下就回答</b>飞书卡片、QQ 按钮直接回答通知、审批和提问；提问和审批发给最后说话的那个人。</li>
+              <li><b>同一个对话</b>软件、飞书、QQ 里看到的是同一份；收到的是这一轮的总结，不会把每个步骤都发一遍。</li>
+              <li><b>每日日报</b>定时发到手机，只挑近期的事来总结；提醒也算进这个对话。</li>
             </ul>
           </li>
           <li class="day-stop" data-scene="4" data-time="10:58">
             <p class="day-time"><span>10:58</span>Agent 与技能</p>
-            <h3 class="day-title">做过一次，下次一键调用</h3>
-            <p class="day-lead">一件新事第一次做成后，它会问：「要把这次的做法存成技能吗？」</p>
+            <h3 class="day-title">助手派活，跑稳了还能再优化</h3>
+            <p class="day-lead">左边是 agent 名册：你只和助手说话，它把活交给干预、游戏、脚本、编排，做完的结果作为一条消息回到它的对话。</p>
             <ul class="day-points">
-              <li><b>斜杠命令</b>输入 <code>/</code> 调出 <code>/技能</code>、<code>/资讯</code>、<code>/编排</code>、<code>/诊断</code> 和你存下的技能。</li>
-              <li><b>技能库</b>按你关注的游戏和装了的脚本推荐；下载后可以改，更新不会覆盖你的改动。</li>
-              <li><b>技能隔离</b>处理三月七的对话看不到 MAA 的技能，不会把一个脚本的做法套到另一个上。</li>
-              <li><b>模型自己选</b>DeepSeek、Claude、ChatGPT、Gemini、国内各家，或者本机的 Ollama。</li>
+              <li><b>各管一摊</b>角色 agent 只看得到自己用得上的工具；可以单独选一个便宜、能看图的模型，省用量。</li>
+              <li><b>优化脚本</b>跑成功 5 次或更新后第一次跑通，它会问要不要优化：重新总结脚本包、调卡住时间、把走通的步骤存成技能。</li>
+              <li><b>技能按游戏分</b>每个游戏一节，先放游戏的，再放各脚本的，最后是通用技能；可以自己新建、编辑、删除。</li>
+              <li><b>斜杠命令</b>输入 <code>/</code> 调出命令和技能，按「游戏 · 脚本」分组；<code>/优化脚本 脚本名</code> 直接开始。</li>
             </ul>
           </li>
           <li class="day-stop" data-scene="3" data-time="12:30">
@@ -371,7 +371,7 @@
             <p class="day-lead">玩的游戏一多，最容易漏的就是限时活动。</p>
             <ul class="day-points">
               <li><b>同一条时间轴</b>还剩几天、哪些快结束了还没做完，全部排在一起。</li>
-              <li><b>进游戏看进度</b>agent 进游戏看你的实际进度，标成做完、做了一部分或需要关注。</li>
+              <li><b>进游戏看进度</b>「游戏」agent 进游戏看你的实际进度，标成做完、做了一部分或需要关注。</li>
               <li><b>数据不花模型调用</b>SRA 公共 API、PRTS、B 站游戏 WIKI 每天自动读；官网公告和你添加的网址由 agent 去读。</li>
               <li><b>更多游戏</b>SRA 公共 API 支持的 18 个游戏直接关注；其他游戏，agent 去找 Wiki 和官网。</li>
             </ul>
@@ -393,14 +393,14 @@
       </header>
       <ol class="hl-grid reveal-block">
         <li class="hl-card"><span class="hl-idx">01</span><span class="hl-en">UNATTENDED</span><h3>定时无人值守</h3><p>上班上课期间，电脑按时开工、错过补跑、跑完收尾。</p></li>
-        <li class="hl-card"><span class="hl-idx">02</span><span class="hl-en">REMOTE</span><h3>远程对话操控</h3><p>在飞书里跟 agent 聊天，远程指挥家里的电脑。</p></li>
+        <li class="hl-card"><span class="hl-idx">02</span><span class="hl-en">REMOTE</span><h3>远程对话操控</h3><p>在飞书或 QQ 里跟助手聊天，和软件里是同一个对话。</p></li>
         <li class="hl-card"><span class="hl-idx">03</span><span class="hl-en">ANY SCRIPT</span><h3>陌生脚本自动适配</h3><p>导入任意脚本目录，agent 读懂后生成脚本包。</p></li>
-        <li class="hl-card"><span class="hl-idx">04</span><span class="hl-en">SELF-HEAL</span><h3>出错自动干预</h3><p>卡住、报错、超时先自动处理；处理不了就截图排查原因。</p></li>
-        <li class="hl-card"><span class="hl-idx">05</span><span class="hl-en">UNDERSTAND</span><h3>读懂并调用脚本</h3><p>一句「用 MAA 自动战斗打这关」，它知道该怎么做。</p></li>
+        <li class="hl-card"><span class="hl-idx">04</span><span class="hl-en">SELF-HEAL</span><h3>出错自动干预</h3><p>卡住、报错先自动处理；处理不了交给「干预」看画面排除。</p></li>
+        <li class="hl-card"><span class="hl-idx">05</span><span class="hl-en">AGENTS</span><h3>一组 agent 分工</h3><p>助手和你说话、派活，干预、游戏、脚本、编排各管一摊。</p></li>
         <li class="hl-card"><span class="hl-idx">06</span><span class="hl-en">ONE-CLICK</span><h3>一键下载安装</h3><p>按游戏名搜索，下载、校验、解压、装运行环境一步到位。</p></li>
-        <li class="hl-card"><span class="hl-idx">07</span><span class="hl-en">PIPELINE</span><h3>灵活编排</h3><p>并行、排队、重试、agent 步骤、人工确认，满足绝大部分需求。</p></li>
+        <li class="hl-card"><span class="hl-idx">07</span><span class="hl-en">PIPELINE</span><h3>灵活编排</h3><p>并行、排队、重试、人工确认；出了问题，等处理完再往下走。</p></li>
         <li class="hl-card"><span class="hl-idx">08</span><span class="hl-en">EVENTS</span><h3>多游戏活动一览</h3><p>所有活动一条时间轴，还能进游戏查你哪些没做完。</p></li>
-        <li class="hl-card"><span class="hl-idx">09</span><span class="hl-en">SKILLS</span><h3>技能一键存取</h3><p>做过一次存成技能，输入 <code>/</code> 一键调用；也能装现成的技能。</p></li>
+        <li class="hl-card"><span class="hl-idx">09</span><span class="hl-en">SKILLS</span><h3>技能与优化</h3><p>做过的存成技能、按游戏分好；脚本跑稳了，一键优化脚本。</p></li>
       </ol>
     </section>
 
@@ -431,12 +431,16 @@
             <p>需要。装好后在软件里选模型、填 API key；不想用云端模型，也可以接本机的 Ollama。</p>
           </details>
           <details>
-            <summary>不接飞书能用吗？</summary>
-            <p>能。飞书用来接收通知、日报和确认卡片，以及在手机上远程对话；不接的话，在软件里看运行记录、和 agent 对话即可。</p>
+            <summary>不接飞书或 QQ 能用吗？</summary>
+            <p>能。飞书和 QQ 用来接收通知、日报和确认，以及在手机上和助手对话；不接的话，在软件里看运行记录、和助手对话即可。</p>
           </details>
           <details>
             <summary>agent 会乱动我的电脑吗？</summary>
-            <p>默认是「每次确认」：命令在沙箱里运行，敏感操作先问你。出问题时 agent 能不能动手也可以单独设置：诊断并处理、只诊断或不干预。</p>
+            <p>默认是「每次确认」：命令在沙箱里运行，敏感操作先问你。出问题时「干预」能不能动手也可以单独设置：诊断并处理、只诊断或不干预。</p>
+          </details>
+          <details>
+            <summary>这么多 agent，会多花很多模型用量吗？</summary>
+            <p>角色 agent 只在有活时才干，看得到的工具也少。可以在「设置 → 模型 → 角色 agent 的模型」里给它们选一个便宜、能看图的模型。</p>
           </details>
           <details>
             <summary>我已经在用的脚本要重新装吗？</summary>

@@ -53,7 +53,7 @@
       node('m7s', 'run', '运行中'); line(1);
     }],
     [24, function () { node('m7s', 'warn', '! 被公告挡住'); line(2); }],
-    [26, function () { node('m7s', 'fix', 'agent 处理中'); }],
+    [26, function () { node('m7s', 'fix', '干预处理中'); }],
     [28, function () { node('m7s', 'run', '重试中'); }],
     [31, function () {
       node('m7s', 'ok', '✓ 重试 1 次'); edge('e4', 'done'); edge('e5', 'done');

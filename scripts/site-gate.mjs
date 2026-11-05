@@ -53,7 +53,7 @@ try {
     assert.equal(await p.locator('#relLatestTag').innerText(), 'v2.0.0');
     assert.equal(await p.locator('#relHistory details').count(), 2);
     assert.match(await href(p), /v2\.0\.0\/setup-x64\.exe$/);
-    assert.match(await p.locator('#relCmdDsh').innerText(), /download\/v2\.0\.0\/dsh-multigameassistant-2\.0\.0\.tgz/);
+    assert.match(await p.locator('#relCmdDsh').innerText(), /^dsh plugin add dsh-multigameassistant$/m);
     assert.equal(await p.locator('.rail-item.is-active').getAttribute('href'), 'releases.html');
     await p.goto(base + 'releases.html#v1.0.0');
     await p.waitForFunction(() => document.getElementById('v1.0.0') && document.getElementById('v1.0.0').open);

@@ -43,7 +43,8 @@ const scenes: Step[][] = [
     effect(() => incident(true)), wait(3000)],
   [go('#/p/games/farecho'), click('刷新全部'), wait(900), focus('.version-card'), wait(3400),
     click('明日方舟：终末地'), focus('.version-card'), wait(3400), click('崩坏：星穹铁道'), focus('.version-card'), wait(3400)],
-  [go('#/s/s-diag'), wait(2000), focus('允许本次'), click('允许本次'), wait(4200)],
+  [go('#/chat'), wait(1400), focus('.delegation', 1.15), wait(2200), click('.delegation .exchange-line'), wait(3200),
+    go('#/p/skills'), wait(1200), focus('.main', 1), wait(3000)],
   [go('#/settings/feishu'), wait(1200), click('重新检查'), wait(9000)],
 ];
 const duration = (s: Step) => s.kind === 'wait' ? s.ms : s.kind === 'type' ? 750 + s.text.length * 60 : s.kind === 'effect' || s.kind === 'focus' ? 0 : 900;

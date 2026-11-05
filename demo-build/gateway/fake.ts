@@ -1,6 +1,6 @@
 /* In-browser fake ADG gateway. Task/session state is simulated;
    game information and images come from the public API snapshot. */
-import { Requests, Notifications, Pipeline } from '@adg/protocol';
+import { Requests, Notifications, Pipeline, taskMessage, relayMessage } from '@adg/protocol';
 import snapshot from '../../data/demo-games.json';
 import { clock } from '../scenarios/clock.ts';
 import type { RequestMethod, RequestParams, RequestResult, NotificationMethod, NotificationParams } from '@adg/protocol';
@@ -15,13 +15,17 @@ const later = (run: () => void, ms: number) => clock.schedule(run, ms);
 /* capabilities the plugins actually gate on — derived from every Requests entry's `capability` */
 const CAPABILITIES = [...new Set(Object.values(Requests as Record<string, { capability: string | null }>).map(r => r.capability).filter(Boolean))].map(id => ({ id: id!, version: 1 }));
 
+const OPT_REPLY = '脚本包有 2 处改动（草稿，等你确认）；卡住时间按日志节奏调成 60 秒；存了技能「清体力前先关活动公告」。';
+
 /* ----- world state ----- */
 export const world = {
   sessions: [
-    { id: 's-daily', title: '排每天早上的日常', updatedAt: Date.now() - 3600e3, running: false, blank: false, live: false, cwd: 'D:\\MGA\\workspace' },
+    { id: 's-home', title: '助手', updatedAt: Date.now() - 60e3, running: false, blank: false, live: false, home: 'main' },
+    { id: 's-scripts', title: '优化脚本：三月七小助手', updatedAt: Date.now() - 300e3, running: false, blank: false, live: false, role: 'scripts', requestedBy: '助手', home: 'scripts' },
+    { id: 's-daily', title: '排每天早上的日常', updatedAt: Date.now() - 3600e3, running: false, blank: false, live: false, cwd: 'D:\\MGA\\workspace', role: 'pipelines', requestedBy: '你', home: 'pipelines' },
     { id: 's-emu', title: '看模拟器是否在运行', updatedAt: Date.now() - 7200e3, running: false, blank: false, live: false },
-    { id: 's-diag', title: '诊断昨晚失败', updatedAt: Date.now() - 200e3, running: false, blank: false, live: false },
-    { id: 's-game', title: '游戏信息：崩坏：星穹铁道', updatedAt: Date.now() - 400e3, running: false, blank: false, live: false },
+    { id: 's-diag', title: '诊断昨晚失败', updatedAt: Date.now() - 200e3, running: false, blank: false, live: false, role: 'intervene', requestedBy: '监控', home: 'intervene' },
+    { id: 's-game', title: '游戏信息：崩坏：星穹铁道', updatedAt: Date.now() - 400e3, running: false, blank: false, live: false, role: 'games', requestedBy: '定时', home: 'games' },
   ] as any[],
   scripts: [
     { id: 'emu-daily', name: 'MAA', source: { kind: 'local' as const, path: 'D:\\MGA\\tools\\emu-daily' }, current: 'local', dir: 'D:\\MGA\\tools\\emu-daily', versions: [{ version: '1.2.0', dir: 'D:\\MGA\\tools\\emu-daily', installedAt: Date.now() - 30 * 864e5, current: true }], channels: {}, addedAt: Date.now() - 30 * 864e5, enabled: true, summary: { state: 'done' as const, at: Date.now() - 20 * 864e5, text: '模拟器上的每日任务，自动领取奖励。' } },
@@ -75,6 +79,14 @@ export const world = {
     edges: ['emu', 'clear', 'farm'].map((f: string) => ({ from: f, to: 'done', when: 'always' })),
     schedule: { enabled: true, times: ['06:30'], days: [], catchUpMinutes: 30 },
   }),
+  /* work 助手 handed on, and 监控's hand-off to 干预 */
+  handOffs: [
+    { id: 'h-opt', fromSession: 's-home', callId: 'd1', by: '助手', to: 'scripts', toSession: 's-scripts', title: '优化脚本：三月七小助手',
+      task: '最近 5 次都跑通了：按这些运行重新总结脚本包，调卡住时间，把走通的步骤存成技能。', state: 'done' as const,
+      reply: OPT_REPLY, startedAt: Date.now() - 420e3, endedAt: Date.now() - 300e3 },
+    { id: 'h-iv', fromSession: 's-home', by: '监控', to: 'intervene', toSession: 's-diag', title: '三月七小助手 · 材料速刷：遇到了不认识的界面',
+      task: '脚本停在一个不认识的界面，看看画面，能处理就处理。', state: 'running' as const, startedAt: Date.now() - 200e3 },
+  ] as any[],
   feishu: { appId: 'cli_a1b2c3d4e5f60718', enabled: true, connected: true, bot: 'MGA 助手', users: [{ openId: 'ou_demo', name: '演示用户' }] },
 };
 
@@ -83,9 +95,34 @@ let seq = 0;
 const ev = (type: string, extra: any = {}) => ({ type, seq: seq++, time: Date.now() - (60 - seq) * 1000, turn: 1, step: 1, timing: { tokenChunks: 4 }, ...extra });
 const text = (t: string) => [{ type: 'text' as const, text: t }];
 export const sessionEvents: Record<string, any[]> = {
+  's-home': [
+    ev('turn/start'),
+    ev('user/message', { messageId: 'h1', content: text('三月七小助手这周都跑通了，帮我优化一下脚本'), origin: { kind: 'user', human: true } }),
+    ev('step/start', { step: 1 }),
+    ev('assistant/message', { messageId: 'h2', content: [{ type: 'other', kind: 'tool-call', callId: 'd1', name: 'agent_delegate', arguments: '{"agent":"脚本","task":"优化脚本：三月七小助手"}' }] }),
+    ev('tool/call', { callId: 'd1', name: 'agent_delegate', arguments: '{"agent":"脚本","task":"优化脚本：三月七小助手"}' }),
+    ev('tool/result', { callId: 'd1', isError: false, content: text('已交给「脚本」') }),
+    ev('assistant/message', { messageId: 'h3', content: text('交给「脚本」了，它做完会回到这里。') }),
+    ev('step/end', { step: 1 }),
+    ev('turn/end', { reason: { kind: 'completed' } }),
+    ev('turn/start', { turn: 2 }),
+    ev('user/message', { turn: 2, messageId: 'h4', content: text(relayMessage({ agent: '脚本', asker: '你', title: '优化脚本：三月七小助手', ok: true, reply: OPT_REPLY })), origin: { kind: 'handoff', human: false } }),
+    ev('step/start', { turn: 2, step: 1 }),
+    ev('assistant/message', { turn: 2, messageId: 'h5', content: text('优化好了：脚本包有 2 处改动等你确认，卡住时间调成 60 秒，还存了一个技能「清体力前先关活动公告」。') }),
+    ev('step/end', { turn: 2, step: 1 }),
+    ev('turn/end', { turn: 2, reason: { kind: 'completed' } }),
+  ],
+  's-scripts': [
+    ev('turn/start'),
+    ev('user/message', { messageId: 'o1', content: text(taskMessage('助手', '优化脚本：三月七小助手', '最近 5 次都跑通了：按这些运行重新总结脚本包，调卡住时间，把走通的步骤存成技能。', true)), origin: { kind: 'handoff', human: false } }),
+    ev('step/start', { step: 1 }),
+    ev('assistant/message', { messageId: 'o2', content: text(OPT_REPLY) }),
+    ev('step/end', { step: 1 }),
+    ev('turn/end', { reason: { kind: 'completed' } }),
+  ],
   's-diag': [
     ev('turn/start'),
-    ev('user/message', { messageId: 'm1', content: text('昨晚的日常为什么失败？'), origin: { kind: 'user', human: true } }),
+    ev('user/message', { messageId: 'm1', content: text(taskMessage('监控', '三月七小助手 · 材料速刷：遇到了不认识的界面', '昨晚的日常为什么失败？脚本停在一个不认识的界面，看看画面，能处理就处理。', true)), origin: { kind: 'handoff', human: false } }),
     ev('step/start', { step: 1 }),
     ev('assistant/message', { messageId: 'm2', content: [{ type: 'other', kind: 'tool-call', callId: 'c1', name: 'read_log', arguments: '{"path":"logs/run.log"}' }] }),
     ev('tool/call', { callId: 'c1', name: 'read_log', arguments: '{"path":"logs/run.log"}' }),
@@ -120,6 +157,25 @@ export const sessionEvents: Record<string, any[]> = {
   ],
 };
 
+/* each script's stall time is learned from its own successful runs */
+const monitorSettings = {
+  defaultStallSeconds: 60, notifyWarnings: true, screenshot: false, intervene: 'act' as const, interventionsPerDay: 200,
+  scriptStall: {
+    'emu-daily': { seconds: 150, by: 'learned' as const, samples: [92, 118, 131, 140, 126], at: Date.now() - 2 * 864e5 },
+    'desk-daily': { seconds: 90, by: 'learned' as const, samples: [48, 61, 70, 55, 66], at: Date.now() - 3 * 864e5 },
+    'daily-helper': { seconds: 60, by: 'agent' as const, samples: [], at: Date.now() - 864e5, note: '加载关卡时最多安静 50 秒' },
+  },
+};
+/* skills filed under their game and script, as the 技能 page groups them */
+const demoSkills = [
+  { name: 'startrail-events', description: '进入活动页，按剩余天数查看各活动的进度。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\startrail-events', modelInvocable: true, userInvocable: true, owner: { games: ['startrail'] } },
+  { name: 'farecho-base-shift', description: '基建换班前先看干员心情，避免排班冲突。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\farecho-base-shift', modelInvocable: true, userInvocable: true, owner: { games: ['farecho'] } },
+  { name: 'frostland-weekly', description: '终末地每周任务的入口和领取顺序。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\frostland-weekly', modelInvocable: true, userInvocable: true, owner: { games: ['frostland'] } },
+  { name: 'close-event-notice', description: '清体力前先关闭活动公告弹窗，再继续执行。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\close-event-notice', modelInvocable: true, userInvocable: true, owner: { scripts: ['daily-helper'], games: ['startrail'] }, removable: true },
+  { name: 'maa-copilot', description: '用 MAA 自动战斗打指定关卡。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\maa-copilot', modelInvocable: true, userInvocable: true, owner: { scripts: ['emu-daily'], games: ['farecho'] } },
+  { name: 'pipeline-planning', description: '把多个脚本任务排成流水线，处理资源冲突。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\pipeline-planning', modelInvocable: true, userInvocable: true },
+  { name: 'script-analysis', description: '读懂一个陌生脚本，写出脚本包草稿。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\script-analysis', modelInvocable: true, userInvocable: true },
+];
 export const lastRun: { current: any } = { current: null };
 const initialWorld = structuredClone(world);
 const initialEvents = structuredClone(sessionEvents);
@@ -143,6 +199,28 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
     capabilities: CAPABILITIES,
   }),
   'sessions/list': () => ok({ items: world.sessions }),
+  'roles/list': () => ok({ items: [
+    { id: 'intervene', name: '干预', description: '脚本出问题时看画面、动手排除', order: 1 },
+    { id: 'games', name: '游戏', description: '读活动日历，进游戏看你的进度', order: 2 },
+    { id: 'scripts', name: '脚本', description: '安装、读懂和优化脚本', order: 3 },
+    { id: 'pipelines', name: '编排', description: '把脚本排成流水线、设定时', order: 4 },
+  ] }),
+  'agents/home': (p) => ok({ sessionId: world.sessions.find(s => s.home === p.agentId)?.id ?? 's-home' }),
+  'sessions/lastReplies': (p) => ok({ items: p.sessionIds.map(id => {
+    const said = (sessionEvents[id] ?? []).filter(e => e.type === 'assistant/message').flatMap(e => e.content).filter((c: any) => c.type === 'text').at(-1);
+    return { sessionId: id, text: said ? said.text.slice(0, 80) : null };
+  }) }),
+  'handoffs/list': (p) => ok({ items: world.handOffs.filter(h => h.fromSession === p.sessionId || h.toSession === p.sessionId) }),
+  'handoffs/get': (p) => ok(world.handOffs.find(h => h.id === p.id) ?? world.handOffs[0]),
+  'reminders/list': (p) => ok({ items: [
+    { id: 'rem-report', agent: 'main', sessionId: 's-home', title: '每日日报', prompt: '总结今天各游戏的日常和活动进度，发到飞书和 QQ', rule: '每天 21:00', repeats: true, next: Date.now() + 6 * 3600e3 },
+    { id: 'rem-events', agent: 'games', sessionId: 's-game', title: '看活动进度', prompt: '进游戏看看各活动还有哪些没做完', rule: '每天 09:40', repeats: true, next: Date.now() + 20 * 3600e3 },
+  ].filter(r => p.agent === undefined || r.agent === p.agent) }),
+  'reminders/remove': () => ok({}),
+  'instances/others': () => ok({ others: [] }),
+  'notify/notices': () => ok({ items: [] }),
+  'models/roleModel': () => ok({ model: null }),
+  'models/setRoleModel': () => ok({}),
   'sessions/create': () => {
     const s = { id: 's-' + Math.random().toString(36).slice(2, 8), title: null, updatedAt: Date.now(), running: false, blank: true, live: false, cwd: 'D:\\MGA\\workspace' };
     world.sessions.unshift(s);
@@ -207,8 +285,8 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   'runs/list': () => ok({ items: world.runs }),
   'runs/start': (p) => { const r = { id: 'run-' + Date.now(), scriptId: p.scriptId, scriptName: '三月七小助手', taskId: p.taskId, taskTitle: '材料速刷', params: p.params ?? {}, state: 'running' as const, startedAt: Date.now(), command: ['March7thAssistant.exe', '--task', p.taskId], resources: ['desktop'], tags: [], warnings: [], kind: 'task' as const }; world.runs.push(r); return ok(r); },
   'runs/stop': () => ok({}),
-  'monitor/settings': () => ok({ defaultStallMinutes: 10, notifyWarnings: true, screenshot: false, intervene: 'act' as const, interventionsPerDay: 200 }),
-  'monitor/settings/set': () => ok({ defaultStallMinutes: 10, notifyWarnings: true, screenshot: false, intervene: 'act' as const, interventionsPerDay: 200 }),
+  'monitor/settings': () => ok(monitorSettings),
+  'monitor/settings/set': () => ok(monitorSettings),
   'monitor/incidents': () => ok({ items: world.incidents }),
   'monitor/act': () => ok(world.incidents[0] ?? {} as any),
   'monitor/screenshot': () => ok({ mime: 'image/png' as const, data: '' }),
@@ -245,7 +323,7 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
     return { mediaType: image.mediaType, data: btoa(binary) };
   },
   'games/mirrorchyan': () => ok({ items: [], from: 'mirrorchyan' } as any),
-  'skills/get': () => ok({ name: 'pipeline-planning', description: '把多个脚本任务排成流水线。', source: 'custom', provider: 'runtime', path: 'D:\MGA\skills\pipeline-planning', modelInvocable: true, userInvocable: true, content: '# pipeline-planning' } as any),
+  'skills/get': (p: any) => { const skill = demoSkills.find(k => k.name === p.name) ?? demoSkills[0]!; return ok({ ...skill, content: `# ${skill.name}\n\n${skill.description}` } as any); },
   'intervene/takeover': () => ok({} as any),
   'intervene/release': () => ok({} as any),
   'emulators/status': () => ok({ items: [] } as any),
@@ -288,11 +366,7 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
     failures: [],
   }),
   'models/setDefault': () => ok({}),
-  'skills/list': () => ok({ skills: [
-    { name: 'pipeline-planning', description: '把多个脚本任务排成流水线，处理资源冲突。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\pipeline-planning', modelInvocable: true, userInvocable: true },
-    { name: 'script-analysis', description: '读懂一个陌生脚本，写出脚本包草稿。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\script-analysis', modelInvocable: true, userInvocable: true },
-    { name: '诊断日常失败', description: '查看运行日志，找出失败原因并处理。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\diagnose-daily', modelInvocable: true, userInvocable: true },
-  ] }),
+  'skills/list': () => ok({ skills: demoSkills }),
   'credentials/describe': () => ok({ items: {} }),
   'credentials/set': () => ok({}),
   'approval/respond': (p: any, push) => {

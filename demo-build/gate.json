@@ -1,6 +1,6 @@
 {
   "base": "http://127.0.0.1:8080/app-demo/index.html?validate=1",
-  "rail": ["游戏", "对话", "脚本", "编排", "运行", "技能"],
+  "rail": ["助手", "干预", "游戏", "脚本", "编排", "定时", "设置"],
   "banned": ["当前连接没有提供这个功能"],
   "urls": [
     { "name": "scripts", "hash": "#/p/scripts", "must": ["脚本", "MAA", "MaaEnd", "三月七小助手"] },
@@ -10,8 +10,8 @@
     { "name": "runs", "hash": "#/p/runs", "must": ["出错", "三月七小助手"] },
     { "name": "games", "hash": "#/p/games", "must": ["崩坏：星穹铁道", "明日方舟"] },
     { "name": "game-detail", "hash": "#/p/games/startrail", "must": ["崩坏：星穹铁道", "活动"] },
-    { "name": "chat", "hash": "#/chat", "must": ["排每天早上的日常", "诊断昨晚失败"] },
-    { "name": "session-diag", "hash": "#/s/s-diag", "must": ["昨晚的日常为什么失败", "logs/run.log", "模拟器卡在启动页", "允许"] },
+    { "name": "chat", "hash": "#/chat", "must": ["优化脚本：三月七小助手", "交回了", "监控", "进行中"] },
+    { "name": "session-diag", "hash": "#/s/s-diag", "must": ["模拟器卡在启动页", "允许本次"] },
     { "name": "skills", "hash": "#/p/skills", "must": ["pipeline-planning"] },
     { "name": "feishu", "hash": "#/settings/feishu", "must": ["MGA 助手"] },
     { "name": "settings", "hash": "#/settings", "must": ["设置"] }

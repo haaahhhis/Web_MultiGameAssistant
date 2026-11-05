@@ -2,13 +2,13 @@
   "compilerOptions": {
     "strict": true,
     "noEmit": true,
-    "target": "ES2020",
+    "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": [],
     "ignoreDeprecations": "6.0",
     "paths": {
