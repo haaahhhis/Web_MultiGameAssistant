@@ -1,5 +1,34 @@
 [
   {
+    "tag_name": "v2.0.0",
+    "name": "MultiGameAssistant 2.0.0",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-05T06:23:14Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v2.0.0",
+    "body": "## 新功能\n\n### 一组 agent，各管一摊\n\n- **左边是 agent 名册**：助手、干预、游戏、脚本、编排各有自己的页面，每个 agent 只有一个对话，它的定时任务和工具也都放在它自己那里。\n- **助手负责和你说话、派活**：截图点击、跑脚本、读游戏这些事助手会交给对应的 agent，做完的结果会作为一条消息发回助手的对话。软件自己发现的事（比如监控交给干预）也是这样，结果同样回到助手这里。\n- 角色 agent 只看得到自己用得上的工具，也知道自己该做什么。它们可以用单独的模型（设置 → 模型 →「角色 agent 的模型」），选一个便宜、能看图的就能省用量。\n- 角色 agent 的会话列在各自下面，不和你自己的对话混在一起；每张任务卡片都写着是谁布置的。\n\n### 软件里、飞书、QQ 是同一个对话\n\n- 助手的对话在软件、飞书和 QQ 里看到的是同一份。新增 **QQ 机器人**，作为第二个远程连接。\n- 通知、定时提醒都算进这个对话里，提醒也会显示在「定时」里。\n- QQ 消息用 markdown 显示，有按钮可以直接回答通知、审批和提问；提问和审批会发给最后说话的那个人。\n- 飞书上收到的是这一轮的总结，不再把每个步骤都发一遍。\n\n### 脚本出问题时更稳\n\n- **流水线会等问题处理完**：前一步出的问题还没解决，后面的步骤不会自己开始。干预会先确认现在还需不需要处理，比如脚本已经自己重启修好了，就不再插手。\n- **卡住检测**：脚本默认 1 分钟没有新日志就交给干预。每个脚本会从自己跑成功的记录里学会正常时要安静多久，agent 也可以替它调；「监控」页能看到每个脚本自己的卡住时间。\n- 运行前先更新脚本，只走软件内置的更新或 Mirror酱 这类正式渠道。\n- 出问题时的截图能看到运行的报错框，就算被别的窗口挡住也一样。MuMu 冷启动时会先等它起来，不会因为第一次查询出错就判失败。\n- 同一台电脑上开了第二个软件时会提醒。\n\n### 优化脚本\n\n- 一个脚本跑成功 5 次，或者更新后第一次跑通，助手对话（还有飞书、QQ）里会问要不要**优化脚本**。点一下，「脚本」agent 会一次做完：按这些运行重新总结脚本包（改动先作为草稿给你确认）、按正常时的日志节奏调卡住时间、把反复走通的步骤存成只给这个脚本用的技能。\n- 也可以在「脚本」页点「优化脚本」，或在对话里输入 `/优化脚本 脚本名`。\n\n### 技能页\n\n- 按游戏分：每个游戏一节，先放这个游戏本身的技能，再放玩它的各个脚本的技能，最后是通用技能。游戏页上的每个游戏都会出现，没有技能也一样。\n- 可以自己**新建、编辑、删除**技能；放错了游戏或脚本，点「更换游戏和脚本」改过来。从技能库下载的技能也能换，技能库更新它时你的选择会保留。\n- agent 存技能时也会按游戏和脚本分好：只和某个脚本有关的给那个脚本，游戏本身的操作和活动给游戏。\n- 对话框里输入 `/` 时，技能也按「游戏 · 脚本」分组列出。\n- 节可以折叠，能改的技能有标记，详情更清楚。\n\n## 去掉的\n\n- 「设置 → 模型」里的「其他凭据（高级）」去掉了：每个模型服务在自己的卡片里填 Key。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-2.0.0.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-2.0.0-arm64.exe`\n- 已经装了 dsh：dsh 插件版 `dsh-multigameassistant-2.0.0.tgz`（安装方法见 README「已经装了 dsh」）\n",
+    "assets": [
+      {
+        "name": "dsh-multigameassistant-2.0.0.tgz",
+        "size": 14389873,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.0/dsh-multigameassistant-2.0.0.tgz"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.0.0-arm64.exe",
+        "size": 232276479,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.0/MultiGameAssistant-Setup-2.0.0-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.0.0.exe",
+        "size": 248898052,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.0/MultiGameAssistant-Setup-2.0.0.exe"
+      }
+    ]
+  },
+  {
     "tag_name": "v1.2.0",
     "name": "MultiGameAssistant 1.2.0",
     "draft": false,
