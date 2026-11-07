@@ -212,6 +212,13 @@
      ============================================================ */
   var stops = Array.prototype.slice.call(document.querySelectorAll('.day-stop'));
   var dayStage = document.getElementById('dayStage');
+  /* the sticky demo sits mid-window: its offset is half the room it leaves */
+  if (dayStage) {
+    var centreStage = function () { dayStage.style.setProperty('--stage-top', Math.max(0, (window.innerHeight - dayStage.offsetHeight) / 2) + 'px'); };
+    window.addEventListener('resize', centreStage);
+    if ('ResizeObserver' in window) new ResizeObserver(centreStage).observe(dayStage);
+    centreStage();
+  }
   if (stops.length) {
     var currentStop = -1, lockUntil = 0;
     var stopFor = function (scene) {

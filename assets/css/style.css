@@ -251,7 +251,7 @@ body.anim-ready .contour-line:nth-child(5) { animation-delay: .4s; }
 .hero-copy { position: relative; padding-top: 8px; }
 .hero-inner {
   position: relative; z-index: 1;
-  padding: 56px 7vw 120px;
+  padding: 56px 7vw 70px;
   max-width: var(--wrap);
   margin: 0 auto;
   width: 100%;
@@ -432,21 +432,6 @@ body.anim-ready .glyph {
 .chip::before { content: ""; width: 8px; height: 8px; background: var(--accent); outline: 1px solid var(--ink); }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; }
 
-.hero-scroll {
-  position: absolute; left: 50%; bottom: 26px;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: .3em;
-  color: var(--grey-600);
-}
-.hero-scroll-bar { width: 1px; height: 34px; background: var(--ink); overflow: hidden; position: relative; }
-.hero-scroll-bar::after {
-  content: ""; position: absolute; left: 0; top: -100%;
-  width: 1px; height: 100%; background: var(--grey-400);
-  animation: scrollDrop 1.8s infinite;
-}
-@keyframes scrollDrop { to { top: 100%; } }
-
 /* reveal-line base (JS adds .anim to trigger) */
 .reveal-line { opacity: 1; }
 body.anim-ready .reveal-line {
@@ -494,7 +479,8 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 .no-motion .reveal-block { opacity: 1; transform: none; transition: none; }
 
 /* ============ A DAY (timeline + sticky demo) ============ */
-.day { background: var(--bg); padding-bottom: 90px; overflow: clip; }
+/* blocks end 160px above the next chapter title: 70 here + the head's 90 */
+.day { background: var(--bg); padding-bottom: 70px; overflow: clip; }
 .day::before {
   content: ""; position: absolute; pointer-events: none;
   top: 260px; right: 3%; width: 110px; height: 110px;
@@ -519,7 +505,7 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 }
 .scen-time { font-style: normal; font-family: var(--font-mono); font-size: 10px; color: var(--grey-400); margin-right: 6px; }
 .scen-tab.on .scen-time { color: var(--ink); }
-.day-stops { padding-bottom: 38vh; }
+.day-stops { padding-bottom: 12vh; }
 .day-stop {
   position: relative;
   padding: 34px 0 40px 30px;
@@ -567,17 +553,18 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
     grid-template-columns: minmax(250px, 320px) minmax(0, 1fr); gap: 44px; align-items: start;
   }
   .day-stops { grid-column: 1; grid-row: 1; }
-  /* a full-height sticky box that centres the demo in the window */
+  /* the sticky box hugs the demo and sits mid-window (main.js sets --stage-top),
+     so the demo ends where the timeline ends instead of half a window early */
   .day-stage {
-    grid-column: 2; grid-row: 1; top: 0; height: 100vh; padding: 0;
-    display: flex; flex-direction: column; justify-content: center;
+    grid-column: 2; grid-row: 1; top: var(--stage-top, 0px); padding: 0;
+    display: flex; flex-direction: column;
     background: transparent; box-shadow: none;
   }
   /* keep the whole sticky stage inside the viewport height (app is ~1.42:1), and
      no wider than ~860px per size step so the app shows a little under real size */
   .day-stage .demo-outer, .day-stage .scen-tabs { max-width: min(calc((100vh - 120px) * 1.42), calc(860px * var(--k))); margin-left: 0; }
   .day-stop { min-height: 70vh; }
-  .day-stops { padding-bottom: 22vh; }
+  .day-stops { padding-bottom: 0; }
 }
 .feat-note {
   position: relative; z-index: 1;
@@ -596,7 +583,7 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 }
 
 /* ============ HIGHLIGHTS ============ */
-.highlights { background: var(--bg); padding-bottom: 90px; }
+.highlights { background: var(--bg); padding-bottom: 70px; }
 .hl-grid {
   position: relative; z-index: 1;
   max-width: var(--wrap); margin: 0 auto; padding: 0 calc(7vw + 1px) 0 7vw;
@@ -666,7 +653,8 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
 }
 
 /* ============ SAFETY + FAQ ============ */
-.faq { background: var(--bg); padding-bottom: 90px; }
+/* the closing band has no chapter head: the whole 160px is here */
+.faq { background: var(--bg); padding-bottom: 160px; }
 .faq-main {
   position: relative; z-index: 1;
   max-width: var(--wrap); margin: 0 auto; padding: 0 7vw;
@@ -844,8 +832,9 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
   .mobile-menu-foot { position: relative; display: flex; gap: 12px; margin-top: 28px; }
 
   .hero { min-height: auto; padding-top: var(--topbar-h); }
-  .hero-inner { padding: 50px 6vw 70px; }
-  .hero-scroll { display: none; }
+  .hero-inner { padding: 50px 6vw 56px; }
+  .day, .highlights { padding-bottom: 56px; }
+  .faq { padding-bottom: 120px; }
   .hero-contour { width: 480px; height: 480px; right: -90px; bottom: -40px; }
 
   .chapter-head { padding: 64px 6vw 28px; column-gap: 14px; grid-template-columns: 10px minmax(0, max-content); }
@@ -931,7 +920,9 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
   .chapter-sub { font-size: calc(12px * var(--k)); margin-top: calc(8px * var(--k)); }
 
   /* hero */
-  .hero-inner { padding: calc(56px * var(--k)) 7vw calc(120px * var(--k)); }
+  .hero-inner { padding: calc(56px * var(--k)) 7vw calc(70px * var(--k)); }
+  .day, .highlights { padding-bottom: calc(70px * var(--k)); }
+  .faq { padding-bottom: calc(160px * var(--k)); }
   .hero-inner > .chapter-head { padding-bottom: calc(24px * var(--k)); }
   .hero-grid { grid-template-columns: minmax(0, calc(560px * var(--k))) minmax(0, 1fr); gap: calc(64px * var(--k)); }
   .hero-grid .hero-en-line { font-size: clamp(56px, 5vw, calc(92px * var(--k))); }
@@ -971,7 +962,6 @@ body.anim-ready .hero-ctas { animation-delay: .72s; }
   .hero-log-list time, .hero-log-list i { font-size: calc(12px * var(--k)); }
   .hero-log-list em, .hero-log-more { font-size: calc(11px * var(--k)); }
   .hero-contour { width: calc(460px * var(--k)); height: calc(460px * var(--k)); }
-  .hero-scroll { font-size: calc(9px * var(--k)); }
 
   /* closing + footer */
   .cta-inner { padding: calc(90px * var(--k)) 7vw; }
