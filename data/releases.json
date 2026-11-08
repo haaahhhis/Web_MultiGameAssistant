@@ -1,5 +1,34 @@
 [
   {
+    "tag_name": "v2.0.1",
+    "name": "MultiGameAssistant 2.0.1",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-08T11:22:02Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v2.0.1",
+    "body": "## 新功能\n\n- **DeepSeek 余额**：用 DeepSeek 官方接口的模型时，对话框里上下文小圆圈旁边会显示账户余额，鼠标移上去能看到充值和赠送各多少。一轮开始和结束时会刷新，运行中每分钟刷新一次。余额不足时变成警告色；查询失败时显示「余额 ?」，不会显示成 0。Key 只发给 DeepSeek 官方地址，用中转服务时不会查询。\n- **自己添加、编辑活动**：游戏页「活动日程」的「+」可以新建活动，也可以编辑已有的活动（名称、时间、类型、说明、链接、图片，图片可以选择或粘贴）。你改过的内容以你的为准，刷新不会覆盖；不想要了可以点「恢复来源的内容」。只由你添加的活动会一直留着，直到你删除。agent 也能替你添加和删除活动。\n- **没有图片的活动显示游戏截图**：活动是从游戏截图里读到的，又没有别的图片时，卡片背景就用那张截图，「看游戏截图」也能打开它。\n- **dsh 插件可以按名字安装**：在 dsh 的「Add plugin」里填 `dsh-multigameassistant` 就行，不用再找插件包链接。npm 连不上时，仍然可以用 GitHub 上的插件包链接，这个链接总是指向最新版本。\n\n## 修复\n\n- **BetterGI 安装**\n  - 没下载完的旧文件接不上时（比如报「mirrorchyan.com 返回 416」），会丢掉重新下载一次，不再直接安装失败。\n  - 能认出 BetterGI 的安装程序，并且可以静默安装。\n  - Mirror酱 的压缩包解开后只有一个安装程序时，会按安装程序来运行，不再把它当成已经装好的软件。\n  - 指定要下载某个文件时，即使同一版本已经从别的文件装好了，也会下载你指定的那个。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-2.0.1.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-2.0.1-arm64.exe`\n- 已经装了 dsh：在 dsh 的「Add plugin」里填 `dsh-multigameassistant`（npm 连不上时用插件包 `dsh-multigameassistant.tgz` 的链接；见 README「已经装了 dsh」）\n",
+    "assets": [
+      {
+        "name": "dsh-multigameassistant.tgz",
+        "size": 14410787,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.1/dsh-multigameassistant.tgz"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.0.1-arm64.exe",
+        "size": 232298664,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.1/MultiGameAssistant-Setup-2.0.1-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.0.1.exe",
+        "size": 248920290,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.1/MultiGameAssistant-Setup-2.0.1.exe"
+      }
+    ]
+  },
+  {
     "tag_name": "v2.0.0",
     "name": "MultiGameAssistant 2.0.0",
     "draft": false,
