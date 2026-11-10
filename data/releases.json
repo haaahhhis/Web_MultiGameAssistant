@@ -1,5 +1,34 @@
 [
   {
+    "tag_name": "v2.0.2",
+    "name": "MultiGameAssistant 2.0.2",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-10T03:48:09Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v2.0.2",
+    "body": "## 新功能\n\n### 多个 agent 一起干活\n\n- **agent 之间可以来回说话**：交出去的事不再是一问一答。做的过程中双方都能问、答、说进展，交回结论以后也还能接着补充（比如「20 秒后再告诉你」）。脚本、游戏这些 agent 之间也能直接把事交给对方，不用都经过助手。\n- **问你的问题会经过交事的 agent**：别的 agent 交来的事有不清楚的，它会先问交事的 agent，由那边决定要不要来问你，不会突然冒出一个你不知道来由的问题。\n- **记得以前说过的事**：两个 agent 之间以前的来往单独保存，对话被压缩或换了新对话也还在；交事时会附上最近几条，需要时 agent 还能翻出完整的。\n- **具体操作交给子 agent**：运行命令、改文件、截图点屏幕、装脚本、启动游戏这些，由 agent 开一个子 agent 去做，它自己的对话只负责安排和汇报，不会被一长串步骤塞满。子 agent 要你批准的操作，仍然会在对应 agent 的对话里请你批准。\n- **一个对话同时可以交出 4 件事**（原来 3 件）。\n- **agent 知道自己在和谁合作**：每个 agent 知道自己是谁、上级和同事是谁、现在是谁在跟它说话；别的 agent 说的话不会被当成你的批准。\n\n### 看 agent 之间说了什么\n\n- **agent 之间的对话页**：在对话里点「助手 → 脚本」这样的一行，打开它们两个之间说过的所有话，按时间排成一段对话，每条消息上面是 agent 的头像和名字，气泡和主聊天界面一样。打开时停在你点的那件事上。\n- **关掉不再闪**：从这个页面回到原来的对话时，对话停在原来的位置，不会先变空再重新加载。\n- **子任务**：agent 开的子 agent 在对话里显示成一张卡片，可以在旁边打开它的完整过程，也可以停掉它。对话上方可以选「汇报 / 协作 / 全部」，决定显示多少 agent 之间的往来。\n- **聊天记录有时间了**：隔了 5 分钟以上或者换了一天，中间会显示一行时间（「15:05」「昨天 22:45」「11月8日周日 20:45」）；鼠标放在消息上能看到具体时间。\n\n### 对话\n\n- **工作中发的消息直接插进去**：agent 正在做事时你发的话，默认插进它当前这一轮（说错了、改主意了都能马上生效），飞书等聊天软件发来的也一样。取消勾选「插入当前轮次」就还是排队。\n- **回复风格可以统一设置，也可以每个 agent 单独设置**；agent 之间互相说话默认用平实的语气。\n- **以前的对话只能看**：不会再在旧对话里误发消息；不想看到「以前的对话」标签，可以在设置里关掉。\n\n### 游戏页\n\n- **重新排版**：游戏页的大图更紧凑，活动按图片网格排列，状态、日程和来源放在侧栏；「全部活动」每个游戏一张卡片，下面是带时间轴的活动日程。\n- **选择活动的来源**：同一个活动有几个来源时，可以选用哪个来源的图片和时间，刷新和重启后都保留，也可以改回来；agent 也能替你选。活动详情在屏幕中间的窗口里打开。\n\n## 修复\n\n- 子 agent 会被当成助手：它现在有自己上级 agent 的工具和职责。\n- agent 开了子任务后，交事的那边只收到「我开了一个子任务」，现在会等子任务做完，拿到真正的结论；取消交出去的事时，它开的子任务也会一起停下。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-2.0.2.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-2.0.2-arm64.exe`\n- 已经装了 dsh：在 dsh 的「Add plugin」里填 `dsh-multigameassistant`（npm 连不上时用插件包 `dsh-multigameassistant.tgz` 的链接；见 README「已经装了 dsh」）\n",
+    "assets": [
+      {
+        "name": "dsh-multigameassistant.tgz",
+        "size": 14474398,
+        "download_count": 14,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.2/dsh-multigameassistant.tgz"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.0.2-arm64.exe",
+        "size": 232359677,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.2/MultiGameAssistant-Setup-2.0.2-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.0.2.exe",
+        "size": 248981105,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.2/MultiGameAssistant-Setup-2.0.2.exe"
+      }
+    ]
+  },
+  {
     "tag_name": "v2.0.1",
     "name": "MultiGameAssistant 2.0.1",
     "draft": false,
@@ -11,7 +40,7 @@
       {
         "name": "dsh-multigameassistant.tgz",
         "size": 14410787,
-        "download_count": 13,
+        "download_count": 21,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.1/dsh-multigameassistant.tgz"
       },
       {
