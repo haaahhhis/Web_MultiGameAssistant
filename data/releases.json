@@ -1,5 +1,34 @@
 [
   {
+    "tag_name": "v2.0.5",
+    "name": "MultiGameAssistant 2.0.5",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-14T05:30:00Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v2.0.5",
+    "body": "## 新功能\n\n### 脚本包使用说明\n\n- **每个脚本包都有使用说明**：「脚本」页新增「使用说明」，分「任务与参数」「功能开启」「配置文件」「运行前」「常见问题」：脚本能做什么、每个参数是什么意思、每个功能在脚本自己的界面里哪里打开、配置文件里哪些设置要紧以及建议怎么设、常见报错的原因和解决办法。每次运行会临时改哪些设置也一条条列出来，运行完会改回去。\n- MAA（明日方舟）、MaaEnd（终末地）、三月七小助手（星穹铁道）都已写好说明。让 agent 分析或改进脚本时，它会一起写好说明。\n- 「让 agent 分析/改进」改由「脚本」来做，分析完能直接保存脚本包。\n\n### 编排和脚本直接保存\n\n- **编排直接保存流水线**：让「编排」给已保存的流水线加一步、改一处，它会直接保存，不用再拿着文件自己重建；日程和画布上节点的位置保持不变。「助手」仍然只出草稿，要替换已保存的流水线时会转给「编排」。\n- **脚本包直接启用**：「脚本」写好或改好的脚本包通过检查后直接启用，检查不通过就什么都不改。「脚本」页可以「恢复上一版」，也能看到更早的版本；替代内置脚本包的自定义包可以换回内置的。\n\n### 记忆\n\n- **核心记忆**：最在意的要求和偏好可以记成「核心」，每次对话都会带上，不会随时间被挤掉，所有 agent 共享，一共最多 2000 字。在「设置 → 记忆」里添加。\n- **能找回当时的原话**：agent 记下的事会注明是在哪个对话、哪句话里说的，需要细节时能翻回当时的对话。\n- **自动整理不再漏掉**：对话很长时，也会从上次停下的地方按顺序整理，不会跳过一大段。\n- **更会找**：搜索记忆和对话时，没有完全对上的也会列出最接近的；记忆太多放不进对话时，你提到相关的事，较早的记忆会自动被想起来。\n\n### 对话压缩\n\n- **摘要也能归档**：开着低上下文模式时，可以在「设置 → 对话压缩」勾选「摘要也归档」：每段对话单独压缩一次，超过设定天数的摘要移出上下文，只留一句说明；需要时 agent 会去查记忆和原文。\n- **摘要用对话的语言写**：压缩摘要跟着对话写成中文，篇幅跟着内容走，只写有内容的部分；搜索对话记录时也能搜到。\n- **更省 token**：太短的一段对话不再单独压缩；记忆有变化时不再整段重发提示词，提示词缓存不会因此失效。\n\n## 修复\n\n- 搜索对话记录时，不再把正在问的这句话排在最前面。\n- agent 翻看以前的对话时，不再夹带软件自动加的环境说明。\n- 「游戏」可以查技能库了；子 agent 不再丢掉上级能用的定时工具。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-2.0.5.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-2.0.5-arm64.exe`\n- 已经装了 dsh：在 dsh 的「Add plugin」里填 `dsh-multigameassistant`（npm 连不上时用插件包 `dsh-multigameassistant.tgz` 的链接；见 README「已经装了 dsh」）\n",
+    "assets": [
+      {
+        "name": "dsh-multigameassistant.tgz",
+        "size": 14598646,
+        "download_count": 2,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.5/dsh-multigameassistant.tgz"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.0.5-arm64.exe",
+        "size": 232507769,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.5/MultiGameAssistant-Setup-2.0.5-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.0.5.exe",
+        "size": 249129198,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.5/MultiGameAssistant-Setup-2.0.5.exe"
+      }
+    ]
+  },
+  {
     "tag_name": "v2.0.4",
     "name": "MultiGameAssistant 2.0.4",
     "draft": false,
@@ -11,7 +40,7 @@
       {
         "name": "dsh-multigameassistant.tgz",
         "size": 14549109,
-        "download_count": 24,
+        "download_count": 30,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.4/dsh-multigameassistant.tgz"
       },
       {
