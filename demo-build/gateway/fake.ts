@@ -238,8 +238,16 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   'reminders/remove': () => ok({}),
   'instances/others': () => ok({ others: [] }),
   'notify/notices': () => ok({ items: [] }),
-  'models/roleModel': () => ok({ model: null }),
-  'models/setRoleModel': () => ok({}),
+  'models/agentModels': () => ok({ agents: {}, subAgents: null, subAgentsOf: {} }),
+  'models/setAgentModel': () => ok({}),
+  'about/info': () => ok({ edition: 'other' as const }),
+  'providers/balance': () => ok({ balance: null }),
+  'skillhub/list': () => ok({ items: [], repos: [], errors: [] }),
+  'scripts/icon': () => ok({}),
+  'scripts/guide': () => ok({ guide: null }),
+  'packs/history': () => ok({ items: [] }),
+  'games/icon': () => ok({}),
+  'scripts/settings': () => ok({ apiBase: 'https://api.github.com', downloadMirror: '', mirrorFallback: true, tokenRef: 'GITHUB_TOKEN', keepVersions: 3, includePrereleases: false, cdkRef: 'MIRRORCHYAN_CDK', autoUpdate: 'ask' as const, tokenConfigured: false, cdkConfigured: false }),
   'sessions/create': () => {
     const s = { id: 's-' + Math.random().toString(36).slice(2, 8), title: null, updatedAt: Date.now(), running: false, blank: true, live: false, cwd: 'D:\\MGA\\workspace' };
     world.sessions.unshift(s);
@@ -293,7 +301,7 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   },
   'scripts/install': () => ok({ jobId: 'job-1', scriptId: 'daily-helper' }),
   'scripts/update': () => ok({ upToDate: false, jobId: 'job-2' }),
-  'scripts/settings/set': () => ok({ apiBase: 'https://api.github.com', downloadMirror: '', mirrorFallback: true, tokenRef: '', keepVersions: 3, includePrereleases: false, cdkRef: '' }),
+  'scripts/settings/set': () => ok({ apiBase: 'https://api.github.com', downloadMirror: '', mirrorFallback: true, tokenRef: 'GITHUB_TOKEN', keepVersions: 3, includePrereleases: false, cdkRef: 'MIRRORCHYAN_CDK', autoUpdate: 'ask' as const }),
   'pipelines/list': () => ok({ items: [world.pipeline, world.early].map(p => ({ id: p.id, name: p.name, nodes: p.nodes.length, draft: false, schedule: p.schedule })) }),
   'pipelines/get': (p: any) => ok(p.id === world.early.id ? world.early : world.pipeline),
   'pipelines/save': (p) => { Object.assign(world.pipeline, p.pipeline); return ok({ pipeline: world.pipeline, check: { ok: true, issues: [], serialized: [] } }); },

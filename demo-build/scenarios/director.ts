@@ -45,8 +45,10 @@ const scenes: Step[][] = [
     effect(() => runPhase({ farm: nodeRun('succeeded'), done: nodeRun('succeeded') }, 'succeeded')), click('运行记录'), wait(2400)],
   [go('#/p/runs'), wait(1000), effect(() => incident(false)), focus('.incident-title'), wait(2400), click('.incident-title'), wait(2400),
     effect(() => incident(true)), wait(2400), click('监控设置'), focus('.stall-list'), wait(3400)],
-  [go('#/p/games/farecho'), click('刷新全部'), wait(900), focus('.version-card'), wait(3400),
-    click('明日方舟：终末地'), focus('.version-card'), wait(3400), click('崩坏：星穹铁道'), focus('.version-card'), wait(3400)],
+  // games sit in the rail on the games page: each one's button title starts with its name
+  [go('#/p/games/farecho'), click('刷新全部'), wait(900), focus('.version-hero'), wait(2600), focus('.game-events', 1.15), wait(2200), focus('.status-card'), wait(2200),
+    click('.rail-game[title^="明日方舟：终末地："]'), focus('.version-hero'), wait(3000),
+    click('.rail-game[title^="崩坏：星穹铁道："]'), focus('.version-hero'), wait(3000)],
   [go('#/chat'), wait(1400), focus('.delegation', 1.15), wait(2200), click('.delegation .exchange-line'), wait(3200),
     go('#/p/skills'), wait(1200), focus('.main', 1), wait(3000)],
   [go('#/settings/feishu'), wait(1200), click('重新检查'), wait(4200), click('QQ 机器人'), wait(900), click('重新检查'), wait(4200)],
@@ -146,7 +148,9 @@ async function play(index: number, fraction = 0) {
   }
 }
 export async function startDirector() {
-  for (let attempt = 0; !document.querySelector('.app .rail-connection.open'); attempt++) {
+  // the rail marks the connection only while it is not open
+  const connected = () => document.querySelector('.app .rail-footer') && !document.querySelector('.app .rail-connection');
+  for (let attempt = 0; !connected(); attempt++) {
     if (attempt >= 100) throw new Error('演示界面未完成初始化');
     await sleep(50);
   }

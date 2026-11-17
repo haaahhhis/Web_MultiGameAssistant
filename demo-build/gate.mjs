@@ -29,7 +29,7 @@ for (const u of gate.urls) {
   await p.goto(gate.base + u.hash, { waitUntil: 'load' });
   await wait(3000);
   const text = await p.evaluate(() => document.body.innerText);
-  const missing = [...gate.rail, ...(u.must || [])].filter(m => !text.includes(m));
+  const missing = [...(u.rail ?? gate.rail), ...(u.must || [])].filter(m => !text.includes(m));
   const banned = gate.banned.filter(m => text.includes(m));
   const shot = shotsDir ? path.join(shotsDir, `s2-${u.name}.png`) : null;
   if (shot) await p.screenshot({ path: shot });

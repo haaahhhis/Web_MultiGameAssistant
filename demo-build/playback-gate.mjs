@@ -57,7 +57,7 @@ try {
     assert.ok(Math.abs(state.vt - state.total) < 1, JSON.stringify(state));
     if (index === 3) {
       await page.waitForFunction(() => [...document.images].some(i => i.src.startsWith('data:image/') && i.complete && i.naturalWidth > 0));
-      assert.ok(await page.locator('.game-tab[aria-selected="true"]').innerText().then(t => t.includes('崩坏：星穹铁道')));
+      assert.ok(await page.locator('.rail-game[aria-selected="true"]').getAttribute('title').then(t => t.startsWith('崩坏：星穹铁道：')));
       assert.ok(!(await page.locator('.games-page').innerText()).includes('鸣潮'));
     }
   });
