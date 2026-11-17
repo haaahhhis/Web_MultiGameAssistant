@@ -1,5 +1,34 @@
 [
   {
+    "tag_name": "v2.1.0",
+    "name": "MultiGameAssistant 2.1.0",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-17T07:04:38Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v2.1.0",
+    "body": "## 新功能\n\n### 内置浏览器\n\n- **agent 能自己用浏览器**：软件里有一个内置浏览器，agent 可以打开网页、点击、输入、读正文、截图；你在旁边看得到每一步，也可以随时接手。要点开才有内容的官网公告、Wiki，`web_fetch` 只拿到空壳时就用它。\n- 内置浏览器是隔离的：不保存登录和 Cookie，不下载文件，弹窗只在标签页里打开。\n\n### 右侧边栏和新的标题栏\n\n- **一个侧边栏看全**：对话右上角有「子任务」「命令」「浏览器」三个按钮，在对话旁边的同一个侧边栏里打开：子任务的完整过程、agent 运行过的命令和输出、内置浏览器。\n- 对话上方显示有几个子任务在进行，每个都能点开；聊天可以只看「汇报」或看「全部」。\n- **标题栏**：视图按钮移到最小化、最大化、关闭按钮左边，「轨迹」在 `…` 里，点开后有「返回对话」。\n- **侧边栏可以拖宽**：拖宽后助手的名字显示在头像旁边，下面是最新一条消息的开头；「游戏」放到侧边栏左下角，点开后游戏列表就在侧边栏里。\n- **游戏和脚本的头像用程序自己的图标**：找到（或选好）游戏程序、脚本程序后，头像换成它在桌面和开始菜单里的图标；没有图标时还是名字的第一个字。\n- 每条消息下面有复制按钮；聊天里的时间只显示几点几分，鼠标移上去显示日期。\n- 插件版顶部和桌面版的标题栏一样，标签居中；按钮提示改成和 dsh 一样的样式。\n\n### 自动查找游戏更准\n\n- 「自动查找」先看 Windows 记下的地方：以前运行过的程序、App Paths、Windows 搜索的索引（开始菜单能搜到的就能找到），以及 HoYoPlay、鹰角、库洛启动器记下的安装目录；快捷方式打开的是启动器时，也会找启动器旁边的游戏目录。\n- 游戏的位置按脚本包里写的游戏来找，找到的路径会记住。\n\n### 模型和用量\n\n- **每个 agent 和它的子 agent 各用一个模型**：「设置 → 模型」是一张表，没单独选的跟着上一层。\n- 每个模型可以标「1M 上下文」，和「图片」「思考」放在一起。\n- **等脚本不再反复查**：agent 等脚本跑完时会一直等到结束（最长一小时），不再每隔一会儿查一次；等的时候你发新消息，它会马上停下来看。\n- 安静超过 4 小时的对话，下次从摘要接着聊，不再把一整天的旧对话重新发给模型。\n- 子 agent 可以写一小段代码一次调用多个工具，步骤更少。\n\n### 技能库和安装\n\n- 从技能库下载的技能跟着技能库走：「更新」直接换成新版本；要留下自己的改动，另存成自己的技能。\n- 安装版的脚本装在安装目录里，不再全放在 C 盘；运行日志和故障截图有大小上限，每天整理一次。\n- 插件版需要 dsh 0.2.2（0.2.2-rc.3 或更新）。可以在 dsh 的插件市场搜索 `dsh-multigameassistant` 安装和更新。\n\n## 修复\n\n- 插件版又能「选择文件…」了，「导入本地项目」新增「选择文件夹…」，adb.exe 的位置也能直接选。\n- 回复里引用的本地图片、agent 在 `run_code` 里截的图能在对话里显示。\n- 所有胶囊标签（脚本 id、状态）的文字居中，不再偏上。\n- TokenPlus、硅基流动等 OpenAI 兼容中转站不再因为提示词的角色报 400。\n- 流水线里一步失败后重跑成功，后面的步骤跟着成功的那次走。\n- 子任务卡片在 dsh 0.2.2 下能找到它的子 agent。\n- 暂停中的脚本不再算进卡住时间；没标大小的模型不再被说成 262K 上下文。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-2.1.0.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-2.1.0-arm64.exe`\n- 已经装了 dsh：在 dsh 的「Add plugin」里填 `dsh-multigameassistant`（npm 连不上时用插件包 `dsh-multigameassistant.tgz` 的链接；见 README「已经装了 dsh」）\n",
+    "assets": [
+      {
+        "name": "dsh-multigameassistant.tgz",
+        "size": 14667149,
+        "download_count": 2,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.1.0/dsh-multigameassistant.tgz"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.1.0-arm64.exe",
+        "size": 304180182,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.1.0/MultiGameAssistant-Setup-2.1.0-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.1.0.exe",
+        "size": 320831880,
+        "download_count": 2,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.1.0/MultiGameAssistant-Setup-2.1.0.exe"
+      }
+    ]
+  },
+  {
     "tag_name": "v2.0.5",
     "name": "MultiGameAssistant 2.0.5",
     "draft": false,
@@ -11,7 +40,7 @@
       {
         "name": "dsh-multigameassistant.tgz",
         "size": 14598646,
-        "download_count": 60,
+        "download_count": 64,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.5/dsh-multigameassistant.tgz"
       },
       {
@@ -23,7 +52,7 @@
       {
         "name": "MultiGameAssistant-Setup-2.0.5.exe",
         "size": 249129198,
-        "download_count": 1,
+        "download_count": 2,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.0.5/MultiGameAssistant-Setup-2.0.5.exe"
       }
     ]
