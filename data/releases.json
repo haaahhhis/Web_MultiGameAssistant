@@ -11,19 +11,19 @@
       {
         "name": "dsh-multigameassistant.tgz",
         "size": 14673356,
-        "download_count": 9,
+        "download_count": 17,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.1.1/dsh-multigameassistant.tgz"
       },
       {
         "name": "MultiGameAssistant-Setup-2.1.1-arm64.exe",
         "size": 304186377,
-        "download_count": 1,
+        "download_count": 2,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.1.1/MultiGameAssistant-Setup-2.1.1-arm64.exe"
       },
       {
         "name": "MultiGameAssistant-Setup-2.1.1.exe",
         "size": 320838201,
-        "download_count": 2,
+        "download_count": 11,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.1.1/MultiGameAssistant-Setup-2.1.1.exe"
       }
     ]
