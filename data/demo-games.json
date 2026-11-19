@@ -1,5 +1,5 @@
 {
-  "fetchedAt": 1794922492367,
+  "fetchedAt": 1795080959933,
   "games": [
     {
       "id": "startrail",
@@ -27,11 +27,11 @@
         "endsAt": 1797976800000,
         "cover": "https://i0.hdslb.com/bfs/new_dyn/51ed4397657edcd7e2f23c0cd92bf5cb1340190821.jpg",
         "source": "sra",
-        "at": 1794922492367
+        "at": 1795080959933
       },
       "art": "https://i0.hdslb.com/bfs/new_dyn/51ed4397657edcd7e2f23c0cd92bf5cb1340190821.jpg",
       "refreshed": {
-        "at": 1794922492367,
+        "at": 1795080959933,
         "ok": true,
         "count": 10
       },
@@ -63,11 +63,11 @@
         "endsAt": 1795291199000,
         "cover": "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG",
         "source": "sra",
-        "at": 1794922492367
+        "at": 1795080959933
       },
       "art": "https://web.hycdn.cn/upload/image/20261027/5254c742beaed7e402455815718d4880.JPG",
       "refreshed": {
-        "at": 1794922492367,
+        "at": 1795080959933,
         "ok": true,
         "count": 4
       },
@@ -99,13 +99,13 @@
         "endsAt": 1795644000000,
         "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
         "source": "sra",
-        "at": 1794922492367
+        "at": 1795080959933
       },
       "art": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
       "refreshed": {
-        "at": 1794922492367,
+        "at": 1795080959933,
         "ok": true,
-        "count": 7
+        "count": 6
       },
       "pools": []
     }
@@ -123,7 +123,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -138,7 +138,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -153,7 +153,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -169,7 +169,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -185,7 +185,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -201,7 +201,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -217,7 +217,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -233,7 +233,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -248,7 +248,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -263,7 +263,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -278,7 +278,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -294,7 +294,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -309,7 +309,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -324,7 +324,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -341,24 +341,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
-      }
-    },
-    {
-      "id": "frostland/「百趣演武」挑战活动",
-      "game": "frostland",
-      "name": "「百趣演武」挑战活动",
-      "startsAt": 1793246400000,
-      "endsAt": 1795032000000,
-      "cover": "https://web.hycdn.cn/upload/image/20261014/36c2e3fbd1f70b9a3402167ac404ea96.jpg",
-      "description": "活动期间挑战「百趣演武」，获取演武积分，达到演武历程中的全部档位，即可获得【嵌晶玉】×1200、【存续的痕迹】等活动奖励。",
-      "kind": "挑战活动",
-      "todo": [],
-      "done": [],
-      "site": {
-        "source": "sra",
-        "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -375,7 +358,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -392,7 +375,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -409,7 +392,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -425,7 +408,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     },
     {
@@ -441,7 +424,7 @@
       "site": {
         "source": "sra",
         "name": "SRA 公共 API",
-        "at": 1794922492367
+        "at": 1795080959933
       }
     }
   ],

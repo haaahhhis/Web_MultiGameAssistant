@@ -12,7 +12,10 @@
     { "name": "game-detail", "hash": "#/p/games/startrail", "rail": [], "must": ["崩坏：星穹铁道", "活动"] },
     { "name": "chat", "hash": "#/chat", "must": ["优化脚本：三月七小助手", "交回了", "监控", "进行中"] },
     { "name": "session-diag", "hash": "#/s/s-diag", "must": ["模拟器卡在启动页", "允许本次"] },
-    { "name": "skills", "hash": "#/p/skills", "must": ["pipeline-planning"] },
+    { "name": "skills", "hash": "#/p/skills", "must": ["脚本包", "游戏包", "核心技能", "pipeline-planning"] },
+    { "name": "skillhub", "hash": "#/p/skills/hub", "must": ["技能库", "MAA", "MultiGameAssistant"] },
+    { "name": "schedule", "hash": "#/schedule", "must": ["看新版本和公告", "每天早上的日常", "领周常奖励"] },
+    { "name": "daily-report", "hash": "#/p/daily-report", "must": ["日报"] },
     { "name": "feishu", "hash": "#/settings/feishu", "must": ["远程连接", "QQ 机器人", "MGA 助手"] },
     { "name": "settings", "hash": "#/settings", "must": ["设置"] }
   ]

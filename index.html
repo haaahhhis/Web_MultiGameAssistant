@@ -18,7 +18,7 @@
   <script src="assets/js/release-data.js?v=5c3d6dae6fb3" defer></script>
   <script src="assets/js/main.js?v=22137c28a0b0" defer></script>
   <script src="assets/js/pipeline.js?v=6ef9507f1d6f" defer></script>
-  <script src="assets/js/demo.js?v=bfb823e885cd" defer></script>
+  <script src="assets/js/demo.js?v=3168c7bde5c3" defer></script>
 </head>
 <body>
 
@@ -271,8 +271,8 @@
         </div>
 
         <ul class="hero-stats reveal-block" aria-label="一览">
-          <li><b>03</b><span>内置脚本</span><small>MAA · MaaEnd · 三月七小助手</small></li>
-          <li><b>18</b><span>款游戏可关注</span><small>活动日历 · 每日日报</small></li>
+          <li><b>03</b><span>个官方脚本包</span><small>MAA · MaaEnd · 三月七小助手</small></li>
+          <li><b>18</b><span>款游戏勾上就显示</span><small>活动日历 · 公告 · 每日日报</small></li>
           <li><b>05</b><span>个 agent 各管一摊</span><small>助手 · 干预 · 游戏 · 脚本 · 编排</small></li>
           <li><b>02</b><span>个手机入口</span><small>QQ · 飞书，同一个对话</small></li>
         </ul>
@@ -286,7 +286,7 @@
         <span class="chapter-bar" aria-hidden="true"></span>
         <p class="chapter-idx">02 / 04</p>
         <h2 class="chapter-title">日常</h2>
-        <p class="chapter-sub">A DAY · 08:30 → 12:30</p>
+        <p class="chapter-sub">A DAY · 07:99 → 13:25</p>
       </header>
 
       <div class="day-layout">
@@ -294,37 +294,39 @@
           <div class="demo-outer anno-frame" id="demoOuter">
             <div class="demo-outer-top">
               <span class="demo-label" id="demoLabel">DEMO // SCRIPTS</span>
-              <div class="demo-top-controls"><span class="day-clock" id="dayClock" aria-hidden="true">08:30</span><button type="button" class="demo-expand" id="demoExpand" hidden>全屏查看 ⤢</button><span class="demo-rec" aria-hidden="true">[REC]</span></div>
+              <div class="demo-top-controls"><span class="day-clock" id="dayClock" aria-hidden="true">07:99</span><button type="button" class="demo-expand" id="demoExpand" hidden>全屏查看 ⤢</button><span class="demo-rec" aria-hidden="true">[REC]</span></div>
             </div>
             <div class="appwin-clip" id="appwinClip">
               <iframe class="appwin-frame" id="demoFrame" title="MultiGameAssistant 界面演示" tabindex="-1" aria-hidden="true"></iframe>
-              <span class="sr-only">界面演示动画：随页面滚动依次展示脚本、流水线编排、运行监控、飞书和 QQ、助手派活与技能和游戏信息。</span>
+              <span class="sr-only">界面演示动画：随页面滚动依次展示脚本、流水线编排与「定时」页、运行监控、飞书和 QQ、助手派活与技能库和游戏信息。</span>
             </div>
           </div>
           <div class="scen-tabs" id="scenTabs" role="tablist" aria-label="演示场景"></div>
         </div>
 
         <ol class="day-stops">
-          <li class="day-stop" data-scene="0" data-time="08:30">
-            <p class="day-time"><span>08:30</span>出门前</p>
+          <li class="day-stop" data-scene="0" data-time="07:99">
+            <p class="day-time"><span>07:99</span>出门前</p>
             <h3 class="day-title">脚本早已各就各位</h3>
             <p class="day-lead">明日方舟的基建还没换班，星穹铁道的体力快溢出了，终末地的活动还剩两天。没关系，脚本都装好、配好了。</p>
             <ul class="day-points">
               <li><b>一键安装</b>从 GitHub 或 Mirror酱 安装，断点续传、校验、补齐运行环境；运行前先走正式渠道更新，也能回滚、删除。</li>
               <li><b>导入本地脚本</b>不移动、不修改原目录，自动认出版本和更新渠道。</li>
               <li><b>任意脚本</b>没见过的脚本，「脚本」agent 先读项目文档再看代码，直接写成「脚本包」，附上每个任务、参数是做什么的使用说明；旧版本留在历史里，随时换回。</li>
+              <li><b>脚本自带的 MCP 和技能</b>脚本目录里有 MCP 配置时，agent 直接调用它的工具：查状态、只跑某一项、改设置；脚本自带的技能一键放进技能库，只在处理这个脚本时用。</li>
               <li><b>配置副本</b>大号、小号各存一份配置，原项目里的设置不受影响。</li>
             </ul>
           </li>
           <li class="day-stop" data-scene="1" data-time="09:00">
             <p class="day-time"><span>09:00</span>编排与定时</p>
             <h3 class="day-title">上班上课，它按时开工</h3>
-            <p class="day-lead">把几个游戏的日常连成一张流水线，设成「工作日 09:00」，剩下的就不用管了。</p>
+            <p class="day-lead">把几个游戏的日常连成一张流水线，设成「工作日 09:00」，剩下的就不用管了。所有按时做的事都在左边栏的「定时」里。</p>
             <ul class="day-points">
               <li><b>流水线画布</b>并行、排队、失败重试、agent 步骤、人工确认，拖到画布上连线即可；复制、粘贴、撤销都有，删掉一步其余原地不动。</li>
               <li><b>等问题处理完</b>前一步出的问题还没解决，后面的步骤不会自己开始。</li>
               <li><b>无人值守</b>开机自启、定时唤醒、错过了在宽限时间内补跑，跑完关游戏、关模拟器或关机。</li>
               <li><b>用说的也行</b>「帮我把这几个脚本排成每天早上跑的流程」，「编排」agent 看过电脑配置后直接排好保存，不满意再在画布上改。</li>
+              <li><b>一个「定时」页</b>选一个 agent、写下要做的事、定好每天或工作日几点，到点交给它；按时运行的流水线、游戏日报、agent 在对话里自己设的提醒也都列在这里，按 agent 筛选、就地修改。agent 替你设了定时，会弹窗告诉你。</li>
             </ul>
           </li>
           <li class="day-stop" data-scene="2" data-time="10:20">
@@ -346,7 +348,7 @@
               <li><b>直接说想做的事</b>「现在什么状态？」「把明日方舟的日常跑一下。」</li>
               <li><b>点一下就回答</b>飞书卡片、QQ 按钮直接回答通知、审批和提问；提问和审批发给最后说话的那个人。</li>
               <li><b>同一个对话</b>软件、飞书、QQ 里看到的是同一份；收到的是这一轮的总结，不会把每个步骤都发一遍。</li>
-              <li><b>每日日报</b>定时发到手机，只挑近期的事来总结；提醒也算进这个对话。</li>
+              <li><b>每日日报</b>在「游戏」agent 的「日报」页设好时间，定时发到手机，只挑近期的事来总结；提醒也算进这个对话。</li>
             </ul>
           </li>
           <li class="day-stop" data-scene="4" data-time="10:58">
@@ -358,19 +360,21 @@
               <li><b>内置浏览器</b>网页读不出内容时，agent 打开内置浏览器自己点；你在侧栏里看着它操作，也可以随时接手。</li>
               <li><b>长期记忆</b>记得你是谁、之前做过什么，久了不聊也接得上；在「记忆」页按 agent、按天查看，也能自己记一条。</li>
               <li><b>优化脚本</b>跑成功 5 次或更新后第一次跑通，它会问要不要优化：重新总结脚本包、调卡住时间、把走通的步骤存成技能。</li>
-              <li><b>技能按游戏分</b>输入 <code>/</code> 调出命令和技能；技能库有新版时整个换成新版本，附更新说明，不满意可以回滚。</li>
+              <li><b>技能库</b>脚本包、游戏包和技能按「游戏 → 脚本 → 作者」分好，用到哪个游戏、脚本时才问你要不要装；「版本」里能换成任何一版，往前往后都行。</li>
+              <li><b>「技能」页</b>脚本包、游戏包、技能、核心技能分开列，按游戏分组，下载的写着「下载」；用不上的直接删。输入 <code>/</code> 调出命令和技能。</li>
             </ul>
           </li>
-          <li class="day-stop" data-scene="3" data-time="12:30">
-            <p class="day-time"><span>12:30</span>游戏信息</p>
+          <li class="day-stop" data-scene="3" data-time="13:25">
+            <p class="day-time"><span>13:25</span>游戏信息</p>
             <h3 class="day-title">所有游戏的活动，一眼看完</h3>
             <p class="day-lead">玩的游戏一多，最容易漏的就是限时活动。关注的游戏就排在左边栏里，点一下切换。</p>
             <ul class="day-points">
               <li><b>版本大图和活动卡片</b>每个游戏一张当前版本的大图和进度条，活动一张一张带封面和倒计时；也能自己添加活动，配上自己的图。</li>
               <li><b>同一条时间轴</b>还剩几天、哪些快结束了还没做完，全部排在一起。</li>
               <li><b>进游戏看进度</b>「游戏」agent 进游戏看你的实际进度，标成做完、做了一部分或需要关注。</li>
-              <li><b>数据不花模型调用</b>SRA 公共 API、PRTS、B 站游戏 WIKI 每天自动读；官网公告和你添加的网址由 agent 去读。</li>
-              <li><b>更多游戏</b>SRA 公共 API 支持的 18 个游戏直接关注；其他游戏，agent 去找 Wiki 和官网。</li>
+              <li><b>公告与更新</b>版本更新、补丁说明、长期公告单独列在「公告」里；单机游戏先看这些，Steam 上的游戏每天自动读官方公告。</li>
+              <li><b>数据不花模型调用</b>SRA 公共 API、PRTS、B 站游戏 WIKI、Steam 公告每天自动读；官网公告和你添加的网址由 agent 去读。</li>
+              <li><b>更多游戏</b>SRA 公共 API 支持的 18 个游戏勾上就显示，取消只是不显示；其他游戏输入名字添加，再让 agent 去找 Wiki 和官网。打开游戏页时，技能库有它的游戏包和脚本包会问你要不要装。</li>
             </ul>
           </li>
         </ol>
@@ -389,15 +393,15 @@
         <p class="chapter-sub">HIGHLIGHTS · AT A GLANCE</p>
       </header>
       <ol class="hl-grid reveal-block">
-        <li class="hl-card"><span class="hl-idx">01</span><span class="hl-en">UNATTENDED</span><h3>定时无人值守</h3><p>上班上课期间，电脑按时开工、错过补跑、跑完收尾。</p></li>
+        <li class="hl-card"><span class="hl-idx">01</span><span class="hl-en">UNATTENDED</span><h3>定时无人值守</h3><p>按时开工、错过补跑、跑完收尾；所有定时的事都在一个「定时」页。</p></li>
         <li class="hl-card"><span class="hl-idx">02</span><span class="hl-en">REMOTE</span><h3>远程对话操控</h3><p>在 QQ 或飞书里跟助手聊天，和软件里是同一个对话。</p></li>
-        <li class="hl-card"><span class="hl-idx">03</span><span class="hl-en">ANY SCRIPT</span><h3>陌生脚本自动适配</h3><p>导入任意脚本目录，agent 读懂后生成脚本包。</p></li>
+        <li class="hl-card"><span class="hl-idx">03</span><span class="hl-en">ANY SCRIPT</span><h3>陌生脚本自动适配</h3><p>导入任意脚本目录，agent 读懂后生成脚本包；脚本自带的 MCP 也能直接用。</p></li>
         <li class="hl-card"><span class="hl-idx">04</span><span class="hl-en">SELF-HEAL</span><h3>出错自动干预</h3><p>卡住、报错先自动处理；处理不了交给「干预」看画面排除。</p></li>
         <li class="hl-card"><span class="hl-idx">05</span><span class="hl-en">AGENTS</span><h3>一组 agent 分工</h3><p>助手派活，各管一摊；动手的交给子 agent，网页用内置浏览器自己点。</p></li>
         <li class="hl-card"><span class="hl-idx">06</span><span class="hl-en">ONE-CLICK</span><h3>一键下载安装</h3><p>按游戏名搜索，下载、校验、解压、装运行环境一步到位。</p></li>
         <li class="hl-card"><span class="hl-idx">07</span><span class="hl-en">PIPELINE</span><h3>灵活编排</h3><p>并行、排队、重试、人工确认；出了问题，等处理完再往下走。</p></li>
         <li class="hl-card"><span class="hl-idx">08</span><span class="hl-en">EVENTS</span><h3>多游戏活动一览</h3><p>所有活动一条时间轴，还能进游戏查你哪些没做完。</p></li>
-        <li class="hl-card"><span class="hl-idx">09</span><span class="hl-en">MEMORY</span><h3>技能与记忆</h3><p>做过的存成技能，记得你是谁、做过什么；脚本跑稳了，一键优化。</p></li>
+        <li class="hl-card"><span class="hl-idx">09</span><span class="hl-en">MEMORY</span><h3>技能与记忆</h3><p>技能库按游戏挑着装，做过的存成技能，记得你做过什么；跑稳了一键优化。</p></li>
       </ol>
     </section>
 
@@ -437,7 +441,11 @@
           </details>
           <details>
             <summary>这么多 agent，会多花很多模型用量吗？</summary>
-            <p>角色 agent 只在有活时才干，看得到的工具也少。可以在「设置 → 模型 → 每个 agent 用的模型」里给各个 agent 和它们的子 agent 选便宜、能看图的模型；还可以打开「低上下文模式」，让对话保持很短。</p>
+            <p>角色 agent 只在有活时才干，看得到的工具也少。可以在「设置 → 模型 → 每个 agent 用的模型」里给各个 agent 和它们的子 agent 选便宜、能看图的模型；还可以打开「低上下文模式」，让对话保持很短；「设置 → 对话压缩」里也能换一个便宜的模型来写摘要。</p>
+          </details>
+          <details>
+            <summary>脚本包和游戏包要自己装吗？</summary>
+            <p>软件本身不带，都在<a href="https://github.com/MultiGameAssistant/skills" target="_blank" rel="noopener">技能库</a>里。打开一个游戏的页面，或 agent 开始处理某个游戏、脚本时，会问你一次要不要装，勾上才下载；不玩的不用装，也可以在「技能」页自己挑、随时删。</p>
           </details>
           <details>
             <summary>我已经在用的脚本要重新装吗？</summary>

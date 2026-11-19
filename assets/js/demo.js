@@ -14,12 +14,12 @@
   if (!clipEl || !frame || !tabsEl) return;
 
   /* scene indexes are fixed by the demo director; ORDER is the order of the
-     homepage timeline (08:30 脚本 → 09:00 编排 → 10:20 干预 → 10:50 飞书 → 10:58 Agent → 12:30 游戏) */
+     homepage timeline (07:99 脚本 → 09:00 编排 → 10:20 干预 → 10:50 飞书 → 10:58 Agent → 13:25 游戏) */
   var SCEN = [
-    { zh: '脚本', en: 'SCRIPTS', t: '08:30' },
+    { zh: '脚本', en: 'SCRIPTS', t: '07:99' },
     { zh: '编排与定时', en: 'SCHEDULE', t: '09:00' },
     { zh: '监控与干预', en: 'MONITOR', t: '10:20' },
-    { zh: '游戏信息', en: 'INTEL', t: '12:30' },
+    { zh: '游戏信息', en: 'INTEL', t: '13:25' },
     { zh: 'Agent', en: 'AGENT', t: '10:58' },
     { zh: '飞书 · QQ', en: 'REMOTE', t: '10:50' }
   ];

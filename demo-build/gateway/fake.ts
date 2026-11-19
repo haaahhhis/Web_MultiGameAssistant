@@ -24,7 +24,9 @@ export const world = {
     { id: 's-scripts', title: '优化脚本：三月七小助手', updatedAt: Date.now() - 300e3, running: false, blank: false, live: false, role: 'scripts', requestedBy: '助手', home: 'scripts' },
     { id: 's-daily', title: '排每天早上的日常', updatedAt: Date.now() - 3600e3, running: false, blank: false, live: false, cwd: 'D:\\MGA\\workspace', role: 'pipelines', requestedBy: '你', home: 'pipelines' },
     { id: 's-emu', title: '看模拟器是否在运行', updatedAt: Date.now() - 7200e3, running: false, blank: false, live: false },
-    { id: 's-diag', title: '诊断昨晚失败', updatedAt: Date.now() - 200e3, running: false, blank: false, live: false, role: 'intervene', requestedBy: '监控', home: 'intervene' },
+    // 干预's own conversation; the diagnosis waiting on an approval is a session of its own, where the approval card shows
+    { id: 's-iv', title: '干预', updatedAt: Date.now() - 19000e3, running: false, blank: false, live: false, role: 'intervene', home: 'intervene' },
+    { id: 's-diag', title: '诊断昨晚失败', updatedAt: Date.now() - 200e3, running: false, blank: false, live: false, role: 'intervene', requestedBy: '监控' },
     { id: 's-game', title: '游戏信息：崩坏：星穹铁道', updatedAt: Date.now() - 400e3, running: false, blank: false, live: false, role: 'games', requestedBy: '定时', home: 'games' },
   ] as any[],
   scripts: [
@@ -66,7 +68,7 @@ export const world = {
     },
   ] as any[],
   interventions: [
-    { id: 'iv-1', incidentId: 'inc-1', runId: 'run-3', sessionId: 's-iv', title: '干预：三月七小助手 · 材料速刷', mode: 'act' as const, state: 'running' as const, paused: true, startedAt: Date.now() - 880e3 },
+    { id: 'iv-1', incidentId: 'inc-1', runId: 'run-3', sessionId: 's-diag', title: '干预：三月七小助手 · 材料速刷', mode: 'act' as const, state: 'running' as const, paused: true, startedAt: Date.now() - 880e3 },
   ] as any[],
   pipeline: Pipeline.parse({
     id: 'morning-daily', name: '每天早上的日常',
@@ -149,6 +151,14 @@ export const sessionEvents: Record<string, any[]> = {
     ev('tool/call', { callId: 'c2', name: 'pwsh', arguments: '{\"cmd\":\"Restart-Emulator\"}' }),
     ev('approval/asked', { approvalId: 'ap-1', toolName: 'pwsh', callId: 'c2', reason: '需要你的批准：重启模拟器' }),
   ],
+  's-iv': [
+    ev('turn/start'),
+    ev('user/message', { messageId: 'v1', content: text(taskMessage('监控', 'MaaEnd · 清体力：断线', '连接中断，长时间没有新日志；自动重跑已经成功，确认一下还要不要处理。', true)), origin: { kind: 'handoff', human: false } }),
+    ev('step/start', { step: 1 }),
+    ev('assistant/message', { messageId: 'v2', content: text('看过了：重跑后清体力已经完成，不用再处理。') }),
+    ev('step/end', { step: 1 }),
+    ev('turn/end', { reason: { kind: 'completed' } }),
+  ],
   's-daily': [
     ev('turn/start'),
     ev('user/message', { messageId: 'm1', content: text('把日常跑一下'), origin: { kind: 'user', human: true } }),
@@ -182,15 +192,50 @@ const monitorSettings = {
     'daily-helper': { seconds: 60, by: 'agent' as const, samples: [], at: Date.now() - 864e5, note: '加载关卡时最多安静 50 秒' },
   },
 };
-/* skills filed under their game and script, as the 技能 page groups them */
+/* 技能: script packs, game packs and skills downloaded from the 技能库, the user's own and the core ones */
+const skill = (name: string, description: string, extra: object = {}) => ({ name, description, source: 'hub', provider: 'runtime', path: 'D:\\MGA\\skills\\' + name, modelInvocable: true, userInvocable: true, ...extra });
 const demoSkills = [
-  { name: 'startrail-events', description: '进入活动页，按剩余天数查看各活动的进度。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\startrail-events', modelInvocable: true, userInvocable: true, owner: { games: ['startrail'] } },
-  { name: 'farecho-base-shift', description: '基建换班前先看干员心情，避免排班冲突。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\farecho-base-shift', modelInvocable: true, userInvocable: true, owner: { games: ['farecho'] } },
-  { name: 'frostland-weekly', description: '终末地每周任务的入口和领取顺序。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\frostland-weekly', modelInvocable: true, userInvocable: true, owner: { games: ['frostland'] } },
-  { name: 'close-event-notice', description: '清体力前先关闭活动公告弹窗，再继续执行。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\close-event-notice', modelInvocable: true, userInvocable: true, owner: { scripts: ['daily-helper'], games: ['startrail'] }, removable: true },
-  { name: 'maa-copilot', description: '用 MAA 自动战斗打指定关卡。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\maa-copilot', modelInvocable: true, userInvocable: true, owner: { scripts: ['emu-daily'], games: ['farecho'] } },
-  { name: 'pipeline-planning', description: '把多个脚本任务排成流水线，处理资源冲突。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\pipeline-planning', modelInvocable: true, userInvocable: true },
-  { name: 'script-analysis', description: '读懂一个陌生脚本，写出脚本包草稿。', source: 'custom', provider: 'runtime', path: 'D:\\MGA\\skills\\script-analysis', modelInvocable: true, userInvocable: true },
+  skill('maa', 'MAA 怎么装、有哪些任务、运行前改哪些设置。', { kind: 'script-pack', pack: 'maa', owner: { scripts: ['emu-daily'], games: ['farecho'] } }),
+  skill('maaend', 'MaaEnd 怎么装、有哪些任务、运行前改哪些设置。', { kind: 'script-pack', pack: 'maaend', owner: { scripts: ['desk-daily'], games: ['frostland'] } }),
+  skill('march7th', '三月七小助手怎么装、有哪些任务、运行前改哪些设置。', { kind: 'script-pack', pack: 'march7th', owner: { scripts: ['daily-helper'], games: ['startrail'] } }),
+  skill('farecho', '明日方舟的活动从 PRTS 读，游戏里怎么看活动进度。', { kind: 'game-pack', owner: { games: ['farecho'] } }),
+  skill('frostland', '明日方舟：终末地的活动从 SRA 公共 API 读。', { kind: 'game-pack', owner: { games: ['frostland'] } }),
+  skill('startrail', '崩坏：星穹铁道的活动从 SRA 公共 API 和 B 站游戏 WIKI 读。', { kind: 'game-pack', owner: { games: ['startrail'] } }),
+  skill('startrail-events', '进入活动页，按剩余天数查看各活动的进度。', { owner: { games: ['startrail'] } }),
+  skill('farecho-base-shift', '基建换班前先看干员心情，避免排班冲突。', { owner: { games: ['farecho'] } }),
+  skill('frostland-weekly', '终末地每周任务的入口和领取顺序。', { owner: { games: ['frostland'] } }),
+  skill('maa-copilot', '用 MAA 自动战斗打指定关卡。', { owner: { scripts: ['emu-daily'], games: ['farecho'] } }),
+  skill('close-event-notice', '清体力前先关闭活动公告弹窗，再继续执行。', { source: 'custom', owner: { scripts: ['daily-helper'], games: ['startrail'] }, removable: true }),
+  skill('pipeline-planning', '把多个脚本任务排成流水线，处理资源冲突。', { source: 'custom', removable: true }),
+  skill('script-analysis', '读懂一个陌生脚本，写出脚本包和使用说明。', { source: 'bundled' }),
+  skill('intervene-basics', '脚本卡住或出错时，先确认还要不要处理，再看画面动手。', { source: 'bundled' }),
+];
+/* what the 技能库 has: the ones downloaded here */
+const HUB_REPO = 'MultiGameAssistant/skills';
+const hubItem = (name: string, title: string, kind: 'game' | 'script' | 'general', extra: object = {}) => ({
+  name, title, description: demoSkills.find(k => k.name === name)?.description ?? title, kind, games: [] as string[], scripts: [] as string[], repo: HUB_REPO, author: 'MultiGameAssistant',
+  path: name, hash: name + '-3', version: '1.2.0', history: [{ version: '1.1.0' }, { version: '1.0.0' }],
+  installed: { at: Date.now() - 6 * 864e5, update: false, version: '1.2.0' }, ...extra,
+});
+const hubItems = [
+  hubItem('maa', 'MAA', 'script', { pack: 'script', games: ['farecho'], scripts: ['maa'] }),
+  hubItem('maaend', 'MaaEnd', 'script', { pack: 'script', games: ['frostland'], scripts: ['maaend'] }),
+  hubItem('march7th', '三月七小助手', 'script', { pack: 'script', games: ['startrail'], scripts: ['march7th'] }),
+  hubItem('farecho', '明日方舟', 'game', { pack: 'game', game: 'farecho', sra: ['ak'], games: ['farecho'] }),
+  hubItem('frostland', '明日方舟：终末地', 'game', { pack: 'game', game: 'frostland', sra: ['end'], games: ['frostland'] }),
+  hubItem('startrail', '崩坏：星穹铁道', 'game', { pack: 'game', game: 'startrail', sra: ['sr'], games: ['startrail'] }),
+  hubItem('startrail-events', 'startrail-events', 'game', { games: ['startrail'] }),
+  hubItem('farecho-base-shift', 'farecho-base-shift', 'game', { games: ['farecho'] }),
+  hubItem('frostland-weekly', 'frostland-weekly', 'game', { games: ['frostland'] }),
+  hubItem('maa-copilot', 'maa-copilot', 'script', { games: ['farecho'], scripts: ['maa'] }),
+];
+/* timed tasks on 定时: at set times one agent is handed one piece of work in plain words */
+const timetable = (times: string[], days: number[] = []) => ({ enabled: true, times, days, catchUpMinutes: 30 });
+const demoTasks = [
+  { id: 'task-news', agent: 'games', title: '看新版本和公告', prompt: '看各个游戏最近一天的新版本、维护和重要公告，有变化的用一两句话说明，没有就说没有。', schedule: timetable(['12:30']),
+    lastRun: { id: 'tr-1', taskId: 'task-news', trigger: { kind: 'schedule' as const }, state: 'done' as const, outcome: '昨天没有新版本和维护公告。', startedAt: Date.now() - 864e5, endedAt: Date.now() - 864e5 + 90e3 } },
+  { id: 'task-updates', agent: 'scripts', title: '检查脚本有没有新版本', prompt: '检查已安装的脚本有没有新版本，有的话说明更新了什么；先不要安装。', schedule: timetable(['08:00'], [1, 2, 3, 4, 5]) },
+  { id: 'task-night', agent: 'intervene', title: '汇总夜里的异常', prompt: '汇总最近 12 小时运行里出过的异常：哪些已经自动处理了，哪些还要我管、该怎么做。', schedule: timetable(['07:30']) },
 ];
 /* the QQ official bot, connected beside Feishu */
 const qqChecks = [{ id: 'config', label: 'AppID 和 AppSecret', ok: true }, { id: 'bot', label: '机器人信息', ok: true, detail: 'MGA 助手' }, { id: 'ws', label: 'WebSocket 连接', ok: true }, { id: 'users', label: '已允许用户', ok: true }];
@@ -208,6 +253,14 @@ export function resetWorld() {
   emit('approval/resolved', { approvalId: 'ap-1', outcome: 'rejected' });
 }
 export { ev, text };
+
+/** The next time the local clock reads hh:mm (on that weekday, when given). */
+function nextClock(hour: number, minute: number, weekday?: number) {
+  const at = new Date();
+  at.setHours(hour, minute, 0, 0);
+  while (at.getTime() <= Date.now() || (weekday !== undefined && at.getDay() !== weekday)) at.setDate(at.getDate() + 1);
+  return at.getTime();
+}
 
 /* ----- responders ----- */
 const ok = <T>(r: T) => r;
@@ -232,8 +285,8 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   'handoffs/list': (p) => ok({ items: world.handOffs.filter(h => h.fromSession === p.sessionId || h.toSession === p.sessionId) }),
   'handoffs/get': (p) => ok(world.handOffs.find(h => h.id === p.id) ?? world.handOffs[0]),
   'reminders/list': (p) => ok({ items: [
-    { id: 'rem-report', agent: 'main', sessionId: 's-home', title: '每日日报', prompt: '总结今天各游戏的日常和活动进度，发到飞书和 QQ', rule: '每天 21:00', repeats: true, next: Date.now() + 6 * 3600e3 },
-    { id: 'rem-events', agent: 'games', sessionId: 's-game', title: '看活动进度', prompt: '进游戏看看各活动还有哪些没做完', rule: '每天 09:40', repeats: true, next: Date.now() + 20 * 3600e3 },
+    { id: 'rem-weekly', agent: 'main', sessionId: 's-home', title: '领周常奖励', prompt: '提醒我把各游戏的周常奖励领了', rule: '每周日 20:00', repeats: true, next: nextClock(20, 0, 0) },
+    { id: 'rem-events', agent: 'games', sessionId: 's-game', title: '看活动进度', prompt: '进游戏看看各活动还有哪些没做完', rule: '每天 09:40', repeats: true, next: nextClock(9, 40) },
   ].filter(r => p.agent === undefined || r.agent === p.agent) }),
   'reminders/remove': () => ok({}),
   'instances/others': () => ok({ others: [] }),
@@ -242,7 +295,10 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   'models/setAgentModel': () => ok({}),
   'about/info': () => ok({ edition: 'other' as const }),
   'providers/balance': () => ok({ balance: null }),
-  'skillhub/list': () => ok({ items: [], repos: [], errors: [] }),
+  'skillhub/list': () => ok({ items: hubItems, repos: [{ repo: HUB_REPO, branch: 'main' }], errors: [], fetchedAt: Date.now() - 3600e3 }),
+  'skills/focus': () => ok({ scripts: [], games: [] }),
+  'scripts/mcp': () => ok({ servers: [], skills: [] }),
+  'tasks/list': (p) => ok({ items: demoTasks.filter(t => p.agent === undefined || t.agent === p.agent) }),
   'scripts/icon': () => ok({}),
   'scripts/guide': () => ok({ guide: null }),
   'packs/history': () => ok({ items: [] }),
@@ -356,6 +412,7 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
     return { mediaType: image.mediaType, data: btoa(binary) };
   },
   'games/mirrorchyan': () => ok({ items: [], from: 'mirrorchyan' } as any),
+  'skillhub/preview': (p) => ok({ content: `# ${p.name}\n\n${demoSkills.find(k => k.name === p.name)?.description ?? ''}` }),
   'skills/get': (p: any) => { const skill = demoSkills.find(k => k.name === p.name) ?? demoSkills[0]!; return ok({ ...skill, content: `# ${skill.name}\n\n${skill.description}` } as any); },
   'intervene/takeover': () => ok({} as any),
   'intervene/release': () => ok({} as any),
@@ -372,7 +429,7 @@ const handlers: { [M in RequestMethod]?: Handler<M> } = {
   'intervene/list': () => ok({ items: world.interventions }),
   'games/list': () => {
     const games = snapshot.games.filter(g => g.builtin || followed.has(g.sra));
-    return ok({ games, activities: snapshot.activities.filter(a => games.some(g => g.id === a.game)), settings: { report: { enabled: true, at: '09:00', games: [], soonDays: 3, ai: true }, followed: [...followed] }, report: { next: Date.now() + 14 * 3600e3 } } as any);
+    return ok({ games: games.map(g => ({ ...g, sra: [g.sra] })), activities: snapshot.activities.filter(a => games.some(g => g.id === a.game)), settings: { report: { enabled: true, at: '09:00', games: [], soonDays: 3, ai: true }, followed: [...followed] }, report: { next: Date.now() + 14 * 3600e3 } } as any);
   },
   'notify/conversations': () => ok({ items: [] } as any),
   'games/refresh': (p, push) => { push('games/changed', {}); return ok({ results: snapshot.games.filter(g => (!p.game || g.id === p.game) && (g.builtin || followed.has(g.sra))).map(g => ({ game: g.id, ok: g.refreshed.ok, count: snapshot.activities.filter(a => a.game === g.id).length, detail: 'API 图片快照；构建前刷新' })) }); },

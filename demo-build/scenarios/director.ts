@@ -42,7 +42,9 @@ const scenes: Step[][] = [
     effect(() => runPhase({ emu: nodeRun('succeeded'), clear: nodeRun('waiting', '被活动公告挡住，交给干预处理'), farm: nodeRun('waiting', '等清体力的问题处理完') })), wait(2400),
     effect(() => runPhase({ clear: nodeRun('running', '干预关掉了公告，重试', 2) })), wait(1800),
     effect(() => runPhase({ clear: nodeRun('succeeded', undefined, 2), farm: nodeRun('running') })), wait(1800),
-    effect(() => runPhase({ farm: nodeRun('succeeded'), done: nodeRun('succeeded') }, 'succeeded')), click('运行记录'), wait(2400)],
+    effect(() => runPhase({ farm: nodeRun('succeeded'), done: nodeRun('succeeded') }, 'succeeded')), click('运行记录'), wait(2400),
+    // every agent's timed work, the pipelines on a timetable and the daily report sit on the one 定时 page
+    go('#/schedule'), wait(1000), focus('.schedule-timeline', 1.1), wait(3400)],
   [go('#/p/runs'), wait(1000), effect(() => incident(false)), focus('.incident-title'), wait(2400), click('.incident-title'), wait(2400),
     effect(() => incident(true)), wait(2400), click('监控设置'), focus('.stall-list'), wait(3400)],
   // games sit in the rail on the games page: each one's button title starts with its name
@@ -50,7 +52,7 @@ const scenes: Step[][] = [
     click('.rail-game[title^="明日方舟：终末地："]'), focus('.version-hero'), wait(3000),
     click('.rail-game[title^="崩坏：星穹铁道："]'), focus('.version-hero'), wait(3000)],
   [go('#/chat'), wait(1400), focus('.delegation', 1.15), wait(2200), click('.delegation .exchange-line'), wait(3200),
-    go('#/p/skills'), wait(1200), focus('.main', 1), wait(3000)],
+    go('#/p/skills'), wait(1200), focus('.main', 1), wait(2600), click('技能库'), wait(1200), focus('.main', 1), wait(3000)],
   [go('#/settings/feishu'), wait(1200), click('重新检查'), wait(4200), click('QQ 机器人'), wait(900), click('重新检查'), wait(4200)],
 ];
 const duration = (s: Step) => s.kind === 'wait' ? s.ms : s.kind === 'type' ? 750 + s.text.length * 60 : s.kind === 'effect' || s.kind === 'focus' ? 0 : 900;
