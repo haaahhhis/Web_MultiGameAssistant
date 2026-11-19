@@ -1,5 +1,34 @@
 [
   {
+    "tag_name": "v2.2.0",
+    "name": "MultiGameAssistant 2.2.0",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-19T09:37:59Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v2.2.0",
+    "body": "## 新功能\n\n### 技能库和技能页\n\n- **脚本包和游戏包从技能库装**：软件不再自带脚本包和游戏包，MAA、MaaEnd、三月七小助手和明日方舟、终末地、星穹铁道的游戏包都在技能库（[MultiGameAssistant/skills](https://github.com/MultiGameAssistant/skills)）里。打开一个游戏的页面，或者 agent 在对话里开始处理某个游戏、脚本时，会问一次要不要装它的游戏包、脚本包和技能；不玩的不用装。从旧版本升级的，原来自带的这些包也是这样装回来。\n- **技能库按「游戏 → 脚本 → 作者」分好**：同一个脚本可以有不同作者的包。每个包能看内容、下载、更新，也能换成技能库留着的任何一个版本，往前往后都行。\n- **技能页**：按脚本包、游戏包、技能、核心技能分开，里面再按游戏分，几级目录用不同的颜色和形状区分。从技能库下载的，名字旁边写着「下载」。右上角「技能库」和「新建技能」并排，进去后点「返回」回到列表。\n- 下载的技能可以更新、回退、编辑、移动和删除，只有核心技能受保护。agent 为脚本写的脚本包也能删；删掉脚本时，只有它用的脚本包会一起删掉。\n- 软件里的 agent 只用自己的技能，不再读电脑上其他 agent 共用的技能文件夹（`~/.agents/skills` 等）。\n\n### 游戏页\n\n- **任何游戏都能按名字添加**：列表里没有的游戏，输入名字后先有一个空的游戏页，点「让 agent 去找」，agent 会去找它的 Wiki 和官网公告，写好它的游戏包。每个游戏页上都能把这个游戏删掉或不再显示。\n- 「更多游戏」在弹窗里打开，只管游戏页上显示哪些游戏，勾选、取消都不会下载或删除东西。\n- **公告与更新**：版本更新、补丁说明、长期公告这些没有起止时间的消息，单独列在游戏页的「公告」里，长期公告排在最前面。单机游戏的页面先显示这些，没有版本信息时大图上显示最新一次更新。游戏包里有 Steam 来源的（agent 找来源时会加上），每天自动读它在 Steam 的官方公告，其他游戏可以让 agent 去官网查；agent 回答「最近更新了什么」时也会读这里。\n- **日报**变成「游戏」agent 自己的标签页，在「对话」旁边。\n\n### 定时\n\n- **所有定时任务都在一个「定时」页**：各个 agent 不再各有一个定时标签。新建时选 agent、要做的事（有例子可选）和时间（每天、工作日、周末或指定的日子）。所有 agent 的定时任务、它们给自己设的提醒、按时运行的流水线和「游戏」的日报都列在一起，可以按 agent 筛选，直接修改或删除。\n- agent 在对话里设了定时任务或提醒时，会弹出提示，说明谁设了什么、什么时候运行，点进去就是那一条。\n\n### 脚本自带的 MCP 和技能\n\n- **脚本的 MCP 服务**：脚本里的 MCP 配置（`.mcp.json`、`.vscode/mcp.json` 等）照原样读取，agent 能通过它们操作脚本。服务第一次用到时启动，空闲时关掉；脚本包没有说明过的服务，要你批准一次才会启动。\n- 脚本自带的技能（`skills/`、`.claude/skills/` 等）可以在脚本页的「MCP 与技能」里放进软件的技能文件夹，只给这个脚本用；脚本更新后会重新拿一次，在软件里改过的不覆盖。\n\n### 对话压缩\n\n- **可以选写摘要的模型**：「设置 → 对话压缩」里能选由哪个模型写压缩摘要，默认和对话用同一个模型，能用上它的提示缓存。换成别的模型（比如更便宜的）时，要压缩的那段按没命中缓存计费，而且它的上下文要装得下这一段。改了以后重启 agent 服务生效。\n\n### 界面\n\n- 左侧栏的头像、图标和名字更大，标题栏里 agent 标签的字和图标也更大。「助手」和「游戏」在左侧栏共用一个按钮，再点一次切到另一个；头像和标签图标重新画过。\n- 左侧栏的「全部活动」换成时间线图标，「定时」换成时钟图标，不再长得一样。\n- 聊天里的时间随着变旧显示更多日期：今天显示 15:05，之后是「昨天 15:05」「周五 15:05」「11月6日 15:05」，往年的带上年份；鼠标移到消息上不再弹出日期。\n- 「显示以前的对话」开关移到「设置 → 对话压缩」底部，默认关闭。\n\n## 修复\n\n- agent 已经拿去处理的消息，在聊天里显示为已发送，不再显示为等待中；这一轮出错时，这些消息交给新的一轮处理，不会丢。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-2.2.0.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-2.2.0-arm64.exe`\n- 已经装了 dsh：在 dsh 的「Add plugin」里填 `dsh-multigameassistant`（npm 连不上时用插件包 `dsh-multigameassistant.tgz` 的链接；见 README「已经装了 dsh」）\n",
+    "assets": [
+      {
+        "name": "dsh-multigameassistant.tgz",
+        "size": 14925130,
+        "download_count": 12,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.0/dsh-multigameassistant.tgz"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.2.0-arm64.exe",
+        "size": 306620968,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.0/MultiGameAssistant-Setup-2.2.0-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.2.0.exe",
+        "size": 323272105,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.0/MultiGameAssistant-Setup-2.2.0.exe"
+      }
+    ]
+  },
+  {
     "tag_name": "v2.1.1",
     "name": "MultiGameAssistant 2.1.1",
     "draft": false,
@@ -11,7 +40,7 @@
       {
         "name": "dsh-multigameassistant.tgz",
         "size": 14673356,
-        "download_count": 22,
+        "download_count": 24,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.1.1/dsh-multigameassistant.tgz"
       },
       {
@@ -23,7 +52,7 @@
       {
         "name": "MultiGameAssistant-Setup-2.1.1.exe",
         "size": 320838201,
-        "download_count": 11,
+        "download_count": 12,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.1.1/MultiGameAssistant-Setup-2.1.1.exe"
       }
     ]
