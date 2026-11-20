@@ -1,5 +1,34 @@
 [
   {
+    "tag_name": "v2.2.1",
+    "name": "MultiGameAssistant 2.2.1",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-20T11:55:20Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v2.2.1",
+    "body": "## 新功能\n\n### 备用模型\n\n- **模型用不了时自动换下一个**：「设置 → 模型 → 备用模型」里有两个列表，一个给各个 agent 自己的对话（助手和其他 agent），一个给子 agent，可以加模型、调顺序。模型因为余额或额度不足、Key 失效或没有权限、模型下线，或者被限流、服务出错且重试后还是不行时，agent 会换成列表里的下一个模型接着做，已经做完的步骤不重做。\n- **对话里有一张切换卡片**：写明从哪个服务的哪个模型换到了哪个，因为什么，点开能看报错原文。agent 自己也读得到这张卡片。这个对话之后继续用新模型，想换回来在输入框旁的模型选择里换。\n- 从出错的那个往下试，试过的不再试，都不行就停下等你处理。网络断了、对话太长这类换模型也没用的错误不会切换。交给别的 agent 的事和子 agent 换了模型后接着做完，交回的是结果，不会报「没有做完」。\n\n### 游戏页\n\n- **横幅可以换成自己的图片**：点游戏页顶部的版本横幅就能换背景，每个游戏分别保存；「恢复默认」换回版本原图。\n\n### 读游戏网站\n\n- **读网页的技能能拿到图片和完整内容**：agent 查游戏的更新、公告时，先读来源本身（Steam 的公告接口和 RSS、商店信息、Wiki 的图片接口、网站的订阅源），再看网页。回答里有完整的更新内容、真实的图片地址和能打开的原文链接。\n- **公告不再只有一两条**：在游戏页按名字添加的游戏，agent 找到 Steam 来源后马上读一次它在 Steam 的官方公告（最近 20 篇），不用等到第二天；agent 自己上网查公告时，列表上最近的每一篇都记下（最多 20 篇），只把最新的几篇读全文写摘要。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-2.2.1.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-2.2.1-arm64.exe`\n- 已经装了 dsh：在 dsh 的「Add plugin」里填 `dsh-multigameassistant`（npm 连不上时用插件包 `dsh-multigameassistant.tgz` 的链接；见 README「已经装了 dsh」）\n",
+    "assets": [
+      {
+        "name": "dsh-multigameassistant.tgz",
+        "size": 14942840,
+        "download_count": 12,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.1/dsh-multigameassistant.tgz"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.2.1-arm64.exe",
+        "size": 306641827,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.1/MultiGameAssistant-Setup-2.2.1-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.2.1.exe",
+        "size": 323293327,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.1/MultiGameAssistant-Setup-2.2.1.exe"
+      }
+    ]
+  },
+  {
     "tag_name": "v2.2.0",
     "name": "MultiGameAssistant 2.2.0",
     "draft": false,
