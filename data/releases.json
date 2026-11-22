@@ -1,5 +1,63 @@
 [
   {
+    "tag_name": "v2.2.3",
+    "name": "MultiGameAssistant 2.2.3",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-22T17:05:23Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v2.2.3",
+    "body": "## 多助手协作修复\n\n- 修复主助手向运行中的子任务补充指令时，后台进程意外退出、对话中断的问题。补充指令会投递到原子任务，主助手在收到投递回执后才显示“已经告诉它了”。\n- 子任务拒收补充指令时，主助手会收到错误，原任务可以继续。回答未送达时，问题保留为待回答，支持重试。\n- 重启后，因上次退出而中断的任务会保存为失败状态，避免再次启动时仍显示为运行中或等待中。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-2.2.3.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-2.2.3-arm64.exe`\n- 已经装了 dsh：在 dsh 的「Add plugin」里填 `dsh-multigameassistant`（npm 连不上时用插件包 `dsh-multigameassistant.tgz` 的链接；见 README「已经装了 dsh」）\n",
+    "assets": [
+      {
+        "name": "dsh-multigameassistant.tgz",
+        "size": 15036144,
+        "download_count": 4,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.3/dsh-multigameassistant.tgz"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.2.3-arm64.exe",
+        "size": 307049558,
+        "download_count": 2,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.3/MultiGameAssistant-Setup-2.2.3-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.2.3.exe",
+        "size": 323700941,
+        "download_count": 2,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.3/MultiGameAssistant-Setup-2.2.3.exe"
+      }
+    ]
+  },
+  {
+    "tag_name": "v2.2.2",
+    "name": "MultiGameAssistant 2.2.2",
+    "draft": false,
+    "prerelease": false,
+    "published_at": "2026-11-22T13:02:00Z",
+    "html_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/tag/v2.2.2",
+    "body": "## 游戏活动与公告\n\n- 查活动时会同时核对已配置的数据源和发行商公告，记录来源、配图和待补查的链接。中断后再次查询同一来源，可以继续补查。\n- 在游戏页点击公告可查看摘要、完整正文和配图。列表与详情统一了版本更新、资讯、长期公告等标签的样式。\n\n## 多助手协作与对话\n\n- 从游戏页或其他功能派发任务时，在负责助手的主对话中显示子任务。子任务使用配置的模型，完成后通过回执唤醒主助手；模型请求超时时可按已配置的备用模型继续。\n- 「汇报」和「全部」都能查看当前动作、排队和审批状态。两种派发入口使用相同的子任务按钮，点击可打开对应的执行记录。\n- 消息两侧新增引用回复入口。可以选中一句话回复，也可以引用整条消息，引用会随草稿保存。\n\n## 运行与监控\n\n- 补偿运行与原任务关联，重复请求可复用已启动的补偿。流水线汇总会列出各脚本任务的结果及尝试次数。\n- 优化未知界面的告警处理，并在轨迹中区分已报告用量和缺少用量的请求。\n\n\n## 下载\n\n- Windows x64（大多数电脑）：`MultiGameAssistant-Setup-2.2.2.exe`\n- Windows ARM64（骁龙等 ARM 处理器的电脑）：`MultiGameAssistant-Setup-2.2.2-arm64.exe`\n- 已经装了 dsh：在 dsh 的「Add plugin」里填 `dsh-multigameassistant`（npm 连不上时用插件包 `dsh-multigameassistant.tgz` 的链接；见 README「已经装了 dsh」）\n",
+    "assets": [
+      {
+        "name": "dsh-multigameassistant.tgz",
+        "size": 15035894,
+        "download_count": 6,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.2/dsh-multigameassistant.tgz"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.2.2-arm64.exe",
+        "size": 307048961,
+        "download_count": 1,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.2/MultiGameAssistant-Setup-2.2.2-arm64.exe"
+      },
+      {
+        "name": "MultiGameAssistant-Setup-2.2.2.exe",
+        "size": 323700382,
+        "download_count": 3,
+        "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.2/MultiGameAssistant-Setup-2.2.2.exe"
+      }
+    ]
+  },
+  {
     "tag_name": "v2.2.1",
     "name": "MultiGameAssistant 2.2.1",
     "draft": false,
@@ -11,7 +69,7 @@
       {
         "name": "dsh-multigameassistant.tgz",
         "size": 14942840,
-        "download_count": 39,
+        "download_count": 50,
         "browser_download_url": "https://github.com/haaahhhis/MultiGameAssistant/releases/download/v2.2.1/dsh-multigameassistant.tgz"
       },
       {
